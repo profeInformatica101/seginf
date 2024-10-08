@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Evaluación de Proyectos: OWASP Top 10 (2021)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            font-size: 18px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 28px;
+        }
+        .group-info {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        .group-info label {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .group-info input {
+            width: 300px;
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+            font-size: 18px;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-size: 18px;
+        }
+        .criterion {
+            background-color: #e6f7ff;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .subtotal, .total {
+            font-weight: bold;
+            background-color: #d9edf7;
+            font-size: 18px;
+        }
+        .points {
+            width: 80px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .comments {
+            border: 1px solid #000;
+            padding: 10px;
+            height: 150px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Evaluación de Proyectos: OWASP Top 10 (2021)</h1>
+
+    <div class="group-info">
+        <p><label>Grupo que evalúa:</label> ________________________________</p>
+        <p><label>Grupo evaluado:</label> _________________________________</p>
+    </div>
+
+    <table>
+        <tr>
+            <th>Criterio</th>
+            <th>Descripción</th>
+            <th>Puntos Máximos</th>
+            <th>Puntos Obtenidos</th>
+        </tr>
+        <!-- Criterio 1 -->
+        <tr>
+            <td rowspan="3" class="criterion">1. Explicación de las Vulnerabilidades Seleccionadas</td>
+            <td>a) Descripción Clara y Precisa</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td>b) Relevancia y Profundidad</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td>c) Relación con la Seguridad Informática</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="subtotal">Subtotal Criterio 1</td>
+            <td class="points">15</td>
+            <td class="points"></td>
+        </tr>
+        <!-- Criterio 2 -->
+        <tr>
+            <td rowspan="2" class="criterion">2. Impacto en Aplicaciones y Sistemas</td>
+            <td>a) Análisis de Afectación</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td>b) Identificación de Activos Comprometidos</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="subtotal">Subtotal Criterio 2</td>
+            <td class="points">10</td>
+            <td class="points"></td>
+        </tr>
+        <!-- Criterio 3 -->
+        <tr>
+            <td rowspan="2" class="criterion">3. Amenazas y Riesgos Asociados</td>
+            <td>a) Enumeración de Amenazas</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td>b) Evaluación de Riesgos</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="subtotal">Subtotal Criterio 3</td>
+            <td class="points">10</td>
+            <td class="points"></td>
+        </tr>
+        <!-- Criterio 4 -->
+        <tr>
+            <td rowspan="3" class="criterion">4. Casos Reales de Incidentes</td>
+            <td>a) Descripción Detallada del Incidente</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td>b) Análisis de Consecuencias</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td>c) Medidas Tomadas Posteriormente</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="subtotal">Subtotal Criterio 4</td>
+            <td class="points">15</td>
+            <td class="points"></td>
+        </tr>
+        <!-- Criterio 5 -->
+        <tr>
+            <td rowspan="2" class="criterion">5. Introducción al OWASP y su Importancia</td>
+            <td>a) Presentación del OWASP</td>
+            <td class="points">2.5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td>b) Importancia en Seguridad Informática</td>
+            <td class="points">2.5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="subtotal">Subtotal Criterio 5</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <!-- Criterio 6 -->
+        <tr>
+            <td rowspan="2" class="criterion">6. Conclusiones y Buenas Prácticas</td>
+            <td>a) Importancia de la Prevención y Mitigación</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td>b) Recomendaciones y Buenas Prácticas</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="subtotal">Subtotal Criterio 6</td>
+            <td class="points">10</td>
+            <td class="points"></td>
+        </tr>
+        <!-- Criterio 7 -->
+        <tr>
+            <td rowspan="3" class="criterion">7. Calidad de la Presentación</td>
+            <td>a) Estructura y Organización</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td>b) Uso de Imágenes y Gráficos</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td>c) Claridad y Comunicación</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="subtotal">Subtotal Criterio 7</td>
+            <td class="points">15</td>
+            <td class="points"></td>
+        </tr>
+        <!-- Criterio 8 -->
+        <tr>
+            <td rowspan="2" class="criterion">8. Participación y Trabajo en Equipo</td>
+            <td>a) Colaboración del Equipo</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td>b) Preparación y Coordinación</td>
+            <td class="points">5</td>
+            <td class="points"></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="subtotal">Subtotal Criterio 8</td>
+            <td class="points">10</td>
+            <td class="points"></td>
+        </tr>
+        <!-- Total -->
+        <tr>
+            <td colspan="2" class="total">PUNTUACIÓN TOTAL</td>
+            <td class="points">90</td>
+            <td class="points"></td>
+        </tr>
+    </table>
+
+    <p><strong>Comentarios adicionales:</strong></p>
+    <div class="comments"></div>
+
+    <h1>Explicación de los Subcriterios para la Evaluación del Proyecto</h1>
+
+    <p>Para ayudarte a entender qué debes tener en cuenta en cada apartado de la rúbrica, a continuación se detallan los subcriterios. Esto te permitirá preparar tu presentación de manera más efectiva y saber en qué fijarte al evaluar a tus compañeros.</p>
+
+    <!-- Subcriterio 1 -->
+    <div class="subcriteria-section">
+        <h2>1. Explicación de las Vulnerabilidades Seleccionadas (15 puntos)</h2>
+
+        <h3>a) Descripción Clara y Precisa (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Explicar cada vulnerabilidad de manera detallada y comprensible.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Define claramente qué es la vulnerabilidad.</li>
+            <li>Utiliza terminología correcta y apropiada para el nivel del curso.</li>
+            <li>Evita tecnicismos excesivos que puedan confundir.</li>
+        </ul>
+
+        <h3>b) Relevancia y Profundidad (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Demostrar una comprensión profunda de cada vulnerabilidad.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Explica el origen y contexto de la vulnerabilidad.</li>
+            <li>Destaca su importancia en el panorama actual de seguridad.</li>
+            <li>Muestra conocimiento más allá de la definición básica.</li>
+        </ul>
+
+        <h3>c) Relación con la Seguridad Informática (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Conectar cada vulnerabilidad con los conceptos aprendidos en la Unidad 1.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Relaciona la vulnerabilidad con los principios básicos de seguridad (confidencialidad, integridad, disponibilidad).</li>
+            <li>Explica cómo afecta a la seguridad de la información y la seguridad informática.</li>
+            <li>Menciona ejemplos de cómo esta vulnerabilidad se encuadra dentro de la seguridad informática.</li>
+        </ul>
+    </div>
+
+    <!-- Subcriterio 2 -->
+    <div class="subcriteria-section">
+        <h2>2. Impacto en Aplicaciones y Sistemas (10 puntos)</h2>
+
+        <h3>a) Análisis de Afectación (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Describir cómo la vulnerabilidad puede afectar a aplicaciones y sistemas.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Proporciona ejemplos específicos o escenarios donde la vulnerabilidad cause problemas.</li>
+            <li>Explica las consecuencias técnicas y operativas.</li>
+        </ul>
+
+        <h3>b) Identificación de Activos Comprometidos (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Identificar qué activos podrían verse afectados.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Menciona datos, sistemas, aplicaciones, servicios o redes que estén en riesgo.</li>
+            <li>Explica la importancia de estos activos para una organización.</li>
+        </ul>
+    </div>
+
+    <!-- Subcriterio 3 -->
+    <div class="subcriteria-section">
+        <h2>3. Amenazas y Riesgos Asociados (10 puntos)</h2>
+
+        <h3>a) Enumeración de Amenazas (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Listar y explicar las amenazas que pueden aprovechar la vulnerabilidad.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Identifica los tipos de atacantes o técnicas que podrían aprovecharse.</li>
+            <li>Describe cómo se llevaría a cabo un ataque utilizando esta vulnerabilidad.</li>
+        </ul>
+
+        <h3>b) Evaluación de Riesgos (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Analizar el nivel de riesgo y las posibles consecuencias.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Evalúa la probabilidad de que ocurra un ataque.</li>
+            <li>Explica el impacto potencial en la confidencialidad, integridad y disponibilidad de la información.</li>
+            <li>Considera el contexto y el entorno donde se encuentra la vulnerabilidad.</li>
+        </ul>
+    </div>
+
+    <!-- Subcriterio 4 -->
+    <div class="subcriteria-section">
+        <h2>4. Casos Reales de Incidentes (15 puntos)</h2>
+
+        <h3>a) Descripción Detallada del Incidente (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Presentar al menos un caso real por vulnerabilidad.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Detalla qué sucedió y cómo se desarrolló el incidente.</li>
+            <li>Explica cómo se explotó la vulnerabilidad.</li>
+        </ul>
+
+        <h3>b) Análisis de Consecuencias (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Explicar las consecuencias del ataque.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Impacto en la organización afectada (pérdidas económicas, daños a la reputación, interrupción de servicios).</li>
+            <li>Afectación a clientes o usuarios.</li>
+        </ul>
+
+        <h3>c) Medidas Tomadas Posteriormente (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Detallar las acciones implementadas tras el incidente.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Medidas de mitigación y prevención adoptadas.</li>
+            <li>Cambios en políticas de seguridad o procedimientos internos.</li>
+            <li>Lecciones aprendidas y cómo se evitarán futuros incidentes.</li>
+        </ul>
+    </div>
+
+    <!-- Subcriterio 5 -->
+    <div class="subcriteria-section">
+        <h2>5. Introducción al OWASP y su Importancia (5 puntos)</h2>
+
+        <h3>a) Presentación del OWASP (2.5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Explicar qué es OWASP.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Significado de las siglas OWASP.</li>
+            <li>Objetivos y misión de la organización.</li>
+            <li>Proyectos y recursos que ofrece.</li>
+        </ul>
+
+        <h3>b) Importancia en Seguridad Informática (2.5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Destacar la relevancia del OWASP Top 10.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Cómo contribuye OWASP a mejorar la seguridad web.</li>
+            <li>Su influencia en estándares y buenas prácticas.</li>
+            <li>Por qué es una referencia esencial para profesionales y estudiantes.</li>
+        </ul>
+    </div>
+
+    <!-- Subcriterio 6 -->
+    <div class="subcriteria-section">
+        <h2>6. Conclusiones y Buenas Prácticas (10 puntos)</h2>
+
+        <h3>a) Importancia de la Prevención y Mitigación (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Reflexionar sobre la necesidad de prevenir y mitigar vulnerabilidades.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Destaca la relevancia de la seguridad proactiva.</li>
+            <li>Relaciona con los principios básicos de seguridad (Unidad 1).</li>
+            <li>Menciona las consecuencias de no abordar las vulnerabilidades.</li>
+        </ul>
+
+        <h3>b) Recomendaciones y Buenas Prácticas (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Proponer acciones para mejorar la seguridad.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Sugerir medidas técnicas y organizativas.</li>
+            <li>Mencionar la importancia de políticas de seguridad y planes de contingencia.</li>
+            <li>Incluir recomendaciones específicas y aplicables.</li>
+        </ul>
+    </div>
+
+    <!-- Subcriterio 7 -->
+    <div class="subcriteria-section">
+        <h2>7. Calidad de la Presentación (15 puntos)</h2>
+
+        <h3>a) Estructura y Organización (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Presentar de forma ordenada y coherente.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Introducción, desarrollo y conclusión bien definidas.</li>
+            <li>Flujo lógico entre los temas.</li>
+            <li>Uso adecuado de secciones y apartados.</li>
+        </ul>
+
+        <h3>b) Uso de Imágenes y Gráficos (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Utilizar recursos visuales que apoyen la comprensión.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Imágenes relevantes y de buena calidad.</li>
+            <li>Gráficos y esquemas que ilustren conceptos complejos.</li>
+            <li>Evitar saturar las diapositivas con texto o imágenes innecesarias.</li>
+        </ul>
+
+        <h3>c) Claridad y Comunicación (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Exponer de manera clara y efectiva.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Hablar con claridad y buen ritmo.</li>
+            <li>Mantener contacto visual con la audiencia.</li>
+            <li>Utilizar lenguaje apropiado y evitar muletillas.</li>
+        </ul>
+    </div>
+
+    <!-- Subcriterio 8 -->
+    <div class="subcriteria-section">
+        <h2>8. Participación y Trabajo en Equipo (10 puntos)</h2>
+
+        <h3>a) Colaboración del Equipo (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Asegurar que todos los miembros participen activamente.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Distribución equitativa de las partes de la presentación.</li>
+            <li>Demostrar cohesión y apoyo mutuo.</li>
+            <li>Cada miembro muestra dominio de su parte.</li>
+        </ul>
+
+        <h3>b) Preparación y Coordinación (5 puntos):</h3>
+        <p><strong>Qué debes hacer:</strong> Mostrar que el equipo está bien preparado.</p>
+        <p><strong>Aspectos clave a considerar:</strong></p>
+        <ul>
+            <li>Transiciones suaves entre los presentadores.</li>
+            <li>Manejo adecuado del tiempo total y de cada sección.</li>
+            <li>Respuesta coherente y coordinada a posibles preguntas.</li>
+        </ul>
+    </div>
+
+    <!-- Consejos Adicionales -->
+    <div class="subcriteria-section">
+        <h2>Consejos Adicionales</h2>
+        <p><strong>Conecta con la Unidad 1:</strong> Recuerda relacionar tu presentación con los conceptos básicos de seguridad informática y de la información que has aprendido.</p>
+        <p><strong>Investiga a Fondo:</strong> Utiliza fuentes confiables y actualizadas para respaldar tu información.</p>
+        <p><strong>Ensaya la Presentación:</strong> Practica para mejorar la fluidez y ajustar el tiempo.</p>
+        <p><strong>Sé Profesional:</strong> Cuida tu lenguaje corporal, tono de voz y actitud durante la presentación.</p>
+        <p><strong>Utiliza Recursos Adecuados:</strong> Asegúrate de que tus diapositivas sean legibles y que los recursos tecnológicos funcionen correctamente.</p>
+    </div>
+
+    <!-- Al Evaluar a tus Compañeros -->
+    <div class="subcriteria-section">
+        <h2>Al Evaluar a tus Compañeros</h2>
+        <p><strong>Sé Objetivo:</strong> Basa tu evaluación en los criterios establecidos, no en opiniones personales.</p>
+        <p><strong>Proporciona Retroalimentación Constructiva:</strong> Usa la sección de comentarios para ofrecer sugerencias que puedan ayudar a mejorar.</p>
+        <p><strong>Respeto y Profesionalismo:</strong> Mantén una actitud respetuosa y considera el esfuerzo de tus compañeros.</p>
+    </div>
+
+    <p><em>Recuerda: Este proyecto es una oportunidad para aplicar lo aprendido, mejorar tus habilidades de comunicación y trabajo en equipo, y profundizar en temas clave de seguridad informática. Aprovecha esta experiencia para crecer académica y profesionalmente.</em></p>
+
+</body>
+</html>
