@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Center Videos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .video-container {
+      margin-top: 20px;
+    }
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Data Center Videos</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="#" onclick="showVideo('video1')">¿Qué es un DATA CENTER?</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showVideo('video2')">España, enclave estratégico</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showVideo('video3')">Introducción y conceptos generales</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showVideo('video4')">Tour 360º - Google Data Center</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Video Content -->
+  <div class="container video-container">
+    <div id="video-content">
+      <!-- Default video when the page loads -->
+      <iframe id="video-frame" src="https://www.youtube.com/embed/F5hnaTySeis?si=srtOE0TklMEhm0Tc" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- JavaScript to Handle Video Loading -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Function to show selected video
+    function showVideo(videoId) {
+      const videoURLs = {
+        'video1': 'https://www.youtube.com/embed/F5hnaTySeis?si=srtOE0TklMEhm0Tc',
+        'video2': 'https://www.youtube.com/embed/wmFN1yXCQlc',
+        'video3': 'https://www.youtube.com/embed/ywv2vPgX_Lw',
+        'video4': 'https://www.youtube.com/embed/zDAYZU4A3w0'
+      };
+      document.getElementById('video-frame').src = videoURLs[videoId];
+    }
+  </script>
+
+</body>
+</html>
