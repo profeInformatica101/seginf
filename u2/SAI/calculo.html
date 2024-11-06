@@ -45,19 +45,18 @@
 </head>
 <body>
     <div class="container">
- <h1>Factores a considerar al seleccionar un SAI</h1>
-<p>La elección del Sistema de Alimentación Ininterrumpida (SAI) adecuado depende de varios factores clave:</p>
-<ul>
-<li><strong>Potencia total de los dispositivos:</strong> Es fundamental conocer la potencia combinada de todos los equipos que se conectarán al SAI.</li>
-<li><strong>Tipo de carga:</strong> Las cargas eléctricas pueden ser lineales (como computadoras) o no lineales (como impresoras láser). Este factor influye en el cálculo de la capacidad necesaria del SAI.</li>
-<li><strong>Tiempo de autonomía requerido:</strong> ¿Cuánto tiempo necesitas que el SAI mantenga tus equipos en funcionamiento en caso de corte de energía? Este dato es crucial para determinar la capacidad de la batería.</li>
-<li><strong>Eficiencia del SAI:</strong> La eficiencia del SAI influye directamente en la duración de la batería. Un SAI más eficiente aprovechará mejor la energía almacenada.</li>
-<li><strong>Factor de potencia:</strong> Este factor relaciona la potencia real con la potencia aparente y afecta al cálculo de la capacidad del SAI. Es importante considerarlo para seleccionar un equipo adecuado.</li>
-<li><strong>Tipo de instalación eléctrica:</strong> Determina si necesitas un SAI monofásico o trifásico. Los SAI monofásicos son ideales para hogares y pequeñas oficinas, mientras que los trifásicos se utilizan en entornos industriales y comerciales de gran tamaño.</li>
-</ul>
+        <h1>Factores a considerar al seleccionar un SAI</h1>
+        <p>La elección del Sistema de Alimentación Ininterrumpida (SAI) adecuado depende de varios factores clave:</p>
+        <ul>
+            <li><strong>Potencia total de los dispositivos:</strong> Es fundamental conocer la potencia combinada de todos los equipos que se conectarán al SAI.</li>
+            <li><strong>Tipo de carga:</strong> Las cargas eléctricas pueden ser lineales (como computadoras) o no lineales (como impresoras láser). Este factor influye en el cálculo de la capacidad necesaria del SAI.</li>
+            <li><strong>Tiempo de autonomía requerido:</strong> ¿Cuánto tiempo necesitas que el SAI mantenga tus equipos en funcionamiento en caso de corte de energía? Este dato es crucial para determinar la capacidad de la batería.</li>
+            <li><strong>Eficiencia del SAI:</strong> La eficiencia del SAI influye directamente en la duración de la batería. Un SAI más eficiente aprovechará mejor la energía almacenada.</li>
+            <li><strong>Factor de potencia:</strong> Este factor relaciona la potencia real con la potencia aparente y afecta al cálculo de la capacidad del SAI. Es importante considerarlo para seleccionar un equipo adecuado.</li>
+            <li><strong>Tipo de instalación eléctrica:</strong> Determina si necesitas un SAI monofásico o trifásico. Los SAI monofásicos son ideales para hogares y pequeñas oficinas, mientras que los trifásicos se utilizan en entornos industriales y comerciales de gran tamaño.</li>
+        </ul>
 
-        
-        <h2>Preguntas para selecionar el SAI</h2>
+        <h2>Preguntas para seleccionar el SAI</h2>
         <ul>
             <li>¿Qué tipo de equipos planeas conectar al SAI? (computadoras, servidores, dispositivos de red, etc.)</li>
             <li>¿Cuál es la potencia de cada equipo?</li>
@@ -69,51 +68,61 @@
             <h2>Aplicaciones para Calcular el SAI Apropiado</h2>
             <p>Algunos fabricantes ofrecen herramientas en línea que pueden facilitar el proceso de selección:</p>
             <ul>
-                <li><a href="https://www.cyberpower.com/mx/es/tools/sizing/ups"> Selector de SAI indicando (Carga de potencia , Tiempo de Respaldo, Capacidad en Reserva ) </a></li>
+                <li><a href="https://www.cyberpower.com/mx/es/tools/sizing/ups"> Selector de SAI indicando (Carga de potencia, Tiempo de Respaldo, Capacidad en Reserva) </a></li>
                 <li><a href="https://www.salicru.com/recomendador-sais.html">Recomendador de SAI (Salicru)</a></li>
-               <li><a href="https://satpcs.com/sp/calculadora-sai/">Calculadora SAI (satpc)</a></li>
+                <li><a href="https://satpcs.com/sp/calculadora-sai/">Calculadora SAI (satpc)</a></li>
                 <li><a href="http://www.canariascontrol.com/calculadora-sai-ups/">Calculadora SAI/UPS (canarias control)</a></li>
-                 <li><a href="https://www.apc.com/es/es/tools/ups_selector/" target="_blank">APC UPS Selector</a> - Herramienta de APC para calcular el SAI adecuado.</li>
+                <li><a href="https://www.apc.com/es/es/tools/ups_selector/" target="_blank">APC UPS Selector</a> - Herramienta de APC para calcular el SAI adecuado.</li>
                 <li><a href="https://www.cyberpowersystems.com/tools/ups-selector/" target="_blank">CyberPower UPS Selector</a> - Calculadora de CyberPower para seleccionar el SAI adecuado.</li>
                 <li><a href="https://upsselector.eaton.com/" target="_blank">Eaton UPS Selector</a> - Calculadora de Eaton para encontrar el SAI correcto.</li>
             </ul>
         </div>
 
-    <h3>Calculadora de Tiempo de Respaldo</h3>
-    <form id="backupTimeForm">
-        <label for="batteryCapacity">Capacidad de la batería (Ah):</label>
-        <input type="number" id="batteryCapacity" required><br><br>
+        <h3>Calculadora de Tiempo de Respaldo</h3>
+        <p>Ejemplo con el SAI <a href="https://ups.legrand.com/es/productos/trimod-he" target="_blank">TRIMOD HE de Legrand</a></p>
+        <form id="backupTimeForm">
+            <label for="batteryQuantity">Cantidad de baterías:</label>
+            <input type="number" id="batteryQuantity" value="5" required><br><br>
 
-        <label for="batteryVoltage">Voltaje de la batería (V):</label>
-        <input type="number" id="batteryVoltage" required><br><br>
+            <label for="batteryCapacity">Capacidad de cada batería (Ah):</label>
+            <input type="number" id="batteryCapacity" value="9" required><br><br>
+    
+            <label for="batteryVoltage">Voltaje de cada batería (V):</label>
+            <input type="number" id="batteryVoltage" value="12" required><br><br>
+    
+            <label for="saiEfficiency">Eficiencia del SAI (0-1):</label>
+            <input type="number" id="saiEfficiency" value="0.96" step="0.01" required><br><br>
+    
+            <label for="apparentPower">Potencia aparente en VA:</label>
+            <input type="number" id="apparentPower" value="12500" required><br><br>
+    
+            <button type="button" onclick="calculateBackupTime()">Calcular</button>
+        </form>
+    
+        <p id="result"></p>
 
-        <label for="saiEfficiency">Eficiencia del SAI (0-1):</label>
-        <input type="number" id="saiEfficiency" step="0.01" required><br><br>
+        <script>
+            function calculateBackupTime() {
+                const batteryQuantity = parseFloat(document.getElementById("batteryQuantity").value);
+                const batteryCapacity = parseFloat(document.getElementById("batteryCapacity").value);
+                const batteryVoltage = parseFloat(document.getElementById("batteryVoltage").value);
+                const saiEfficiency = parseFloat(document.getElementById("saiEfficiency").value);
+                const apparentPower = parseFloat(document.getElementById("apparentPower").value);
+    
+                if (!batteryQuantity || !batteryCapacity || !batteryVoltage || !saiEfficiency || !apparentPower) {
+                    document.getElementById("result").textContent = "Por favor, completa todos los campos correctamente.";
+                    return;
+                }
 
-        <label for="apparentPower">Potencia aparente en VA:</label>
-        <input type="number" id="apparentPower" required><br><br>
+                // Calcular la capacidad total de la batería (considerando la cantidad de baterías en serie o paralelo)
+                const totalBatteryCapacity = batteryCapacity * batteryQuantity;
+                const totalBatteryVoltage = batteryVoltage * batteryQuantity;
 
-        <button type="button" onclick="calculateBackupTime()">Calcular</button>
-    </form>
-
-    <p id="result"></p>
-
-    <script>
-        function calculateBackupTime() {
-            const batteryCapacity = parseFloat(document.getElementById("batteryCapacity").value);
-            const batteryVoltage = parseFloat(document.getElementById("batteryVoltage").value);
-            const saiEfficiency = parseFloat(document.getElementById("saiEfficiency").value);
-            const apparentPower = parseFloat(document.getElementById("apparentPower").value);
-
-            if (!batteryCapacity || !batteryVoltage || !saiEfficiency || !apparentPower) {
-                document.getElementById("result").textContent = "Por favor, completa todos los campos correctamente.";
-                return;
+                // Cálculo del tiempo de respaldo
+                const backupTime = (totalBatteryCapacity * totalBatteryVoltage * saiEfficiency) / apparentPower * 60;
+                document.getElementById("result").textContent = `Tiempo de respaldo aproximado: ${backupTime.toFixed(2)} minutos`;
             }
-
-            const backupTime = (batteryCapacity * batteryVoltage * saiEfficiency) / apparentPower * 60;
-            document.getElementById("result").textContent = `Tiempo de respaldo aproximado: ${backupTime.toFixed(2)} minutos`;
-        }
-    </script>
+        </script>
     </div>
 </body>
 </html>
