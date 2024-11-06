@@ -79,17 +79,41 @@
             </ul>
         </div>
 
-        <h2>Método de Cálculo Simplificado</h2>
-        <p>Aunque los fabricantes ofrecen calculadoras específicas, puedes realizar un cálculo aproximado siguiendo estos pasos:</p>
-        <ul>
-            <li><strong>Suma la potencia de todos los equipos:</strong> Agrega la potencia de cada dispositivo que conectarás al SAI.</li>
-            <li><strong>Considera el factor de potencia:</strong> Multiplica la potencia total por un factor de potencia (FP) para obtener la potencia aparente en VA.</li>
-            <li><strong>Consulta las especificaciones del SAI:</strong> Revisa la capacidad de sus baterías en amperios-hora (Ah).</li>
-            <li><strong>Estima el tiempo de respaldo:</strong> Utiliza la fórmula:</li>
-        </ul>
-        <div class="formula">
-            <p><strong>Tiempo de respaldo (minutos) ≈</strong> (Capacidad de la batería en Ah × Voltaje de la batería × Eficiencia del SAI) / (Potencia aparente en VA) × 60</p>
-        </div>
+    <h3>Calculadora de Tiempo de Respaldo</h3>
+    <form id="backupTimeForm">
+        <label for="batteryCapacity">Capacidad de la batería (Ah):</label>
+        <input type="number" id="batteryCapacity" required><br><br>
+
+        <label for="batteryVoltage">Voltaje de la batería (V):</label>
+        <input type="number" id="batteryVoltage" required><br><br>
+
+        <label for="saiEfficiency">Eficiencia del SAI (0-1):</label>
+        <input type="number" id="saiEfficiency" step="0.01" required><br><br>
+
+        <label for="apparentPower">Potencia aparente en VA:</label>
+        <input type="number" id="apparentPower" required><br><br>
+
+        <button type="button" onclick="calculateBackupTime()">Calcular</button>
+    </form>
+
+    <p id="result"></p>
+
+    <script>
+        function calculateBackupTime() {
+            const batteryCapacity = parseFloat(document.getElementById("batteryCapacity").value);
+            const batteryVoltage = parseFloat(document.getElementById("batteryVoltage").value);
+            const saiEfficiency = parseFloat(document.getElementById("saiEfficiency").value);
+            const apparentPower = parseFloat(document.getElementById("apparentPower").value);
+
+            if (!batteryCapacity || !batteryVoltage || !saiEfficiency || !apparentPower) {
+                document.getElementById("result").textContent = "Por favor, completa todos los campos correctamente.";
+                return;
+            }
+
+            const backupTime = (batteryCapacity * batteryVoltage * saiEfficiency) / apparentPower * 60;
+            document.getElementById("result").textContent = `Tiempo de respaldo aproximado: ${backupTime.toFixed(2)} minutos`;
+        }
+    </script>
     </div>
 </body>
 </html>
