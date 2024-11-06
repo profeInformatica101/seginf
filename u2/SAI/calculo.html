@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía para Selección de SAI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .calculators {
+            margin-top: 20px;
+            background-color: #e9f7ff;
+            padding: 15px;
+            border-left: 4px solid #007BFF;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Factores a Considerar</h1>
+        <p>Seleccionar el Sistema de Alimentación Ininterrumpida (SAI) adecuado depende de varios factores importantes:</p>
+        <ul>
+            <li><strong>Potencia de los dispositivos:</strong> La potencia total de los equipos conectados al SAI es fundamental.</li>
+            <li><strong>Tiempo de respaldo requerido:</strong> ¿Cuánto tiempo necesitas que el SAI mantenga tus equipos funcionando en caso de corte de energía?</li>
+            <li><strong>Tipo de carga:</strong> Las cargas pueden ser lineales (como computadoras) o no lineales (como impresoras láser), lo que influye en el cálculo.</li>
+            <li><strong>Eficiencia del SAI:</strong> La eficiencia del SAI influye en la duración de la batería.</li>
+            <li><strong>Factor de potencia:</strong> Este factor, que relaciona la potencia real con la potencia aparente, afecta el cálculo de la capacidad del SAI.</li>
+        </ul>
+        
+        <h2>Preguntas para selecionar el SAI</h2>
+        <ul>
+            <li>¿Qué tipo de equipos planeas conectar al SAI? (computadoras, servidores, dispositivos de red, etc.)</li>
+            <li>¿Cuál es la potencia de cada equipo?</li>
+            <li>¿Cuánto tiempo necesitas que el SAI mantenga tus equipos funcionando en caso de corte de energía?</li>
+            <li>¿Tienes alguna preferencia por una marca o modelo de SAI en particular?</li>
+        </ul>
+
+        <div class="calculators">
+            <h2>Aplicaciones para Calcular el SAI Apropiado</h2>
+            <p>Algunos fabricantes ofrecen herramientas en línea que pueden facilitar el proceso de selección:</p>
+            <ul>
+                <li><a href="https://www.apc.com/es/es/tools/ups_selector/" target="_blank">APC UPS Selector</a> - Herramienta de APC para calcular el SAI adecuado.</li>
+                <li><a href="https://www.cyberpowersystems.com/tools/ups-selector/" target="_blank">CyberPower UPS Selector</a> - Calculadora de CyberPower para seleccionar el SAI adecuado.</li>
+                <li><a href="https://upsselector.eaton.com/" target="_blank">Eaton UPS Selector</a> - Calculadora de Eaton para encontrar el SAI correcto.</li>
+            </ul>
+        </div>
+
+        <h2>Método de Cálculo Simplificado</h2>
+        <p>Aunque los fabricantes ofrecen calculadoras específicas, puedes realizar un cálculo aproximado siguiendo estos pasos:</p>
+        <ul>
+            <li><strong>Suma la potencia de todos los equipos:</strong> Agrega la potencia de cada dispositivo que conectarás al SAI.</li>
+            <li><strong>Considera el factor de potencia:</strong> Multiplica la potencia total por un factor de potencia (FP) entre 0.8 y 0.9 para obtener la potencia aparente en VA.</li>
+            <li><strong>Consulta las especificaciones del SAI:</strong> Revisa la capacidad de sus baterías en amperios-hora (Ah).</li>
+            <li><strong>Estima el tiempo de respaldo:</strong> Utiliza la fórmula:</li>
+        </ul>
+        <div class="formula">
+            <p><strong>Tiempo de respaldo (minutos) ≈</strong> (Capacidad de la batería en Ah × Voltaje de la batería × Eficiencia del SAI) / (Potencia aparente en VA) × 60</p>
+        </div>
+    </div>
+</body>
+</html>
