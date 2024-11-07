@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Autonomía del SAI</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="text-center">Calculadora de Autonomía del SAI</h1>
+    <p class="text-center">Datos extraídos de la <a href="https://todosai.com/sai-ups/docs/Velorel/LA-ON-LCD-6-10K-Ficha-tecnica-es%20-%20Ficha%20tecnica.pdf" target="_blank">Ficha técnica del SAI LA-ON-LCD-6-10K</a></p>
+
+    <table class="table table-bordered mt-4">
+        <thead class="thead-dark">
+            <tr>
+                <th>Campo</th>
+                <th>Descripción</th>
+                <th>Valor Ejemplo</th>
+                <th>Unidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Cantidad de baterías</td>
+                <td>Número total de baterías</td>
+                <td>20</td>
+                <td>baterías</td>
+            </tr>
+            <tr>
+                <td>Voltaje de cada batería</td>
+                <td>Voltaje de cada batería individual</td>
+                <td>12</td>
+                <td>V</td>
+            </tr>
+            <tr>
+                <td>Capacidad de cada batería</td>
+                <td>Capacidad en amperios-hora de cada batería</td>
+                <td>7</td>
+                <td>Ah</td>
+            </tr>
+            <tr>
+                <td>Potencia de carga</td>
+                <td>Potencia total consumida por los equipos</td>
+                <td>5400</td>
+                <td>W</td>
+            </tr>
+            <tr>
+                <td>Eficiencia del SAI</td>
+                <td>Factor de eficiencia del SAI (en decimal)</td>
+                <td>0.91</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="mt-5">
+        <h2>Calculos</h2>
+        <p>Con estos valores, la <strong>capacidad total de las baterías</strong> en vatios-hora (Wh) se puede calcular así:</p>
+        <ol>
+            <li><strong>Capacidad total de las baterías (Wh):</strong>
+                <p>
+                    = Cantidad de baterías × Voltaje de cada batería × Capacidad de cada batería<br>
+                    = 20 × 12 V × 7 Ah = 1680 Wh
+                </p>
+            </li>
+            <li><strong>Ajustar la potencia de carga por la eficiencia del SAI:</strong>
+                <p>
+                    Potencia de carga ajustada = Potencia de carga × Eficiencia<br>
+                    = 5400 W × 0.91 = 4914 W
+                </p>
+            </li>
+            <li><strong>Finalmente, la autonomía en horas es:</strong>
+                <p>
+                    Autonomía (horas) = Capacidad total de las baterías ÷ Potencia de carga ajustada<br>
+                    = 1680 Wh ÷ 4914 W ≈ 0.34 horas ≈ 20 minutos
+                </p>
+            </li>
+        </ol>
+        <p>Esta tabla y los cálculos te permiten ajustar los valores según las especificaciones de tu SAI y la carga conectada para verificar la autonomía.</p>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
