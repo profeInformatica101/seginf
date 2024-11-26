@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica: Uso de ProtonVPN para Navegación Segura</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        code {
+            background-color: #eaeaea;
+            padding: 4px;
+            border-radius: 4px;
+        }
+        .note {
+            background: #ffffcc;
+            padding: 10px;
+            border-left: 4px solid #ffeb3b;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Práctica: Uso de ProtonVPN para Navegación Segura</h1>
+
+    <h2>Objetivos de la Práctica</h2>
+    <ul>
+        <li>Conocer qué es una VPN, su funcionamiento y usos principales.</li>
+        <li>Registrar, instalar y configurar ProtonVPN en modo gratuito.</li>
+        <li>Verificar el correcto funcionamiento de una VPN.</li>
+        <li>Reflexionar sobre la importancia de las VPN en el entorno digital.</li>
+    </ul>
+
+    <h2>Instrucciones</h2>
+
+    <h3>1. Registro en ProtonVPN</h3>
+    <ol>
+        <li>Accede al sitio web oficial de <a href="https://protonvpn.com/" target="_blank">ProtonVPN</a>.</li>
+        <li>Crea una cuenta gratuita completando el formulario de registro.</li>
+        <li>Guarda tus credenciales de acceso (usuario y contraseña).</li>
+    </ol>
+
+    <h3>2. Instalación de ProtonVPN</h3>
+    <p>Sigue los pasos según tu sistema operativo:</p>
+    <ul>
+        <li><strong>En Windows o macOS:</strong>
+            <ol>
+                <li>Descarga el instalador oficial desde el sitio web de ProtonVPN.</li>
+                <li>Ejecuta el instalador y sigue las instrucciones para completar la instalación.</li>
+            </ol>
+        </li>
+        <li><strong>En Linux:</strong>
+            <ol>
+                <li>Abre una terminal y sigue las instrucciones oficiales para tu distribución. Ejemplo para distribuciones basadas en Debian/Ubuntu:</li>
+                <li>
+                    <code>sudo apt update</code><br>
+                    <code>sudo apt install -y openvpn</code>
+                </li>
+                <li>Sigue la <a href="https://protonvpn.com/support/linux-vpn-tool/" target="_blank">documentación oficial de Linux</a> para instalar su cliente oficial.</li>
+            </ol>
+        </li>
+    </ul>
+
+    <h3>3. Configuración y Conexión</h3>
+    <ol>
+        <li>Inicia la aplicación ProtonVPN.</li>
+        <li>Inicia sesión con tus credenciales.</li>
+        <li>Conéctate a uno de los servidores gratuitos disponibles.</li>
+        <li>Comprueba visualmente en la aplicación que la conexión esté activa.</li>
+    </ol>
+
+    <h3>4. Verificación del Funcionamiento</h3>
+    <ol>
+        <li>Abre una terminal o símbolo del sistema en tu ordenador.</li>
+        <li>Escribe y ejecuta el siguiente comando:</li>
+        <pre><code>curl ipinfo.io</code></pre>
+        <li>Observa los resultados y verifica que:
+            <ul>
+                <li>La dirección IP mostrada sea diferente a la de tu red local.</li>
+                <li>La ubicación corresponda al servidor de la VPN.</li>
+            </ul>
+        </li>
+        <li>Toma una captura de pantalla del resultado del comando.</li>
+    </ol>
+
+    <h3>5. Investigación: ¿Qué es una VPN?</h3>
+    <p>Realiza una breve investigación y responde a las siguientes preguntas:</p>
+    <ol>
+        <li>¿Qué es una VPN y cuál es su función principal?</li>
+        <li>¿Qué ventajas y desventajas tiene el uso de una VPN?</li>
+        <li>¿Qué datos cambian al usar una VPN y por qué esto es importante?</li>
+    </ol>
+    <p>Escribe tus respuestas en el mismo documento que incluirá las capturas de pantalla.</p>
+
+    <h2>Entrega</h2>
+    <p>Crea un único archivo en formato PDF que incluya:</p>
+    <ul>
+        <li><strong>Título:</strong> Práctica: Uso de ProtonVPN para Navegación Segura.</li>
+        <li><strong>Introducción:</strong> Breve explicación del objetivo de la práctica.</li>
+        <li><strong>Captura de pantalla del registro en ProtonVPN.</strong></li>
+        <li><strong>Captura de pantalla del resultado del comando <code>curl ipinfo.io</code>.</strong></li>
+        <li><strong>Respuestas a las preguntas de investigación.</strong></li>
+    </ul>
+    <p><strong>Nombre del archivo:</strong> <code>nombre_apellido_practicaVPN.pdf</code></p>
+    <p><strong>Forma de entrega:</strong> Sube el documento PDF a Moodle dentro del plazo indicado.</p>
+
+    <div class="note">
+        <strong>Nota:</strong> Si encuentras dificultades técnicas durante la práctica, documenta los pasos realizados y los problemas encontrados para discutirlos en clase.
+    </div>
+</body>
+</html>
