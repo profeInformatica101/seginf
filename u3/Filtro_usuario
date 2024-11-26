@@ -1,0 +1,15 @@
+# Filtrar usuarios específicos en /etc/passwd y /etc/shadow
+grep -E '^webadmin|^developer1|^developer2|^tester' /etc/passwd > passwd_temp
+sudo grep -E '^webadmin|^developer1|^developer2|^tester' /etc/shadow > shadow_temp
+
+# Combinar los archivos filtrados con unshadow
+sudo unshadow passwd_temp shadow_temp > tocrack.out
+
+# Usar John the Ripper para descifrar las contraseñas
+john tocrack.out
+
+# (Opcional) Mostrar contraseñas descifradas
+john --show tocrack.out
+
+# (Opcional) Limpiar archivos temporales
+rm passwd_temp shadow_temp tocrack.out
