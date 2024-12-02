@@ -204,7 +204,48 @@ setfacl -m u:usuario3:w /proyecto1
                 </tbody>
             </table>
         </div>
-
+  <section>
+            <h2 class="text-center mb-4">Ejemplo de ACL en Linux</h2>
+            <p>Si deseas otorgar permisos específicos a un usuario o grupo sobre un archivo o directorio, aunque no pertenezcan al grupo principal, puedes utilizar ACL (Access Control Lists). Aquí hay un ejemplo práctico:</p>
+            <h4>Escenario:</h4>
+            <p>Deseas otorgar permisos de <strong>lectura y ejecución</strong> al usuario <code>usuario4</code> y permisos de <strong>lectura</strong> al grupo <code>grupo2</code> sobre el directorio <code>/proyecto2</code>.</p>
+            
+            <h4>Comandos:</h4>
+            <ol>
+                <li>
+                    <strong>Otorgar permisos de lectura y ejecución al usuario <code>usuario4</code>:</strong>
+                    <pre><code>setfacl -m u:usuario4:rx /proyecto2</code></pre>
+                </li>
+                <li>
+                    <strong>Otorgar permisos de solo lectura al grupo <code>grupo2</code>:</strong>
+                    <pre><code>setfacl -m g:grupo2:r /proyecto2</code></pre>
+                </li>
+                <li>
+                    <strong>Verificar las reglas ACL actuales:</strong>
+                    <pre><code>getfacl /proyecto2</code></pre>
+                    <p>Salida esperada:</p>
+                    <pre><code># file: /proyecto2
+# owner: root
+# group: root
+user::rwx
+user:usuario4:rx
+group::r-x
+group:grupo2:r--
+mask::r-x
+other::---</code></pre>
+                </li>
+            </ol>
+            <h4>Notas adicionales:</h4>
+            <ul>
+                <li>
+                    <strong>Máscara ACL:</strong> Controla los permisos efectivos para usuarios y grupos adicionales. Si se define una máscara restrictiva, puede limitar los permisos otorgados.
+                </li>
+                <li>
+                    <strong>Eliminar reglas ACL:</strong> Para eliminar una regla ACL específica, usa:
+                    <pre><code>setfacl -x u:usuario4 /proyecto2</code></pre>
+                </li>
+            </ul>
+        </section>
         <!-- Sección de Definiciones y Ejemplos de AAA en Linux -->
         <div class="section">
             <h2><i class="fas fa-key"></i> Definiciones y Ejemplos de AAA en Linux</h2>
