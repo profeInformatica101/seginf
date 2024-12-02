@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa de Access Control Lists (ACL) en Linux</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Resumen Ejecutivo -->
+        <h1 class="text-center"><i class="fas fa-folder-open"></i> Guía Completa de Access Control Lists (ACL) en Linux</h1>
+        <p class="text-center text-muted">Explora qué son las ACL, cómo utilizarlas y su importancia en la gestión de permisos en sistemas Linux.</p>
+
+        <!-- Índice -->
+        <div class="my-4">
+            <h2><i class="fas fa-list"></i> Índice</h2>
+            <ol>
+                <li><a href="#intro">¿Qué son las ACL?</a></li>
+                <li><a href="#types">Tipos de ACL</a></li>
+                <li><a href="#commands">Comandos Básicos</a></li>
+                <li><a href="#cases">Casos de Uso Prácticos</a></li>
+                <li><a href="#security">Consideraciones de Seguridad</a></li>
+                <li><a href="#faq">Preguntas Frecuentes</a></li>
+            </ol>
+        </div>
+
+        <!-- Sección: ¿Qué son las ACL? -->
+        <div id="intro" class="mt-5">
+            <h2><i class="fas fa-info-circle"></i> ¿Qué son las ACL?</h2>
+            <p>Las <strong>Access Control Lists (ACL)</strong> proporcionan un mecanismo de permisos adicional y más flexible en sistemas Linux. Permiten asignar permisos específicos a cualquier usuario o grupo, complementando los permisos estándar basados en el propietario, el grupo y otros.</p>
+        </div>
+
+        <!-- Sección: Tipos de ACL -->
+        <div id="types" class="mt-5">
+            <h2><i class="fas fa-cogs"></i> Tipos de ACL</h2>
+            <p>Existen diferentes tipos de ACL en función del sistema de archivos:</p>
+            <ul>
+                <li><strong>POSIX ACL:</strong> Es el tipo de ACL estándar en la mayoría de distribuciones Linux. Compatible con sistemas de archivos como ext4.</li>
+                <li><strong>NFSv4 ACL:</strong> Ofrece más granularidad y se utiliza en sistemas que implementan NFS (Network File System).</li>
+            </ul>
+        </div>
+
+        <!-- Sección: Comandos Básicos -->
+        <div id="commands" class="mt-5">
+            <h2><i class="fas fa-terminal"></i> Comandos Básicos</h2>
+            <ul>
+                <li><strong>Añadir permisos para un usuario:</strong>
+                    <pre><code>setfacl -m u:usuario:permisos /ruta/al/archivo</code></pre>
+                </li>
+                <li><strong>Añadir permisos para un grupo:</strong>
+                    <pre><code>setfacl -m g:grupo:permisos /ruta/al/archivo</code></pre>
+                </li>
+                <li><strong>Eliminar ACL:</strong>
+                    <pre><code>setfacl -b /ruta/al/archivo</code></pre>
+                </li>
+                <li><strong>Mostrar ACL existentes:</strong>
+                    <pre><code>getfacl /ruta/al/archivo</code></pre>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Sección: Casos de Uso Prácticos -->
+        <div id="cases" class="mt-5">
+            <h2><i class="fas fa-briefcase"></i> Casos de Uso Prácticos</h2>
+            <p>Las ACL son ideales para situaciones donde los permisos estándar no son suficientes. Aquí algunos ejemplos:</p>
+            <ul>
+                <li><strong>Colaboración en proyectos:</strong> Configurar un directorio compartido donde cada miembro del equipo tenga permisos específicos.</li>
+                <li><strong>Seguridad de datos:</strong> Restringir el acceso a archivos confidenciales otorgando permisos solo a usuarios específicos.</li>
+                <li><strong>Aislamiento de usuarios:</strong> Crear entornos aislados para diferentes grupos de trabajo, evitando conflictos.</li>
+            </ul>
+        </div>
+
+        <!-- Sección: Consideraciones de Seguridad -->
+        <div id="security" class="mt-5">
+            <h2><i class="fas fa-shield-alt"></i> Consideraciones de Seguridad</h2>
+            <ul>
+                <li><strong>Configuración correcta:</strong> Una configuración incorrecta de ACL puede exponer datos sensibles.</li>
+                <li><strong>Auditoría:</strong> Usa herramientas como <code>auditd</code> para monitorear cambios en las ACL.</li>
+                <li><strong>Mejores prácticas:</strong> Revisa regularmente las configuraciones de ACL para evitar permisos innecesarios.</li>
+            </ul>
+        </div>
+
+        <!-- Sección: Preguntas Frecuentes -->
+        <div id="faq" class="mt-5">
+            <h2><i class="fas fa-question-circle"></i> Preguntas Frecuentes</h2>
+            <div class="accordion" id="accordionFAQ">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq1">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFAQ1" aria-expanded="true" aria-controls="collapseFAQ1">
+                            ¿Cuál es la diferencia entre ACL y permisos estándar?
+                        </button>
+                    </h2>
+                    <div id="collapseFAQ1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#accordionFAQ">
+                        <div class="accordion-body">
+                            <p>Los permisos estándar se aplican al propietario, el grupo y otros, mientras que las ACL permiten asignar permisos específicos a cualquier usuario o grupo, ofreciendo mayor flexibilidad.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFAQ2" aria-expanded="false" aria-controls="collapseFAQ2">
+                            ¿Cómo verificar si mi sistema soporta ACL?
+                        </button>
+                    </h2>
+                    <div id="collapseFAQ2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#accordionFAQ">
+                        <div class="accordion-body">
+                            <p>Usa el comando <code>tune2fs -l /dev/sdX</code> y busca la opción <code>Default mount options</code>. Si aparece <code>acl</code>, el sistema lo soporta.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -32,6 +32,117 @@
     </style>
 </head>
 <body>
+    <div class="container mt-5">
+        <h1 class="text-center"><i class="fas fa-user-cog"></i> Gestión de Usuarios, Grupos y Permisos en Linux</h1>
+        <p class="text-center text-muted">Tutorial sobre cómo crear usuarios, grupos y gestionar permisos en sistemas Linux.</p>
+
+        <!-- Sección: Creación de usuarios y grupos -->
+        <section class="mt-5">
+            <h2><i class="fas fa-users"></i> Creación de Usuarios y Grupos</h2>
+            <p>Ejecuta los siguientes comandos para crear usuarios y grupos:</p>
+            <pre class="bg-light p-3">
+Bash
+# Crear los usuarios con contraseña por defecto
+useradd usuario1
+useradd usuario2
+useradd usuario3
+
+# Crear los grupos
+groupadd grupo1
+groupadd grupo2
+            </pre>
+            <p><strong>Precaución:</strong> Usa este código con cuidado, especialmente en entornos de producción.</p>
+        </section>
+
+        <!-- Sección: Asignación de usuarios a grupos -->
+        <section class="mt-5">
+            <h2><i class="fas fa-user-plus"></i> Asignación de Usuarios a Grupos</h2>
+            <p>Para agregar usuarios a los grupos recién creados:</p>
+            <pre class="bg-light p-3">
+Bash
+# Asignar usuarios a grupos
+usermod -aG grupo1 usuario1
+usermod -aG grupo1 usuario2
+usermod -aG grupo2 usuario3
+            </pre>
+            <p><strong>Precaución:</strong> Usa este código con cuidado, especialmente en entornos de producción.</p>
+        </section>
+
+        <!-- Sección: Configuración de permisos en carpetas -->
+        <section class="mt-5">
+            <h2><i class="fas fa-folder"></i> Configuración de Permisos en Carpetas</h2>
+            <p>Para configurar permisos en las carpetas correspondientes:</p>
+            <pre class="bg-light p-3">
+Bash
+# Crear las carpetas (si no existen)
+mkdir /proyecto1 /proyecto2 /compartido /privado
+
+# Asignar permisos a /proyecto1 (solo lectura, escritura y ejecución para grupo1)
+chmod 750 /proyecto1
+chgrp grupo1 /proyecto1
+
+# Asignar permisos a /proyecto2 (lectura y escritura para grupo2, solo lectura para grupo1)
+chmod 764 /proyecto2
+chgrp grupo2 /proyecto2
+
+# Asignar permisos a /compartido (acceso total para todos)
+chmod 777 /compartido
+
+# Asignar permisos a /privado (solo para usuario1)
+chown usuario1:usuario1 /privado
+chmod 700 /privado
+            </pre>
+            <p><strong>Precaución:</strong> Usa este código con cuidado, especialmente en entornos de producción.</p>
+        </section>
+
+        <!-- Sección: Explicación de comandos -->
+        <section class="mt-5">
+            <h2><i class="fas fa-info-circle"></i> Explicación de los Comandos</h2>
+            <ul>
+                <li><code>useradd</code>: Crea un nuevo usuario.</li>
+                <li><code>groupadd</code>: Crea un nuevo grupo.</li>
+                <li><code>usermod</code>: Modifica las propiedades de un usuario existente.</li>
+                <li><code>-aG</code>: Agrega un usuario a un grupo existente.</li>
+                <li><code>chmod</code>: Cambia los permisos de un archivo o directorio.</li>
+                <li><code>chgrp</code>: Cambia el grupo propietario de un archivo o directorio.</li>
+                <li><code>chown</code>: Cambia tanto el propietario como el grupo de un archivo o directorio.</li>
+            </ul>
+        </section>
+
+        <!-- Sección: Explicación de permisos numéricos -->
+        <section class="mt-5">
+            <h2><i class="fas fa-key"></i> Explicación de los Permisos Numéricos</h2>
+            <ul>
+                <li><strong>750:</strong> El propietario tiene todos los permisos (rwx), el grupo tiene lectura y ejecución (rx), y otros no tienen permisos.</li>
+                <li><strong>764:</strong> El propietario tiene todos los permisos, el grupo tiene lectura y escritura (rw), y otros solo lectura (r).</li>
+                <li><strong>777:</strong> Todos los usuarios tienen todos los permisos.</li>
+                <li><strong>700:</strong> Solo el propietario tiene todos los permisos.</li>
+            </ul>
+        </section>
+
+        <!-- Sección: Consideraciones adicionales -->
+        <section class="mt-5">
+            <h2><i class="fas fa-exclamation-triangle"></i> Consideraciones Adicionales</h2>
+            <ul>
+                <li><strong>Seguridad:</strong> Configurar contraseñas fuertes para cada usuario.</li>
+                <li><a href="ACL.html"><strong>ACLs:</strong></a> Para un control más granular, utiliza Listas de Control de Acceso (ACL).</li>
+                <li><strong>Grupos:</strong> Úsalos para gestionar permisos de forma eficiente entre múltiples usuarios.</li>
+                <li><strong>Permisos especiales:</strong> Aprende sobre SUID, SGID y sticky bit para situaciones avanzadas.</li>
+            </ul>
+        </section>
+
+        <!-- Sección: Ejemplo con ACL -->
+        <section class="mt-5">
+            <h2><i class="fas fa-unlock-alt"></i> Ejemplo con ACL</h2>
+            <p>Si deseas otorgar permisos de escritura a un usuario específico (<code>usuario3</code>) sobre el archivo <code>/proyecto1</code>, aunque no pertenezca al grupo <code>grupo1</code>, utiliza ACL:</p>
+            <pre class="bg-light p-3">
+Bash
+setfacl -m u:usuario3:w /proyecto1
+            </pre>
+            <p><strong>Nota:</strong> Siempre verifica los permisos después de realizar cambios utilizando <code>ls -l</code>.</p>
+        </section>
+    </div>
+
     <div class="container">
         <h1 class="text-center"><i class="fas fa-user-cog"></i> Gestión de Usuarios, Permisos y Seguridad en Linux</h1>
 
