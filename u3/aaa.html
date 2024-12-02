@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa: Gestión de Usuarios, Permisos y Seguridad en Linux</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+        .icon {
+            font-size: 1.5rem;
+        }
+        .section {
+            margin-top: 30px;
+        }
+        .section h2 {
+            margin-bottom: 20px;
+        }
+        .highlight {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 10px;
+            margin-top: 20px;
+        }
+        code{
+            color:firebrick;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center"><i class="fas fa-user-cog"></i> Gestión de Usuarios, Permisos y Seguridad en Linux</h1>
+
+        <!-- Tabla Resumen -->
+        <div class="section">
+            <h2><i class="fas fa-users"></i> Tabla Resumen</h2>
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Comando</th>
+                        <th>Descripción</th>
+                        <th>Parámetros Esenciales</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>useradd</code></td>
+                        <td>Crea un nuevo usuario</td>
+                        <td><code>-m</code>: Crea un directorio personal<br><code>-s</code>: Define el shell</td>
+                        <td><code>sudo useradd -m -s /bin/bash usuario1</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>usermod</code></td>
+                        <td>Modifica un usuario existente</td>
+                        <td><code>-aG</code>: Añadir al grupo<br><code>-s</code>: Cambiar shell</td>
+                        <td><code>sudo usermod -aG grupo1 usuario1</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>groupadd</code></td>
+                        <td>Crea un nuevo grupo</td>
+                        <td>No tiene parámetros esenciales</td>
+                        <td><code>sudo groupadd grupo1</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>chmod</code></td>
+                        <td>Cambia los permisos de archivos y carpetas</td>
+                        <td><code>770</code>: Permisos en formato octal</td>
+                        <td><code>sudo chmod 770 /ruta</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>chown</code></td>
+                        <td>Cambia el propietario de un archivo o carpeta</td>
+                        <td><code>usuario:grupo</code>: Define propietario y grupo</td>
+                        <td><code>sudo chown usuario1:grupo1 /ruta</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>setfacl</code></td>
+                        <td>Establece ACL para permisos avanzados</td>
+                        <td><code>-m</code>: Modificar ACL</td>
+                        <td><code>sudo setfacl -m g:grupo1:rwx /ruta</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>passwd</code></td>
+                        <td>Establece o cambia la contraseña de un usuario</td>
+                        <td>No tiene parámetros esenciales</td>
+                        <td><code>echo "usuario1:contraseña" | sudo chpasswd</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sección de Definiciones y Ejemplos de AAA en Linux -->
+        <div class="section">
+            <h2><i class="fas fa-key"></i> Definiciones y Ejemplos de AAA en Linux</h2>
+
+            <!-- Accounting (Auditoría) -->
+            <div class="highlight">
+                <h3><i class="fas fa-shield-alt"></i> Accounting (Auditoría)</h3>
+                <p><strong>Definición:</strong> Proceso de registrar las acciones realizadas en un sistema, incluyendo quién, cuándo y qué hizo, para análisis, reporte y auditoría.</p>
+                <ul>
+                    <li><strong>Ubicación de logs:</strong> <code>/var/log/</code></li>
+                    <li><strong>Ejemplos:</strong>
+                        <ul>
+                            <li>Registro de accesos: <code>/var/log/auth.log</code></li>
+                            <li>Comando para ver los últimos accesos: <code>sudo tail /var/log/auth.log</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Auditoría avanzada con <code>auditd</code>:</strong>
+                        <ul>
+                            <li>Instalar: <code>sudo apt install auditd</code></li>
+                            <li>Ver registros: <code>sudo ausearch -m USER_AUTH</code></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Autenticación -->
+            <div class="highlight">
+                <h3><i class="fas fa-user-check"></i> Autenticación</h3>
+                <p><strong>Definición:</strong> Verifica la identidad de un usuario mediante contraseñas, tokens o datos biométricos.</p>
+                <ul>
+                    <li><strong>Ejemplo básico:</strong> Iniciar sesión con usuario y contraseña.</li>
+                    <li><strong>Autenticación SSH:</strong>
+                        <ul>
+                            <li>Configurar una llave SSH: <code>ssh-keygen -t rsa</code></li>
+                            <li>Agregar llave al servidor: <code>ssh-copy-id usuario@servidor</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Ver registros de autenticación fallida:</strong>
+                        <ul>
+                            <li>Comando: <code>grep "Failed password" /var/log/auth.log</code></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Autorización -->
+            <div class="highlight">
+                <h3><i class="fas fa-user-shield"></i> Autorización</h3>
+                <p><strong>Definición:</strong> Determina si un usuario tiene permisos para realizar una acción específica.</p>
+                <ul>
+                    <li><strong>Ejemplo básico: Permisos sobre archivos</strong>
+                        <ul>
+                            <li>Comprobar permisos: <code>ls -l /ruta</code></li>
+                            <li>Asignar permisos: <code>sudo chmod 750 /ruta</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Control avanzado con ACL:</strong>
+                        <ul>
+                            <li>Permitir acceso a un grupo: <code>sudo setfacl -m g:grupo1:rwx /ruta</code></li>
+                            <li>Ver permisos ACL: <code>getfacl /ruta</code></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Sección de Ejemplos Prácticos -->
+        <div class="section">
+            <h2><i class="fas fa-tools"></i> Ejemplos Prácticos</h2>
+            <div class="highlight">
+                <h3><i class="fas fa-key"></i> Configuración de SSH con Claves</h3>
+                <ol>
+                    <li>Generar una clave SSH:
+                        <code>ssh-keygen -t rsa -b 4096</code></li>
+                    <li>Copiar la clave al servidor:
+                        <code>ssh-copy-id usuario@servidor</code></li>
+                    <li>Verificar autenticación con clave:
+                        <code>ssh usuario@servidor</code></li>
+                </ol>
+            </div>
+            <div class="highlight">
+                <h3><i class="fas fa-folder"></i> Configuración de ACL para Directorios Compartidos</h3>
+                <ol>
+                    <li>Crear un directorio: <code>sudo mkdir /compartido</code></li>
+                    <li>Asignar permisos básicos:
+                        <code>sudo chmod 770 /compartido</code></li>
+                    <li>Configurar ACL para un grupo:
+                        <code>sudo setfacl -m g:grupo1:rwx /compartido</code></li>
+                    <li>Verificar permisos ACL:
+                        <code>getfacl /compartido</code></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Sección de Seguridad -->
+        <div class="section">
+            <h2><i class="fas fa-shield-alt"></i> Seguridad en la Gestión de Usuarios y Permisos</h2>
+            <ul>
+                <li>Usar contraseñas seguras combinando caracteres especiales, números y letras.</li>
+                <li>Configurar bloqueo de cuentas tras múltiples intentos fallidos:
+                    <code>sudo nano /etc/security/faillog.conf</code></li>
+                <li>Deshabilitar cuentas inactivas:
+                    <code>sudo usermod -L usuario</code></li>
+                <li>Habilitar auditoría con <code>auditd</code>:
+                    <code>sudo apt install auditd</code></li>
+            </ul>
+        </div>
+
+        <!-- Sección de Temas Avanzados -->
+        <div class="section">
+            <h2><i class="fas fa-brain"></i> Temas Avanzados</h2>
+            <div class="highlight">
+                <h3><i class="fas fa-server"></i> PAM (Pluggable Authentication Modules)</h3>
+                <p>Personaliza los procesos de autenticación editando el archivo:
+                    <code>/etc/pam.d/</code>.</p>
+            </div>
+            <div class="highlight">
+                <h3><i class="fas fa-lock"></i> SELinux</h3>
+                <p>Implementa control de acceso basado en políticas:
+                    <code>sestatus</code> para verificar el estado.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
