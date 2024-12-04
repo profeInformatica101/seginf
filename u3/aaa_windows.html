@@ -230,6 +230,69 @@ icacls "C:\Privado_Gerente" /grant:r gerente_finanzas:(OI)(CI)F /inheritance:d
                 </ul>
             </div>
         </div>
+<!-- Ejemplos Prácticos Adicionales -->
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        Ejemplos Prácticos Adicionales
+    </div>
+    <div class="card-body">
+        <h5>Creación Masiva de Usuarios</h5>
+        <pre>
+Import-Csv usuarios.csv | ForEach-Object {
+    New-LocalUser -Name $_.Nombre -Password (ConvertTo-SecureString $_.Contraseña -AsPlainText -Force) -PasswordNeverExpires
+}
+        </pre>
+        <h5>Configuración de Políticas de Contraseña</h5>
+        <pre>
+Set-ADDefaultDomainPasswordPolicy -Identity "miDominio.local" -MinPasswordLength 12
+Set-ADDefaultDomainPasswordPolicy -Identity "miDominio.local" -ComplexityEnabled $true
+Set-ADDefaultDomainPasswordPolicy -Identity "miDominio.local" -MaxPasswordAge (New-TimeSpan -Days 90)
+        </pre>
+        <h5>Auditoría de Seguridad</h5>
+        <pre>
+auditpol /set /subcategory:"Logon" /success:enable /failure:enable
+        </pre>
+        <h5>Permisos Avanzados con icacls</h5>
+        <pre>
+icacls "C:\Proyectos" /grant:r "Desarrolladores:(OI)(CI)F" "Usuarios:(OI)(CI)R" /inheritance:d
+        </pre>
+        <h5>Unidades Organizativas en Active Directory</h5>
+        <pre>
+New-ADOrganizationalUnit -Name "Finanzas" -Path "DC=miDominio,DC=local"
+        </pre>
+    </div>
+</div>
+<!-- Bibliografía -->
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        Bibliografía
+    </div>
+    <div class="card-body">
+        <p>Las siguientes fuentes fueron consultadas para el desarrollo de este material:</p>
+        <ul>
+            <li>
+                Microsoft. (s.f.). <em>icacls</em>. En <em>Microsoft Learn</em>. Recuperado de 
+                <a href="https://learn.microsoft.com/es-es/windows-server/administration/windows-commands/icacls" target="_blank">https://learn.microsoft.com/es-es/windows-server/administration/windows-commands/icacls</a>
+            </li>
+            <li>
+                Instituto Nacional de Ciberseguridad (INCIBE). (2014). <em>Protocolos AAA y control de acceso a red: RADIUS</em>. Recuperado de 
+                <a href="https://www.incibe.es/incibe-cert/blog/protocolos-aaa-radius" target="_blank">https://www.incibe.es/incibe-cert/blog/protocolos-aaa-radius</a>
+            </li>
+            <li>
+                LovTechnology. (2023). <em>Protocolo RADIUS: Guía Completa sobre el RADIUS</em>. Recuperado de 
+                <a href="https://lovtechnology.com/protocolo-radius-guia-completa-sobre-el-radius/" target="_blank">https://lovtechnology.com/protocolo-radius-guia-completa-sobre-el-radius/</a>
+            </li>
+            <li>
+                4sysops. (2022). <em>icacls: List, set, grant, remove, and deny permissions</em>. Recuperado de 
+                <a href="https://4sysops.com/archives/icacls-list-set-grant-remove-and-deny-permissions/" target="_blank">https://4sysops.com/archives/icacls-list-set-grant-remove-and-deny-permissions/</a>
+            </li>
+            <li>
+                Ciberseguridad.com. (2023). <em>¿Qué es AAA en Ciberseguridad? Todo lo que debes saber</em>. Recuperado de 
+                <a href="https://ciberseguridad.com/guias/prevencion-proteccion/aaa/" target="_blank">https://ciberseguridad.com/guias/prevencion-proteccion/aaa/</a>
+            </li>
+        </ul>
+    </div>
+</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
