@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica AAA en Windows</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .header {
+            background-color: #343a40;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        pre {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        code{
+            color:darkred;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Práctica AAA en Windows</h1>
+        <p>Gestión de usuarios, grupos, permisos y protocolo AAA en un entorno empresarial</p>
+    </div>
+    <div class="container my-5">
+        <!-- Introducción -->
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                Introducción
+            </div>
+            <div class="card-body">
+                <p>En esta práctica aprenderás a configurar el modelo <strong>AAA (Authentication, Authorization, Accounting)</strong> en un sistema Windows. 
+                    También explorarás cómo se implementa este modelo utilizando tecnologías empresariales como Active Directory y políticas de grupo (GPO).</p>
+            </div>
+            <div class="card-body">
+                <p>Deberás usar la versión oficial con la ISO de Windows 11 y verificarás su integridad utilizando hash SHA-256.</p>
+                <p>Adicionalmente, con <mark>fines educativos</mark> puedes explorar más opciones de ISOs en el siguiente enlace:</p>
+                <a href="https://archive.org/search?query=windows%20iso" target="_blank" class="btn btn-primary">Explorar ISOs en Archive.org</a>
+            </div>
+        </div>
+
+        <!-- Parte 1: Descarga de Windows 11 y comprobación de hash -->
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                Parte 1: Descarga de Windows 11 y comprobación de hash
+            </div>
+            <div class="card-body">
+                <h5>Descarga</h5>
+                <ol>
+                    <li>Accede al siguiente enlace: 
+                        <a href="https://www.microsoft.com/es-es/software-download/windows11" target="_blank">
+                            Página oficial de descarga de Windows 11
+                        </a>.
+                    </li>
+                    <li>Selecciona la versión <strong>Windows 11 Español (x64)</strong>.</li>
+                    <li>Descarga y guarda el archivo ISO en tu equipo.</li>
+                </ol>
+
+                <h5>Verificar la integridad</h5>
+                <p>Una vez descargado, verifica que el archivo no esté corrupto comprobando su hash SHA-256.</p>
+                <h6>Comando para comprobar el hash:</h6>
+                <pre>sha256sum Win11_Spanish_x64.iso</pre>
+                <p><strong>Resultado esperado:</strong> 
+                    <code>708AF7C9AC63B7EB045CA9B196568758B6C1749E8D13CADE61FAACBC7C66D142</code>
+                </p>
+            </div>
+        </div>
+
+        <!-- Parte 2: Configuración de AAA -->
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                Parte 2: Configuración de AAA
+            </div>
+            <div class="card-body">
+                <h5>Escenario</h5>
+                <p>Gestiona los permisos de los siguientes departamentos:</p>
+                <ul>
+                    <li><strong>Finanzas:</strong> Acceso exclusivo al grupo <code>Finanzas</code>.</li>
+                    <li><strong>Recursos Humanos:</strong> Acceso exclusivo al grupo <code>RRHH</code>.</li>
+                    <li><strong>Recursos Compartidos:</strong> Acceso total para todos los usuarios.</li>
+                    <li><strong>Privado del Gerente:</strong> Solo accesible por <code>gerente_finanzas</code>.</li>
+                </ul>
+                <h5>Tareas</h5>
+                <ol>
+                    <li>
+                        Crear tres usuarios con contraseña por defecto <strong>Emp#123</strong>:
+                        <pre>
+New-LocalUser -Name "empleado1" -Password (ConvertTo-SecureString "Emp#123" -AsPlainText -Force) -PasswordNeverExpires
+New-LocalUser -Name "empleado2" -Password (ConvertTo-SecureString "Emp#123" -AsPlainText -Force) -PasswordNeverExpires
+New-LocalUser -Name "gerente_finanzas" -Password (ConvertTo-SecureString "Emp#123" -AsPlainText -Force) -PasswordNeverExpires
+                        </pre>
+                    </li>
+                    <li>
+                        Crear los grupos <code>Finanzas</code> y <code>RRHH</code>:
+                        <pre>
+New-LocalGroup -Name "Finanzas"
+New-LocalGroup -Name "RRHH"
+                        </pre>
+                    </li>
+                    <li>
+                        Asignar usuarios a los grupos:
+                        <pre>
+Add-LocalGroupMember -Group "Finanzas" -Member "empleado1", "gerente_finanzas"
+Add-LocalGroupMember -Group "RRHH" -Member "empleado2"
+                        </pre>
+                    </li>
+                    <li>
+                        Configurar permisos para las carpetas:
+                        <pre>
+New-Item -ItemType Directory -Path "C:\Finanzas"
+New-Item -ItemType Directory -Path "C:\RRHH"
+New-Item -ItemType Directory -Path "C:\Recursos_Compartidos"
+New-Item -ItemType Directory -Path "C:\Privado_Gerente"
+
+icacls "C:\Finanzas" /grant:r Finanzas:(OI)(CI)F /inheritance:d
+icacls "C:\RRHH" /grant:r RRHH:(OI)(CI)F /inheritance:d
+icacls "C:\Recursos_Compartidos" /grant Everyone:(OI)(CI)F
+icacls "C:\Privado_Gerente" /grant:r gerente_finanzas:(OI)(CI)F /inheritance:d
+                        </pre>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Parte 3: Implementación del protocolo AAA en Windows -->
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                Parte 3: Implementación del protocolo AAA en Windows
+            </div>
+            <div class="card-body">
+                <h5>Explora las siguientes preguntas:</h5>
+                <ol>
+                    <li>¿Cómo se implementa el protocolo AAA en Windows? Relaciona las siguientes tecnologías:
+                        <ul>
+                            <li><strong>Active Directory</strong>: Administración centralizada de usuarios y dispositivos.</li>
+                            <li><strong>LDAP</strong>: Protocolo para consultas y gestión de objetos en Active Directory.</li>
+                            <li><strong>RADIUS</strong>: Autenticación en red para accesos remotos o inalámbricos.</li>
+                            <li><strong>GPO (Group Policy Objects)</strong>: Configuración centralizada de políticas de acceso.</li>
+                        </ul>
+                    </li>
+                    <li>¿Qué servicios de Windows permiten implementar cada componente del modelo AAA?
+                        <ul>
+                            <li><strong>Autenticación:</strong> Active Directory, Kerberos, LDAP.</li>
+                            <li><strong>Autorización:</strong> GPO, listas de control de acceso (ACLs).</li>
+                            <li><strong>Auditoría:</strong> Logs de seguridad, políticas de auditoría configuradas en el Visor de Eventos.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- Parte 1: Tabla Resumen de icacls -->
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                Tabla Resumen: Comando <mark><code>icacls</code></mark>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Parámetro</th>
+                            <th>Descripción</th>
+                            <th>Ejemplo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>/grant</code></td>
+                            <td>Otorga permisos a un usuario o grupo.</td>
+                            <td><code>icacls "C:\Carpeta" /grant Usuario:(OI)(CI)F</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>:r</code></td>
+                            <td>Reemplaza permisos existentes.</td>
+                            <td><code>icacls "C:\Carpeta" /grant:r Usuario:(OI)(CI)R</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>(OI)</code></td>
+                            <td>Aplica permisos a archivos dentro de la carpeta.</td>
+                            <td><code>icacls "C:\Carpeta" /grant Usuario:(OI)R</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>(CI)</code></td>
+                            <td>Aplica permisos a subcarpetas.</td>
+                            <td><code>icacls "C:\Carpeta" /grant Usuario:(CI)W</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>F</code></td>
+                            <td>Control total (lectura, escritura, ejecución).</td>
+                            <td><code>icacls "C:\Carpeta" /grant Usuario:F</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>R</code></td>
+                            <td>Permiso de solo lectura.</td>
+                            <td><code>icacls "C:\Carpeta" /grant Usuario:R</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>/inheritance:d</code></td>
+                            <td>Desactiva la herencia de permisos.</td>
+                            <td><code>icacls "C:\Carpeta" /inheritance:d</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>/remove</code></td>
+                            <td>Elimina permisos para un usuario o grupo.</td>
+                            <td><code>icacls "C:\Carpeta" /remove Usuario</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Esta tabla te ayudará a entender y utilizar el comando <code>icacls</code> para configurar permisos en Windows de manera efectiva.</p>
+            </div>
+        </div>
+        <!-- Reflexión Final -->
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                Reflexión Final
+            </div>
+            <div class="card-body">
+                <p>Responde las siguientes preguntas:</p>
+                <ul>
+                    <li>¿Por qué es importante verificar la integridad de un archivo descargado?</li>
+                    <li>¿Qué ventaja tiene organizar usuarios y grupos en un sistema Windows?</li>
+                    <li>¿Cómo el modelo AAA garantiza la seguridad en un entorno empresarial?</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
