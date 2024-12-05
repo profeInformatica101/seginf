@@ -222,6 +222,69 @@ icacls "C:\Privado_Gerente" /grant:r gerente_finanzas:(OI)(CI)F /inheritance:d
                 </ul>
             </div>
         </div>
+
+        <!-- GPOs: Configuración de Políticas de Seguridad -->
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        <i class="fas fa-cogs"></i> GPOs: Configuración de Políticas de Seguridad
+    </div>
+    <div class="card-body">
+        <p>Las GPOs (Group Policy Objects) son una herramienta poderosa en Windows para aplicar políticas de seguridad y configuración en equipos y usuarios de un dominio. Permiten:</p>
+        <ul>
+            <li><i class="fas fa-shield-alt"></i> Forzar configuraciones de contraseña (longitud mínima, complejidad).</li>
+            <li><i class="fas fa-network-wired"></i> Configurar políticas de red, como acceso remoto o restricciones de recursos.</li>
+            <li><i class="fas fa-user-lock"></i> Controlar el acceso a aplicaciones y configuraciones específicas.</li>
+        </ul>
+        <h5><i class="fas fa-terminal"></i> Pasos para configurar GPOs:</h5>
+        <ol>
+            <li>Abre la consola de administración de directivas de grupo:
+                <pre>gpedit.msc</pre>
+            </li>
+            <li>Ubica las políticas en:
+                <pre>Configuración de Windows > Configuración de seguridad > Directivas de cuenta</pre>
+            </li>
+            <li>Configura las siguientes opciones:
+                <ul>
+                    <li><strong>Longitud mínima de la contraseña:</strong> Configurar a 12 caracteres.</li>
+                    <li><strong>Complejidad de la contraseña:</strong> Activada.</li>
+                    <li><strong>Máximo tiempo de validez:</strong> 90 días.</li>
+                </ul>
+            </li>
+            <li>Aplica la GPO al grupo deseado dentro del dominio mediante la consola de "Administración de directivas de grupo".</li>
+        </ol>
+    </div>
+</div>
+
+<!-- Auditoría: Configuración de Auditorías de Seguridad -->
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        <i class="fas fa-search"></i> Auditoría: Configuración de Auditorías de Seguridad
+    </div>
+    <div class="card-body">
+        <p>La auditoría en Windows permite rastrear eventos clave en el sistema, como intentos de inicio de sesión fallidos o accesos no autorizados. Configurar auditorías detalladas es esencial para detectar posibles intrusiones y reforzar la seguridad.</p>
+        <h5><i class="fas fa-tools"></i> Pasos para configurar auditorías:</h5>
+        <ol>
+            <li>Abre la consola de políticas locales:
+                <pre>secpol.msc</pre>
+            </li>
+            <li>Navega a:
+                <pre>Configuración de Windows > Configuración de seguridad > Directivas locales > Directiva de auditoría</pre>
+            </li>
+            <li>Habilita las auditorías para los siguientes eventos:
+                <ul>
+                    <li><strong>Inicio de sesión:</strong> Registrar éxitos y fallos.</li>
+                    <li><strong>Acceso a objetos:</strong> Registrar intentos de lectura/escritura en archivos críticos.</li>
+                    <li><strong>Cambios en políticas:</strong> Rastrear modificaciones en las configuraciones del sistema.</li>
+                </ul>
+            </li>
+            <li>Verifica los registros en el Visor de Eventos:
+                <pre>eventvwr.msc</pre>
+            </li>
+        </ol>
+        <h6><i class="fas fa-exclamation-triangle"></i> Nota:</h6>
+        <p>Habilitar demasiadas auditorías puede generar un alto volumen de registros. Prioriza los eventos críticos para mantener la eficiencia del sistema.</p>
+    </div>
+</div>
         <!-- Bibliografía -->
         <div class="card mb-4">
             <div class="card-header bg-dark text-white">
@@ -289,3 +352,4 @@ New-ADOrganizationalUnit -Name "Finanzas" -Path "DC=miDominio,DC=local"
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
