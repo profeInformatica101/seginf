@@ -65,6 +65,8 @@
                     <li>Selecciona la versión <strong>Windows 11 Español (x64)</strong>.</li>
                     <li>Descarga y guarda el archivo ISO en tu equipo.</li>
                 </ol>
+                <h6><i class="fas fa-exclamation-triangle"></i> Nota de Seguridad:</h6>
+                <p>Descargar software desde fuentes no oficiales puede suponer un riesgo para la seguridad. Recomendamos utilizar siempre sitios oficiales, como Microsoft, para obtener software confiable y evitar posibles amenazas.</p>
                 <h5><i class="fas fa-check-circle"></i> Verificar la integridad</h5>
                 <p>Una vez descargado, verifica que el archivo no esté corrupto comprobando su hash SHA-256.</p>
                 <h6><i class="fas fa-terminal"></i> Comando para comprobar el hash:</h6>
@@ -187,32 +189,39 @@ icacls "C:\Privado_Gerente" /grant:r gerente_finanzas:(OI)(CI)F /inheritance:d
             </div>
         </div>
 
-    <div class="card mb-4">
-    <div class="card-header bg-dark text-white">
-        <i class="fas fa-lightbulb"></i> Reflexión Final
-    </div>
-    <div class="card-body">
-        <ul>
-            <li><i class="fas fa-question-circle"></i> ¿Por qué es importante verificar la integridad de un archivo descargado?</li>
-            <li><i class="fas fa-question-circle"></i> ¿Qué ventaja tiene organizar usuarios y grupos en un sistema Windows?</li>
-            <li><i class="fas fa-question-circle"></i> ¿Cómo el modelo AAA garantiza la seguridad en un entorno empresarial?</li>
-            <li><i class="fas fa-question-circle"></i> ¿Cómo se implementa el protocolo AAA en Windows?</li>
-            <ul>
-                <li>a) Active Directory</li>
-                <li>b) LDAP</li>
-                <li>c) RADIUS</li>
-                <li>d) SMB</li>
-            </ul>
-            <li><i class="fas fa-search"></i> Investiga:</li>
-            <ul>
-                <li>¿Cómo implementa Windows el modelo AAA para garantizar la gestión de usuarios y recursos en una red empresarial?</li>
-                <li>Menciona qué servicios o tecnologías se utilizan para cada componente (Autenticación, Autorización y Auditoría).</li>
-                <li><strong>Ejemplo:</strong> Active Directory, políticas de grupo (GPO), y logs de seguridad.</li>
-            </ul>
-        </ul>
-    </div>
-</div>
-
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                <i class="fas fa-lightbulb"></i> Reflexión Final
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><i class="fas fa-question-circle"></i> ¿Por qué es importante verificar la integridad de un archivo descargado?</li>
+                    <li><i class="fas fa-question-circle"></i> ¿Qué ventaja tiene organizar usuarios y grupos en un sistema Windows?</li>
+                    <li><i class="fas fa-question-circle"></i> ¿Cómo el modelo AAA garantiza la seguridad en un entorno empresarial?</li>
+                    <li><i class="fas fa-question-circle"></i> ¿Cómo se implementa el protocolo AAA en Windows?</li>
+                    <ul>
+                        <li>a) Active Directory</li>
+                        <li>b) LDAP</li>
+                        <li>c) RADIUS</li>
+                        <li>d) SMB</li>
+                    </ul>
+                    <li><i class="fas fa-info-circle"></i> Nota: RADIUS es un protocolo ampliamente utilizado para gestionar AAA en entornos de red, proporcionando autenticación, autorización y contabilización de acceso remoto y conexiones inalámbricas.</li>
+                    <p><strong>Explicación:</strong></p>
+                    <ul>
+                        <li><strong>Active Directory:</strong> Aunque es crucial para la gestión de usuarios y recursos, no es un protocolo de AAA. Sirve como una base de datos centralizada que almacena credenciales.</li>
+                        <li><strong>LDAP:</strong> Es un protocolo utilizado para consultar y acceder a servicios de directorio como Active Directory. Sin embargo, no implementa directamente AAA.</li>
+                        <li><strong>RADIUS:</strong> Es el protocolo estándar utilizado para implementar AAA, especialmente en accesos remotos o redes inalámbricas. Se integra con Active Directory para autenticar usuarios y gestionar autorizaciones.</li>
+                        <li><strong>SMB:</strong> Es un protocolo para compartir archivos y recursos, pero no está relacionado con AAA.</li>
+                    </ul>
+                    <li><i class="fas fa-search"></i> Investiga:</li>
+                    <ul>
+                        <li>¿Cómo implementa Windows el modelo AAA para garantizar la gestión de usuarios y recursos en una red empresarial?</li>
+                        <li>Menciona qué servicios o tecnologías se utilizan para cada componente (Autenticación, Autorización y Auditoría).</li>
+                        <li><strong>Ejemplo:</strong> Active Directory, políticas de grupo (GPO), y logs de seguridad.</li>
+                    </ul>
+                </ul>
+            </div>
+        </div>
         <!-- Bibliografía -->
         <div class="card mb-4">
             <div class="card-header bg-dark text-white">
@@ -280,4 +289,3 @@ New-ADOrganizationalUnit -Name "Finanzas" -Path "DC=miDominio,DC=local"
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
