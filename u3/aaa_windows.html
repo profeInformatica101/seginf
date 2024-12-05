@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Práctica AAA en Windows</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -20,40 +21,41 @@
             padding: 15px;
             border-radius: 5px;
         }
-        code{
-            color:darkred;
+        code {
+            color: darkred;
         }
     </style>
 </head>
 <body>
     <div class="header">
+        <img src="https://cdn.pixabay.com/photo/2013/02/12/09/07/microsoft-80658_1280.png" alt="Microsoft Logo" style="height: 80px; margin-bottom: 10px;">
         <h1>Práctica AAA en Windows</h1>
-        <p>Gestión de usuarios, grupos, permisos y protocolo AAA en un entorno empresarial</p>
+        <p><i class="fas fa-shield-alt"></i> Gestión de usuarios, grupos, permisos y protocolo AAA en un entorno empresarial</p>
     </div>
     <div class="container my-5">
         <!-- Introducción -->
         <div class="card mb-4">
             <div class="card-header bg-dark text-white">
-                Introducción
+                <i class="fas fa-book"></i> Introducción
             </div>
             <div class="card-body">
                 <p>En esta práctica aprenderás a configurar el modelo <strong>AAA (Authentication, Authorization, Accounting)</strong> en un sistema Windows. 
                     También explorarás cómo se implementa este modelo utilizando tecnologías empresariales como Active Directory y políticas de grupo (GPO).</p>
             </div>
             <div class="card-body">
-                <p>Deberás usar la versión oficial con la ISO de Windows 11 y verificarás su integridad utilizando hash SHA-256.</p>
+                <p><i class="fas fa-info-circle"></i> Deberás usar la versión oficial con la ISO de Windows 11 y verificarás su integridad utilizando hash SHA-256.</p>
                 <p>Adicionalmente, con <mark>fines educativos</mark> puedes explorar más opciones de ISOs en el siguiente enlace:</p>
-                <a href="https://archive.org/search?query=windows%20iso" target="_blank" class="btn btn-primary">Explorar ISOs en Archive.org</a>
+                <a href="https://archive.org/search?query=windows%20iso" target="_blank" class="btn btn-primary"><i class="fas fa-external-link-alt"></i> Explorar ISOs en Archive.org</a>
             </div>
         </div>
 
         <!-- Parte 1: Descarga de Windows 11 y comprobación de hash -->
         <div class="card mb-4">
             <div class="card-header bg-dark text-white">
-                Parte 1: Descarga de Windows 11 y comprobación de hash
+                <i class="fas fa-download"></i> Parte 1: Descarga de Windows 11 y comprobación de hash
             </div>
             <div class="card-body">
-                <h5>Descarga</h5>
+                <h5><i class="fas fa-cloud-download-alt"></i> Descarga</h5>
                 <ol>
                     <li>Accede al siguiente enlace: 
                         <a href="https://www.microsoft.com/es-es/software-download/windows11" target="_blank">
@@ -63,10 +65,9 @@
                     <li>Selecciona la versión <strong>Windows 11 Español (x64)</strong>.</li>
                     <li>Descarga y guarda el archivo ISO en tu equipo.</li>
                 </ol>
-
-                <h5>Verificar la integridad</h5>
+                <h5><i class="fas fa-check-circle"></i> Verificar la integridad</h5>
                 <p>Una vez descargado, verifica que el archivo no esté corrupto comprobando su hash SHA-256.</p>
-                <h6>Comando para comprobar el hash:</h6>
+                <h6><i class="fas fa-terminal"></i> Comando para comprobar el hash:</h6>
                 <pre>sha256sum Win11_Spanish_x64.iso</pre>
                 <p><strong>Resultado esperado:</strong> 
                     <code>708AF7C9AC63B7EB045CA9B196568758B6C1749E8D13CADE61FAACBC7C66D142</code>
@@ -77,43 +78,39 @@
         <!-- Parte 2: Configuración de AAA -->
         <div class="card mb-4">
             <div class="card-header bg-dark text-white">
-                Parte 2: Configuración de AAA
+                <i class="fas fa-cogs"></i> Parte 2: Configuración de AAA
             </div>
             <div class="card-body">
-                <h5>Escenario</h5>
+                <h5><i class="fas fa-users-cog"></i> Escenario</h5>
                 <p>Gestiona los permisos de los siguientes departamentos:</p>
                 <ul>
-                    <li><strong>Finanzas:</strong> Acceso exclusivo al grupo <code>Finanzas</code>.</li>
-                    <li><strong>Recursos Humanos:</strong> Acceso exclusivo al grupo <code>RRHH</code>.</li>
-                    <li><strong>Recursos Compartidos:</strong> Acceso total para todos los usuarios.</li>
-                    <li><strong>Privado del Gerente:</strong> Solo accesible por <code>gerente_finanzas</code>.</li>
+                    <li><i class="fas fa-lock"></i> <strong>Finanzas:</strong> Acceso exclusivo al grupo <code>Finanzas</code>.</li>
+                    <li><i class="fas fa-users"></i> <strong>Recursos Humanos:</strong> Acceso exclusivo al grupo <code>RRHH</code>.</li>
+                    <li><i class="fas fa-share-alt"></i> <strong>Recursos Compartidos:</strong> Acceso total para todos los usuarios.</li>
+                    <li><i class="fas fa-user-shield"></i> <strong>Privado del Gerente:</strong> Solo accesible por <code>gerente_finanzas</code>.</li>
                 </ul>
-                <h5>Tareas</h5>
+                <h5><i class="fas fa-tasks"></i> Tareas</h5>
                 <ol>
-                    <li>
-                        Crear tres usuarios con contraseña por defecto <strong>Emp#123</strong>:
+                    <li><i class="fas fa-user-plus"></i> Crear tres usuarios con contraseña por defecto <strong>Emp#123</strong>:
                         <pre>
 New-LocalUser -Name "empleado1" -Password (ConvertTo-SecureString "Emp#123" -AsPlainText -Force) -PasswordNeverExpires
 New-LocalUser -Name "empleado2" -Password (ConvertTo-SecureString "Emp#123" -AsPlainText -Force) -PasswordNeverExpires
 New-LocalUser -Name "gerente_finanzas" -Password (ConvertTo-SecureString "Emp#123" -AsPlainText -Force) -PasswordNeverExpires
                         </pre>
                     </li>
-                    <li>
-                        Crear los grupos <code>Finanzas</code> y <code>RRHH</code>:
+                    <li><i class="fas fa-users"></i> Crear los grupos <code>Finanzas</code> y <code>RRHH</code>:
                         <pre>
 New-LocalGroup -Name "Finanzas"
 New-LocalGroup -Name "RRHH"
                         </pre>
                     </li>
-                    <li>
-                        Asignar usuarios a los grupos:
+                    <li><i class="fas fa-user-tag"></i> Asignar usuarios a los grupos:
                         <pre>
 Add-LocalGroupMember -Group "Finanzas" -Member "empleado1", "gerente_finanzas"
 Add-LocalGroupMember -Group "RRHH" -Member "empleado2"
                         </pre>
                     </li>
-                    <li>
-                        Configurar permisos para las carpetas:
+                    <li><i class="fas fa-folder-open"></i> Configurar permisos para las carpetas:
                         <pre>
 New-Item -ItemType Directory -Path "C:\Finanzas"
 New-Item -ItemType Directory -Path "C:\RRHH"
@@ -130,36 +127,10 @@ icacls "C:\Privado_Gerente" /grant:r gerente_finanzas:(OI)(CI)F /inheritance:d
             </div>
         </div>
 
-        <!-- Parte 3: Implementación del protocolo AAA en Windows -->
+        <!-- Tabla Resumen -->
         <div class="card mb-4">
             <div class="card-header bg-dark text-white">
-                Parte 3: Implementación del protocolo AAA en Windows
-            </div>
-            <div class="card-body">
-                <h5>Explora las siguientes preguntas:</h5>
-                <ol>
-                    <li>¿Cómo se implementa el protocolo AAA en Windows? Relaciona las siguientes tecnologías:
-                        <ul>
-                            <li><strong>Active Directory</strong>: Administración centralizada de usuarios y dispositivos.</li>
-                            <li><strong>LDAP</strong>: Protocolo para consultas y gestión de objetos en Active Directory.</li>
-                            <li><strong>RADIUS</strong>: Autenticación en red para accesos remotos o inalámbricos.</li>
-                            <li><strong>GPO (Group Policy Objects)</strong>: Configuración centralizada de políticas de acceso.</li>
-                        </ul>
-                    </li>
-                    <li>¿Qué servicios de Windows permiten implementar cada componente del modelo AAA?
-                        <ul>
-                            <li><strong>Autenticación:</strong> Active Directory, Kerberos, LDAP.</li>
-                            <li><strong>Autorización:</strong> GPO, listas de control de acceso (ACLs).</li>
-                            <li><strong>Auditoría:</strong> Logs de seguridad, políticas de auditoría configuradas en el Visor de Eventos.</li>
-                        </ul>
-                    </li>
-                </ol>
-            </div>
-        </div>
-        <!-- Parte 1: Tabla Resumen de icacls -->
-        <div class="card mb-4">
-            <div class="card-header bg-dark text-white">
-                Tabla Resumen: Comando <mark><code>icacls</code></mark>
+                <i class="fas fa-table"></i> Tabla Resumen: Comando <mark><code>icacls</code></mark>
             </div>
             <div class="card-body">
                 <table class="table table-bordered table-striped">
@@ -213,24 +184,67 @@ icacls "C:\Privado_Gerente" /grant:r gerente_finanzas:(OI)(CI)F /inheritance:d
                         </tr>
                     </tbody>
                 </table>
-                <p>Esta tabla te ayudará a entender y utilizar el comando <code>icacls</code> para configurar permisos en Windows de manera efectiva.</p>
             </div>
         </div>
-        <!-- Reflexión Final -->
-        <div class="card">
+
+    <div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        <i class="fas fa-lightbulb"></i> Reflexión Final
+    </div>
+    <div class="card-body">
+        <ul>
+            <li><i class="fas fa-question-circle"></i> ¿Por qué es importante verificar la integridad de un archivo descargado?</li>
+            <li><i class="fas fa-question-circle"></i> ¿Qué ventaja tiene organizar usuarios y grupos en un sistema Windows?</li>
+            <li><i class="fas fa-question-circle"></i> ¿Cómo el modelo AAA garantiza la seguridad en un entorno empresarial?</li>
+            <li><i class="fas fa-question-circle"></i> ¿Cómo se implementa el protocolo AAA en Windows?</li>
+            <ul>
+                <li>a) Active Directory</li>
+                <li>b) LDAP</li>
+                <li>c) RADIUS</li>
+                <li>d) SMB</li>
+            </ul>
+            <li><i class="fas fa-search"></i> Investiga:</li>
+            <ul>
+                <li>¿Cómo implementa Windows el modelo AAA para garantizar la gestión de usuarios y recursos en una red empresarial?</li>
+                <li>Menciona qué servicios o tecnologías se utilizan para cada componente (Autenticación, Autorización y Auditoría).</li>
+                <li><strong>Ejemplo:</strong> Active Directory, políticas de grupo (GPO), y logs de seguridad.</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+
+        <!-- Bibliografía -->
+        <div class="card mb-4">
             <div class="card-header bg-dark text-white">
-                Reflexión Final
+                <i class="fas fa-book"></i> Bibliografía
             </div>
             <div class="card-body">
-                <p>Responde las siguientes preguntas:</p>
                 <ul>
-                    <li>¿Por qué es importante verificar la integridad de un archivo descargado?</li>
-                    <li>¿Qué ventaja tiene organizar usuarios y grupos en un sistema Windows?</li>
-                    <li>¿Cómo el modelo AAA garantiza la seguridad en un entorno empresarial?</li>
+                    <li>
+                        Microsoft. (s.f.). <em>icacls</em>. En <em>Microsoft Learn</em>. Recuperado de 
+                        <a href="https://learn.microsoft.com/es-es/windows-server/administration/windows-commands/icacls" target="_blank">https://learn.microsoft.com/es-es/windows-server/administration/windows-commands/icacls</a>
+                    </li>
+                    <li>
+                        Instituto Nacional de Ciberseguridad (INCIBE). (2014). <em>Protocolos AAA y control de acceso a red: RADIUS</em>. Recuperado de 
+                        <a href="https://www.incibe.es/incibe-cert/blog/protocolos-aaa-radius" target="_blank">https://www.incibe.es/incibe-cert/blog/protocolos-aaa-radius</a>
+                    </li>
+                    <li>
+                        LovTechnology. (2023). <em>Protocolo RADIUS: Guía Completa sobre el RADIUS</em>. Recuperado de 
+                        <a href="https://lovtechnology.com/protocolo-radius-guia-completa-sobre-el-radius/" target="_blank">https://lovtechnology.com/protocolo-radius-guia-completa-sobre-el-radius/</a>
+                    </li>
+                    <li>
+                        4sysops. (2022). <em>icacls: List, set, grant, remove, and deny permissions</em>. Recuperado de 
+                        <a href="https://4sysops.com/archives/icacls-list-set-grant-remove-and-deny-permissions/" target="_blank">https://4sysops.com/archives/icacls-list-set-grant-remove-and-deny-permissions/</a>
+                    </li>
+                    <li>
+                        Ciberseguridad.com. (2023). <em>¿Qué es AAA en Ciberseguridad? Todo lo que debes saber</em>. Recuperado de 
+                        <a href="https://ciberseguridad.com/guias/prevencion-proteccion/aaa/" target="_blank">https://ciberseguridad.com/guias/prevencion-proteccion/aaa/</a>
+                    </li>
                 </ul>
             </div>
         </div>
-<!-- Ejemplos Prácticos Adicionales -->
+
+        <!-- Ejemplos Prácticos Adicionales -->
 <div class="card mb-4">
     <div class="card-header bg-dark text-white">
         Ejemplos Prácticos Adicionales
@@ -262,39 +276,8 @@ New-ADOrganizationalUnit -Name "Finanzas" -Path "DC=miDominio,DC=local"
         </pre>
     </div>
 </div>
-<!-- Bibliografía -->
-<div class="card mb-4">
-    <div class="card-header bg-dark text-white">
-        Bibliografía
     </div>
-    <div class="card-body">
-        <p>Las siguientes fuentes fueron consultadas para el desarrollo de este material:</p>
-        <ul>
-            <li>
-                Microsoft. (s.f.). <em>icacls</em>. En <em>Microsoft Learn</em>. Recuperado de 
-                <a href="https://learn.microsoft.com/es-es/windows-server/administration/windows-commands/icacls" target="_blank">https://learn.microsoft.com/es-es/windows-server/administration/windows-commands/icacls</a>
-            </li>
-            <li>
-                Instituto Nacional de Ciberseguridad (INCIBE). (2014). <em>Protocolos AAA y control de acceso a red: RADIUS</em>. Recuperado de 
-                <a href="https://www.incibe.es/incibe-cert/blog/protocolos-aaa-radius" target="_blank">https://www.incibe.es/incibe-cert/blog/protocolos-aaa-radius</a>
-            </li>
-            <li>
-                LovTechnology. (2023). <em>Protocolo RADIUS: Guía Completa sobre el RADIUS</em>. Recuperado de 
-                <a href="https://lovtechnology.com/protocolo-radius-guia-completa-sobre-el-radius/" target="_blank">https://lovtechnology.com/protocolo-radius-guia-completa-sobre-el-radius/</a>
-            </li>
-            <li>
-                4sysops. (2022). <em>icacls: List, set, grant, remove, and deny permissions</em>. Recuperado de 
-                <a href="https://4sysops.com/archives/icacls-list-set-grant-remove-and-deny-permissions/" target="_blank">https://4sysops.com/archives/icacls-list-set-grant-remove-and-deny-permissions/</a>
-            </li>
-            <li>
-                Ciberseguridad.com. (2023). <em>¿Qué es AAA en Ciberseguridad? Todo lo que debes saber</em>. Recuperado de 
-                <a href="https://ciberseguridad.com/guias/prevencion-proteccion/aaa/" target="_blank">https://ciberseguridad.com/guias/prevencion-proteccion/aaa/</a>
-            </li>
-        </ul>
-    </div>
-</div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
