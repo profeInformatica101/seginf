@@ -109,6 +109,11 @@
                 </ul>
                 <h5><i class="fas fa-tasks"></i> Tareas</h5>
                 <ol>
+                    <li><i class="fas fa-user"></i> Ver todos los usuarios locales:
+                        <pre>
+        Get-LocalUser
+                        </pre>
+                    </li>
                     <li><i class="fas fa-user-plus"></i> Crear tres usuarios con contraseña por defecto <strong>Emp#123</strong>:
                         <pre>
                             # Generar la contraseña segura una vez
@@ -116,7 +121,11 @@
                             
                             # Crear usuario empleado1
                             New-LocalUser -Name "empleado1" -Password $SecurePassword -PasswordNeverExpires
-                            
+
+                            # Eliminar y Añadir descripción
+                            Remove-LocalUser -Name "empleado1"
+                            New-LocalUser -Name "empleado1" -Password (ConvertTo-SecureString "Emp#123" -AsPlainText -Force) -PasswordNeverExpires -Description "Cuenta del empleado1"
+
                             # Crear usuario empleado2
                             New-LocalUser -Name "empleado2" -Password $SecurePassword -PasswordNeverExpires
                             
@@ -148,18 +157,14 @@
                                 </ul>
                                 <h5><i class="fas fa-user-friends"></i> Ver Usuarios del Sistema</h5>
                                 <ul>
-                                    <li><i class="fas fa-user"></i> Ver todos los usuarios locales:
-                                        <pre>
-                        Get-LocalUser
-                                        </pre>
-                                    </li>
+                
                                     <li><i class="fas fa-users"></i> Ver miembros de un grupo específico:
                                         <pre>
                         Get-LocalGroupMember -Group "nombre_del_grupo"
                                         </pre>
                                         <strong>Ejemplo:</strong>
                                         <pre>
-                        Get-LocalGroupMember -Group "Administrators"
+                        Get-LocalGroupMember -Group "Administradores"
                                         </pre>
                                     </li>
                                 </ul>
@@ -171,18 +176,35 @@
 Add-LocalGroupMember -Group "Finanzas" -Member "empleado1", "gerente_finanzas"
 Add-LocalGroupMember -Group "RRHH" -Member "empleado2"
                         </pre>
+                        <h5><i class="fas fa-user-shield"></i> Asignar Usuarios al Grupo Administradores</h5>
+                        <p>Para garantizar que los usuarios puedan acceder y usar el PC, añádelos al grupo <code>Administradores</code>:</p>
+                        <pre>
+        # Asignar usuarios al grupo Administradores
+        Add-LocalGroupMember -Group "Administradores" -Member "empleado1", "empleado2", "gerente_finanzas"
+                        </pre>
                     </li>
                     <li><i class="fas fa-folder-open"></i> Configurar permisos para las carpetas:
                         <pre>
-New-Item -ItemType Directory -Path "C:\Finanzas"
-New-Item -ItemType Directory -Path "C:\RRHH"
-New-Item -ItemType Directory -Path "C:\Recursos_Compartidos"
-New-Item -ItemType Directory -Path "C:\Privado_Gerente"
-
-icacls "C:\Finanzas" /grant:r Finanzas:(OI)(CI)F /inheritance:d
-icacls "C:\RRHH" /grant:r RRHH:(OI)(CI)F /inheritance:d
-icacls "C:\Recursos_Compartidos" /grant Everyone:(OI)(CI)F
-icacls "C:\Privado_Gerente" /grant:r gerente_finanzas:(OI)(CI)F /inheritance:d
+                    # Crear carpetas necesarias
+                    New-Item -ItemType Directory -Path "C:\Finanzas"
+                    New-Item -ItemType Directory -Path "C:\RRHH"
+                    New-Item -ItemType Directory -Path "C:\Recursos_Compartidos"
+                    New-Item -ItemType Directory -Path "C:\Privado_Gerente"
+                    
+                    # Configurar permisos para Finanzas - Acceso exclusivo para gerente_finanzas
+                    icacls "C:\Finanzas" /inheritance:r
+                    icacls "C:\Finanzas" /grant "gerente_finanzas:(OI)(CI)F"
+                    
+                    # Configurar permisos para RRHH - Acceso exclusivo para el grupo RRHH
+                    icacls "C:\RRHH" /inheritance:r
+                    icacls "C:\RRHH" /grant "RRHH:(OI)(CI)F"
+                    
+                    # Configurar permisos para Recursos Compartidos - Acceso para todos los usuarios
+                    icacls "C:\Recursos_Compartidos" /grant "Everyone:(OI)(CI)F" /t
+                    
+                    # Configurar permisos para Privado del Gerente - Acceso exclusivo para gerente_finanzas
+                    icacls "C:\Privado_Gerente" /inheritance:r
+                    icacls "C:\Privado_Gerente" /grant "gerente_finanzas:(OI)(CI)F"
                         </pre>
                     </li>
                 </ol>
@@ -248,6 +270,9 @@ icacls "C:\Privado_Gerente" /grant:r gerente_finanzas:(OI)(CI)F /inheritance:d
                 </table>
             </div>
         </div>
+
+
+
 
         <div class="card mb-4">
             <div class="card-header bg-dark text-white">
