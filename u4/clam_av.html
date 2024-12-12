@@ -21,69 +21,146 @@
         .step-card {
             margin-bottom: 15px;
         }
+        code {
+            color:red;
+            background-color: yellow;
+        }
     </style>
 </head>
 <body>
     <header class="header text-center">
         <h1>Práctica con ClamAV</h1>
-        <p class="lead">Guía para realizar la práctica paso a paso</p>
+        <p class="lead">Guía para realizar la práctica paso a paso y explorar casos reales de uso</p>
     </header>
 
     <main class="container my-4">
         <div class="steps">
             <div class="step-card card">
-                <div class="card-header">1. Instalación de ClamAV</div>
+                <div class="card-header">1. ¿Es útil ClamAV en Linux?</div>
+                <div class="card-body">
+                    <p>ClamAV es un antivirus de código abierto diseñado principalmente para detectar malware en archivos y correos electrónicos. Es especialmente útil en los siguientes casos:</p>
+                    <ul>
+                        <li><strong>Servidores de correo:</strong> Analiza adjuntos para prevenir el envío de malware.</li>
+                        <li><strong>Entornos compartidos:</strong> Protege sistemas Linux que interactúan con otros sistemas operativos (como Windows).</li>
+                        <li><strong>Análisis forense:</strong> Identifica posibles archivos maliciosos en auditorías de seguridad.</li>
+                        <li><strong>Protección básica:</strong> Aunque no sustituye soluciones avanzadas, puede detectar amenazas comunes.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step-card card">
+                <div class="card-header">2. Instalación de ClamAV</div>
                 <div class="card-body">
                     <p><strong>Linux:</strong> Abre una terminal y ejecuta los siguientes comandos:</p>
                     <pre><code>sudo apt update
 sudo apt install clamav clamav-daemon -y</code></pre>
-                    <p><strong>Windows/macOS:</strong> Descarga ClamAV desde su <a href="https://www.clamav.net/" target="_blank">sitio oficial</a> y sigue las instrucciones.</p>
+                   <p><strong>Windows/macOS:</strong> Descarga ClamAV desde su <a href="https://www.clamav.net/" target="_blank">sitio oficial</a> y sigue las instrucciones.</p>
                 </div>
             </div>
 
             <div class="step-card card">
-                <div class="card-header">2. Actualización de la base de datos de virus</div>
+                <div class="card-header">3. Actualización de la base de datos de virus</div>
                 <div class="card-body">
                     <p>Ejecuta el siguiente comando para actualizar las definiciones de virus:</p>
                     <pre><code>sudo freshclam</code></pre>
-                    <a href="https://askubuntu.com/questions/909273/clamav-error-var-log-clamav-freshclam-log-is-locked-by-another-process#answer-909276">Si ocurre error</a>
+                    <p><a href="https://askubuntu.com/questions/909273/clamav-error-var-log-clamav-freshclam-log-is-locked-by-another-process#answer-909276" target="_blank">Si ocurre un error</a></p>
                 </div>
             </div>
 
             <div class="step-card card">
-                <div class="card-header">3. Descarga del archivo de prueba EICAR</div>
-                <div class="card-body">
+                <div class="card-header">4. Descarga del archivo de prueba EICAR</div>
+              <div class="card-body">
                     <p>Visita el enlace: <a href="https://www.eicar.org/download-anti-malware-testfile/" target="_blank">EICAR Test File</a>.</p>
                     <p>Descarga el archivo <code>eicar.com</code> y guárdalo en tu sistema.</p>
-                </div>
-            </div>
-
-            <div class="step-card card">
-                <div class="card-header">4. Configuración para la práctica</div>
-                <div class="card-body">
-                    <p>Crea un directorio y copia el archivo de prueba:</p>
-                    <pre><code>mkdir ~/clamav_test
-mv ~/Descargas/eicar.com ~/clamav_test/</code></pre>
+                  <p>Este archivo será detectado como amenaza por ClamAV, aunque no es peligroso.</p>
                 </div>
             </div>
 
             <div class="step-card card">
                 <div class="card-header">5. Escaneo con ClamAV</div>
                 <div class="card-body">
-                    <p>Realiza un escaneo del directorio:</p>
-                    <pre><code>clamscan -r ~/clamav_test/</code></pre>
-                    <p>Resultado esperado:</p>
-                    <p><em>ClamAV detectará el archivo EICAR como una amenaza.</em></p>
+                    <p>Escanea un archivo o directorio específico:</p>
+                    <pre><code>clamscan ~/eicar_test_file.txt</code></pre>
+                    <p>Para un análisis completo de un directorio:</p>
+                    <pre><code>clamscan -r /ruta/a/directorio</code></pre>
+                    <p>Agrega opciones adicionales para mejorar el análisis:</p>
+                    <pre><code>clamscan -r --bell -i /ruta/a/directorio</code></pre>
                 </div>
             </div>
 
             <div class="step-card card">
-                <div class="card-header">6. Limpieza y eliminación de amenazas</div>
+                <div class="card-header">6. Automatización con tareas programadas</div>
                 <div class="card-body">
-                    <p>Para eliminar el archivo detectado automáticamente:</p>
-                    <pre><code>clamscan --remove=yes -r ~/clamav_test/</code></pre>
+                    <p>Configura un análisis diario del directorio <code>/home</code>:</p>
+                    <pre><code>crontab -e</code></pre>
+                    <p>Agrega la siguiente línea:</p>
+                    <pre><code>0 3 * * * clamscan -r --bell -i /home >> ~/clamav_scan.log</code></pre>
+                    <p>Esto realizará un análisis a las 3:00 AM cada día y guardará un informe en <code>clamav_scan.log</code>.</p>
                 </div>
             </div>
+
+            <div class="step-card card">
+                <div class="card-header">7. Limpieza y eliminación de amenazas</div>
+                <div class="card-body">
+                    <p>Para mover archivos infectados a una carpeta segura:</p>
+                    <pre><code>mkdir ~/infectados
+clamscan -r --move=~/infectados /ruta/a/analizar</code></pre>
+                    <p>Para eliminar archivos infectados directamente:</p>
+                    <pre><code>clamscan --remove=yes -r /ruta/a/analizar</code></pre>
+                </div>
+            </div>
+
+          <div class="step-card card">
+    <div class="card-header">8. Práctica con Thunderbird y ClamAV</div>
+    <div class="card-body">
+        <p>Envía un correo con el archivo de prueba EICAR adjunto y verifica que ClamAV lo detecte.</p>
+        <ol>
+            <li><strong>Configura Thunderbird:</strong> Descarga e instala Thunderbird desde <a href="https://www.mozilla.org/thunderbird/" target="_blank">su sitio oficial</a>.</li>
+            <li><strong>Crea el archivo de prueba:</strong> Asegúrate de que el archivo <code>eicar_test_file.txt</code> esté disponible.</li>
+            <li><strong>Envía el correo:</strong> Adjunta el archivo y envíalo a una cuenta configurada en Thunderbird.</li>
+            <li><strong>Configura ClamAV para correos:</strong> Instala y configura ClamSMTP para analizar correos entrantes:</li>
+            <ul>
+              <li>Instala ClamSMTP:</li>
+              <pre><code>sudo apt install clamsmtp</code></pre>
+              <li>Edita el archivo de configuración:</li>
+              <pre><code>sudo nano /etc/clamsmtpd/clamsmtpd.conf</code></pre>
+              <p>Asegúrate de que las siguientes líneas estén configuradas:</p>
+              <pre><code>
+OutAddress: 10025
+InAddress: 127.0.0.1:10026
+ClamAddress: /var/run/clamav/clamd.ctl
+TempDirectory: /var/spool/clamsmtp
+              </code></pre>
+              <li>Reinicia el servicio de ClamSMTP:</li>
+              <pre><code>sudo systemctl start clamsmtp</code></pre>
+              <li>Integra ClamSMTP con Postfix:</li>
+              <pre><code>
+# Agrega en /etc/postfix/main.cf
+content_filter = smtp:[127.0.0.1]:10025
+
+# Reinicia Postfix
+sudo systemctl restart postfix
+              </code></pre>
+            </ul>
+            <li><strong>Verifica la detección:</strong> Revisa los logs para confirmar que ClamAV detectó el archivo adjunto como una amenaza:</li>
+            <pre><code>sudo tail -f /var/log/mail.log</code></pre>
+        </ol>
+        <p>Consulta la documentación oficial para configurar ClamSMTP: <a href="https://www.clamav.net/documents/" target="_blank">ClamAV Documentation</a>.</p>
+    </div>
+</div>
+
+<div class="step-card card">
+    <div class="card-header">9. Bibliografía y recursos útiles</div>
+    <div class="card-body">
+        <ul>
+            <li><a href="https://www.clamav.net/documentation/" target="_blank">Documentación oficial de ClamAV</a> - Información completa sobre instalación, configuración y uso.</li>
+            <li><a href="https://www.eicar.org/" target="_blank">EICAR Test File</a> - Descarga segura para pruebas con antivirus.</li>
+            <li><a href="https://askubuntu.com/questions/tagged/clamav" target="_blank">Preguntas y respuestas sobre ClamAV en AskUbuntu</a> - Solución de problemas comunes.</li>
+            <li><a href="https://help.ubuntu.com/community/ClamAV" target="_blank">Guía de ClamAV en Ubuntu Community Help</a> - Tutoriales detallados para usuarios de Ubuntu.</li>
+        </ul>
+    </div>
+</div>
+
         </div>
     </main>
 
