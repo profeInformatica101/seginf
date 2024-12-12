@@ -116,7 +116,9 @@ clamscan -r --move=~/infectados /ruta/a/analizar</code></pre>
     <div class="card-body">
         <p>Envía un correo con el archivo de prueba EICAR adjunto y verifica que ClamAV lo detecte.</p>
         <ol>
-            <li><strong>Configura Thunderbird:</strong> Descarga e instala Thunderbird desde <a href="https://www.mozilla.org/thunderbird/" target="_blank">su sitio oficial</a>.</li>
+            <li><strong>Configura Thunderbird:</strong> Descarga e instala Thunderbird desde <a href="https://www.mozilla.org/thunderbird/" target="_blank">su sitio oficial</a>.
+ <pre><code>sudo apt install thunderbird</code></pre>
+            </li>
             <li><strong>Crea el archivo de prueba:</strong> Asegúrate de que el archivo <code>eicar_test_file.txt</code> esté disponible.</li>
             <li><strong>Envía el correo:</strong> Adjunta el archivo y envíalo a una cuenta configurada en Thunderbird.</li>
             <li><strong>Configura ClamAV para correos:</strong> Instala y configura ClamSMTP para analizar correos entrantes:</li>
