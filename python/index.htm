@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Herramientas Python en Ciberseguridad</title>
+    <!-- Importar Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <style>
+        code{
+            color:darkred;
+        }
+    </style>
+    <div class="container mt-5">
+        <h1 class="mb-4">Herramientas Python en Ciberseguridad</h1>
+        <p class="text-muted">Advertencia: Las herramientas y scripts presentados aquí deben usarse exclusivamente con fines educativos y en entornos controlados, con el permiso adecuado.</p>
+        <div class="accordion" id="pythonToolsAccordion">
+            <!-- Scapy -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingScapy">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseScapy" aria-expanded="true" aria-controls="collapseScapy">
+                        <i class="fas fa-network-wired me-2"></i> Scapy
+                    </button>
+                </h2>
+                <div id="collapseScapy" class="accordion-collapse collapse show" aria-labelledby="headingScapy" data-bs-parent="#pythonToolsAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Scapy</strong> es una herramienta poderosa para manipular paquetes de red. Es ideal para pruebas de penetración y análisis de redes.</p>
+                        <h5>Ejemplos prácticos:</h5>
+                        <ul>
+                            <li>Simular un ataque de denegación de servicio (DoS): <code>send(IP(dst="192.168.1.1")/ICMP()*1000)</code></li>
+                            <li>Analizar tráfico de red: <code>sniff(iface="eth0", count=10, prn=lambda x: x.summary())</code></li>
+                            <li>Spoofing de IP: <code>send(IP(src="192.168.1.2", dst="192.168.1.3")/TCP(dport=80))</code></li>
+                        </ul>
+                        <a href="https://scapy.readthedocs.io/en/latest/" target="_blank">Documentación oficial de Scapy</a>
+                    </div>
+                </div>
+            </div>
+            <!-- PyCrypto -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingPyCrypto">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePyCrypto" aria-expanded="false" aria-controls="collapsePyCrypto">
+                        <i class="fas fa-lock me-2"></i> PyCrypto
+                    </button>
+                </h2>
+                <div id="collapsePyCrypto" class="accordion-collapse collapse" aria-labelledby="headingPyCrypto" data-bs-parent="#pythonToolsAccordion">
+                    <div class="accordion-body">
+                        <p><strong>PyCrypto</strong> proporciona herramientas para cifrar y descifrar datos, esenciales en la protección de información.</p>
+                        <h5>Ejemplos prácticos:</h5>
+                        <ul>
+                            <li>Cifrar y descifrar archivos: <code>cipher = AES.new(key, AES.MODE_EAX); ciphertext = cipher.encrypt(data)</code></li>
+                            <li>Verificar la integridad de los datos: <code>hash = SHA256.new(data).hexdigest()</code></li>
+                        </ul>
+                        <a href="https://pycryptodome.readthedocs.io/" target="_blank">Documentación oficial de PyCrypto</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Requests -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingRequests">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRequests" aria-expanded="false" aria-controls="collapseRequests">
+                        <i class="fas fa-globe me-2"></i> Requests
+                    </button>
+                </h2>
+                <div id="collapseRequests" class="accordion-collapse collapse" aria-labelledby="headingRequests" data-bs-parent="#pythonToolsAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Requests</strong> simplifica las peticiones HTTP, facilitando la interacción con servicios web.</p>
+                        <h5>Ejemplos prácticos:</h5>
+                        <ul>
+                            <li>Automatizar tareas web: <code>response = requests.get('https://example.com')</code></li>
+                            <li>Realizar pruebas de seguridad: <code>requests.post('https://example.com/login', data={'user':'admin', 'pass':'123'})</code></li>
+                        </ul>
+                        <a href="https://docs.python-requests.org/en/latest/" target="_blank">Documentación oficial de Requests</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Beautiful Soup -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingBeautifulSoup">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBeautifulSoup" aria-expanded="false" aria-controls="collapseBeautifulSoup">
+                        <i class="fas fa-code me-2"></i> Beautiful Soup
+                    </button>
+                </h2>
+                <div id="collapseBeautifulSoup" class="accordion-collapse collapse" aria-labelledby="headingBeautifulSoup" data-bs-parent="#pythonToolsAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Beautiful Soup</strong> permite analizar y manipular código HTML y XML para auditorías web.</p>
+                        <h5>Ejemplos prácticos:</h5>
+                        <ul>
+                            <li>Extraer todos los enlaces de una página web: <code>links = soup.find_all('a')</code></li>
+                            <li>Analizar el código HTML: <code>soup = BeautifulSoup(html_doc, 'html.parser')</code></li>
+                        </ul>
+                        <a href="https://beautiful-soup-4.readthedocs.io/en/latest/" target="_blank">Documentación oficial de Beautiful Soup</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Nmap -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingNmap">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNmap" aria-expanded="false" aria-controls="collapseNmap">
+                        <i class="fas fa-server me-2"></i> Nmap
+                    </button>
+                </h2>
+                <div id="collapseNmap" class="accordion-collapse collapse" aria-labelledby="headingNmap" data-bs-parent="#pythonToolsAccordion">
+                    <div class="accordion-body">
+                        <p><strong>Nmap</strong> es un escáner de red utilizado para identificar dispositivos y servicios en una red.</p>
+                        <h5>Ejemplos prácticos:</h5>
+                        <ul>
+                            <li>Escaneo de puertos: <code>nm.scan('192.168.1.1', '22-80')</code></li>
+                            <li>Encontrar vulnerabilidades: <code>nm.scan(hosts='192.168.1.0/24', arguments='-sV')</code></li>
+                        </ul>
+                        <a href="https://nmap.org/docs.html" target="_blank">Documentación oficial de Nmap</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Importar Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
