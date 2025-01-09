@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial de Criptografía</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        code{
+            color:blue;
+        }
+    </style>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center">Resumen de algunos comandos para Criptografía </h1>
+        <h6>OpenSSL y GPG</h6>
+        <h1>OpenSSL</h1>
+        <div class="accordion" id="accordionExample">
+
+            <!-- Cifrado y descifrado simétrico -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Cifrado y Descifrado Simétrico
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <h5>Cifrado:</h5>
+                        <code>openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -salt -in archivo.txt -out archivo.lock</code>
+                        <br>
+                        <h5>Descifrado:</h5>
+                        <code>openssl enc -d -aes-256-cbc -pbkdf2 -iter 100000 -salt -in archivo.lock -out archivo.txt</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generación y uso de claves asimétricas -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Generación y Uso de Claves Asimétricas
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <h5>Clave Privada:</h5>
+                        <code>openssl genpkey -algorithm RSA -out privada.pem -aes-256-cbc -pass pass:tu_contraseña</code>
+                        <br>
+                        <h5>Clave Pública:</h5>
+                        <code>openssl rsa -in privada.pem -pubout -out publica.pem</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen hash -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Resumen Hash
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <h5>MD5:</h5>
+                        <code>openssl dgst -md5 -out archivo.md5 archivo.txt</code>
+                        <br>
+                        <h5>SHA-512:</h5>
+                        <code>openssl dgst -sha512 -out archivo.sha archivo.txt</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Firma y verificación -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        Firma Digital y Verificación
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <h5>Firmar un archivo:</h5>
+                        <code>openssl dgst -sign privada.pem -out firma.sign archivo.txt</code>
+                        <br>
+                        <h5>Verificar firma:</h5>
+                        <code>openssl dgst -verify publica.pem -signature firma.sign archivo.txt</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certificado digital autofirmado -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        Certificado Digital Autofirmado
+                    </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <h5>Comando:</h5>
+                        <code>openssl req -x509 -newkey rsa:2048 -keyout privada.key -out certificado.crt -days 365 -nodes</code>
+                        <h5>Campos solicitados:</h5>
+                        <ul>
+                            <li>Country Name (2 letter code)</li>
+                            <li>State or Province Name</li>
+                            <li>Locality Name</li>
+                            <li>Organization Name</li>
+                            <li>Organizational Unit Name</li>
+                            <li>Common Name</li>
+                            <li>Email Address</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <h1>GPG</h1>
+<div class="accordion" id="accordionGPG">
+
+    <!-- Cifrado y descifrado simétrico -->
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingGPGOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGPGOne" aria-expanded="true" aria-controls="collapseGPGOne">
+                Cifrado y Descifrado Simétrico
+            </button>
+        </h2>
+        <div id="collapseGPGOne" class="accordion-collapse collapse show" aria-labelledby="headingGPGOne" data-bs-parent="#accordionGPG">
+            <div class="accordion-body">
+                <h5>Ver versión y algoritmos soportados:</h5>
+                <code>gpg --version</code>
+                <br>
+                <h5>Cifrado:</h5>
+                <code>gpg -c archivo.txt</code> (Genera <code>archivo.gpg</code>)
+                <br>
+                <h5>Cifrado en formato ASCII:</h5>
+                <code>gpg -c -a archivo.txt</code> (Genera <code>archivo.asc</code>)
+                <br>
+                <h5>Desencriptar:</h5>
+                <code>gpg -d archivo.asc</code>
+                <br>
+                <h5>Cifrado con algoritmo específico:</h5>
+                <code>gpg -c -a --cipher-algo AES192 archivo.txt</code>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generación y uso de claves asimétricas -->
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingGPGTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGPGTwo" aria-expanded="false" aria-controls="collapseGPGTwo">
+                Generación y Uso de Claves Asimétricas
+            </button>
+        </h2>
+        <div id="collapseGPGTwo" class="accordion-collapse collapse" aria-labelledby="headingGPGTwo" data-bs-parent="#accordionGPG">
+            <div class="accordion-body">
+                <h5>Generar par de claves:</h5>
+                <code>gpg --gen-key</code>
+                <br>
+                <h5>Listar claves públicas disponibles:</h5>
+                <code>gpg --list-keys</code>
+                <br>
+                <h5>Importar clave pública:</h5>
+                <code>gpg --import clave.asc</code>
+                <br>
+                <h5>Exportar clave pública en formato ASCII:</h5>
+                <code>gpg --armor --output miclave_publica.asc --export ClaveID</code>
+                <br>
+                <h5>Exportar clave privada como backup:</h5>
+                <code>gpg --armor --output claveprivada.asc --export-secret-key ClaveID</code>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cifrado y descifrado con clave pública -->
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingGPGThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGPGThree" aria-expanded="false" aria-controls="collapseGPGThree">
+                Cifrado y Descifrado con Clave Pública
+            </button>
+        </h2>
+        <div id="collapseGPGThree" class="accordion-collapse collapse" aria-labelledby="headingGPGThree" data-bs-parent="#accordionGPG">
+            <div class="accordion-body">
+                <h5>Cifrar con clave pública del destinatario:</h5>
+                <code>gpg -e -r "nombre_destinatario" archivo.txt</code> (Genera <code>archivo.txt.gpg</code>)
+                <br>
+                <h5>Desencriptar:</h5>
+                <code>gpg -d archivo.txt.gpg > archivo.txt</code>
+            </div>
+        </div>
+    </div>
+    <!-- Resumen Hash -->
+<div class="accordion-item">
+    <h2 class="accordion-header" id="headingGPGSix">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGPGSix" aria-expanded="false" aria-controls="collapseGPGSix">
+            Resumen Hash
+        </button>
+    </h2>
+    <div id="collapseGPGSix" class="accordion-collapse collapse" aria-labelledby="headingGPGSix" data-bs-parent="#accordionGPG">
+        <div class="accordion-body">
+            <p><strong>Nota:</strong> GPG no realiza generación de hashes como una funcionalidad separada, pero utiliza algoritmos hash internamente para firmas digitales.</p>
+            <h5>Generar Hash Manualmente (MD5, SHA-1, SHA-256):</h5>
+            <ul>
+                <li><strong>MD5:</strong> <code>echo -n "contraseña" | md5sum</code></li>
+                <li><strong>SHA-1:</strong> <code>echo -n "contraseña" | sha1sum</code></li>
+                <li><strong>SHA-256:</strong> <code>echo -n "contraseña" | sha256sum</code></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Firma digital y verificación -->
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingGPGFour">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGPGFour" aria-expanded="false" aria-controls="collapseGPGFour">
+                Firma Digital y Verificación
+            </button>
+        </h2>
+        <div id="collapseGPGFour" class="accordion-collapse collapse" aria-labelledby="headingGPGFour" data-bs-parent="#accordionGPG">
+            <div class="accordion-body">
+                <h5>Firmar un archivo:</h5>
+                <code>gpg --sign archivo.txt</code> (Genera <code>archivo.txt.gpg</code>)
+                <br>
+                <h5>Verificar una firma:</h5>
+                <code>gpg --verify archivo.txt.gpg</code>
+                <br>
+                <h5>Firmar y cifrar un archivo:</h5>
+                <code>gpg -s -e -r "nombre_destinatario" archivo.txt</code>
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificados -->
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingGPGFive">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGPGFive" aria-expanded="false" aria-controls="collapseGPGFive">
+                Certificados y Gestión de Claves
+            </button>
+        </h2>
+        <div id="collapseGPGFive" class="accordion-collapse collapse" aria-labelledby="headingGPGFive" data-bs-parent="#accordionGPG">
+            <div class="accordion-body">
+                <p>GPG no genera certificados X.509 autofirmados (como los usados en HTTPS), pero permite crear "certificados" OpenPGP que contienen las claves públicas.</p>
+                <h5>Generar un "certificado" de clave pública:</h5>
+                <code>gpg --armor --output certificado.asc --export ClaveID</code>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="container my-4">
+    <h2>Comparación: GPG vs OpenSSL</h2>
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Característica</th>
+                <th>GPG (GNU Privacy Guard)</th>
+                <th>OpenSSL</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Funcionalidad Principal</strong></td>
+                <td>Cifrado, descifrado, firma digital, manejo de claves públicas y privadas (OpenPGP).</td>
+                <td>Cifrado, descifrado, hash, firma digital, generación de <a href="https://es.wikipedia.org/wiki/X.509">certificados X.509.</a></td>
+            </tr>
+            <tr>
+                <td><strong>Cifrado Simétrico</strong></td>
+                <td>Soporta cifrado simétrico con algoritmos modernos como AES.</td>
+                <td>Ofrece una amplia variedad de algoritmos (AES, DES, ChaCha20, etc.).</td>
+            </tr>
+            <tr>
+                <td><strong>Cifrado Asimétrico</strong></td>
+                <td>Basado en OpenPGP, permite cifrar con claves públicas y descifrar con claves privadas.</td>
+                <td>Generación y uso de claves RSA, ECDSA, ED25519, etc.</td>
+            </tr>
+            <tr>
+                <td><strong>Hash</strong></td>
+                <td>No genera hashes directamente; utiliza hashes en firmas digitales (SHA-256, SHA-512, etc.).</td>
+                <td>Generación directa de hashes (MD5, SHA-1, SHA-256, SHA-512, etc.).</td>
+            </tr>
+            <tr>
+                <td><strong>Firma Digital</strong></td>
+                <td>Soporta firma de archivos y su verificación.</td>
+                <td>Permite firmar y verificar archivos, además de certificados digitales.</td>
+            </tr>
+            <tr>
+                <td><strong>Certificados X.509</strong></td>
+                <td>No soporta la generación de certificados X.509.</td>
+                <td>Permite generar certificados X.509, incluyendo autofirmados.</td>
+            </tr>
+            <tr>
+                <td><strong>Soporte de Protocolos</strong></td>
+                <td>OpenPGP (compatible con estándares de correo electrónico cifrado).</td>
+                <td>SSL/TLS, PKI, y otros estándares de comunicación segura.</td>
+            </tr>
+            <tr>
+                <td><strong>Comunidad y Uso</strong></td>
+                <td>Popular para uso personal y comunicaciones (correo, archivos).</td>
+                <td>Estándar en entornos empresariales y servidores web.</td>
+            </tr>
+            <tr>
+                <td><strong>Interfaz</strong></td>
+                <td>Línea de comandos y herramientas gráficas como Kleopatra.</td>
+                <td>Solo línea de comandos; algunas GUI externas disponibles.</td>
+            </tr>
+            <tr>
+                <td><strong>Ventajas</strong></td>
+                <td>
+                    <ul>
+                        <li>Fácil integración con herramientas como Thunderbird.</li>
+                        <li>Foco en privacidad individual.</li>
+                        <li>Código abierto y gratuito.</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>Muy versátil.</li>
+                        <li>Compatible con múltiples estándares y protocolos.</li>
+                        <li>Amplio soporte de algoritmos de cifrado.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Desventajas</strong></td>
+                <td>
+                    <ul>
+                        <li>No soporta certificados X.509.</li>
+                        <li>Menos eficiente en operaciones masivas.</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>Interfaz compleja para principiantes.</li>
+                        <li>Configuración avanzada puede ser complicada.</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
