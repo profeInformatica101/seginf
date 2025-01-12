@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificados SSL - Ejemplos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-shield-alt"></i> SSL Configuración</a>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-primary text-white text-center py-5">
+        <h1><i class="fas fa-lock"></i> Certificados SSL</h1>
+        <p class="lead">Guía paso a paso para implementar seguridad en tus aplicaciones locales</p>
+    </header>
+
+    <!-- Introduction Section -->
+    <section class="container my-5">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/SSL_handshake_with_two_way_authentication_with_certificates.svg" alt="SSL Illustration" class="img-fluid rounded">
+            </div>
+            <div class="col-md-6">
+                <h2>¿Qué es un certificado SSL y por qué es importante?</h2>
+                <p>
+                    Un <strong>certificado SSL (Secure Sockets Layer)</strong> es una herramienta esencial para garantizar la seguridad en las comunicaciones entre un usuario y un servidor web. 
+                    Proporciona una conexión encriptada, protegiendo los datos sensibles como contraseñas, información personal y transacciones financieras.
+                </p>
+                <p>
+                    Su uso es especialmente importante para evitar ataques como el robo de información o la suplantación de identidad. Además, los navegadores modernos marcan las páginas sin SSL como "no seguras", afectando la confianza de los usuarios.
+                </p>
+                <ul>
+                    <li><i class="fas fa-check-circle text-success"></i> Garantiza la confidencialidad de los datos.</li>
+                    <li><i class="fas fa-check-circle text-success"></i> Mejora la confianza de los usuarios en tu aplicación.</li>
+                    <li><i class="fas fa-check-circle text-success"></i> Es un requisito para obtener un buen posicionamiento en motores de búsqueda.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="accordion" id="sslAccordion">
+            <!-- PHP (XAMPP) Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingXAMPP">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseXAMPP" aria-expanded="true" aria-controls="collapseXAMPP">
+                        <i class="fab fa-php me-2"></i> Certificado SSL en PHP (XAMPP)
+                    </button>
+                </h2>
+                <div id="collapseXAMPP" class="accordion-collapse collapse show" aria-labelledby="headingXAMPP" data-bs-parent="#sslAccordion">
+                    <div class="accordion-body">
+                        <ol>
+                            <li><strong>Generar un certificado:</strong>
+                                <pre><code>openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out server.crt</code></pre>
+                            </li>
+                            <li>Coloca los archivos en:
+                                <pre><code>C:/xampp/apache/conf/ssl.crt/server.crt</code></pre>
+                                <pre><code>C:/xampp/apache/conf/ssl.key/server.key</code></pre>
+</li>
+                            <li>Edita <code>httpd-ssl.conf</code> para incluir:
+                                <pre><code>
+<VirtualHost _default_:443>
+    DocumentRoot "C:/xampp/htdocs"
+    ServerName localhost:443
+    SSLEngine on
+    SSLCertificateFile "C:/xampp/apache/conf/ssl.crt/server.crt"
+    SSLCertificateKeyFile "C:/xampp/apache/conf/ssl.key/server.key"
+</VirtualHost>
+                                </code></pre>
+                            </li>
+                            <li>Habilita el módulo SSL en <code>httpd.conf</code>:
+                                <pre><code>
+LoadModule ssl_module modules/mod_ssl.so
+Include conf/extra/httpd-ssl.conf
+                                </code></pre>
+                            </li>
+                            <li>Reinicia Apache desde el panel de control de XAMPP.</li>
+                            <li>Accede a <a href="https://localhost" target="_blank">https://localhost</a>.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spring Boot Section -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSpring">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpring" aria-expanded="false" aria-controls="collapseSpring">
+                        <i class="fab fa-java me-2"></i> Certificado SSL en Spring Boot
+                    </button>
+                </h2>
+                <div id="collapseSpring" class="accordion-collapse collapse" aria-labelledby="headingSpring" data-bs-parent="#sslAccordion">
+                    <div class="accordion-body">
+                        <ol>
+                            <li><strong>Generar un archivo keystore:</strong>
+                                <pre><code>keytool -genkey -alias springboot -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 365</code></pre>
+                            </li>
+                            <li>Coloca <code>keystore.p12</code> en <code>src/main/resources</code>.</li>
+                            <li>Edita <code>application.properties</code>:
+                                <pre><code>
+server.port=8443
+server.ssl.key-store=classpath:keystore.p12
+server.ssl.key-store-password=tu_contraseña
+server.ssl.key-store-type=PKCS12
+server.ssl.key-alias=springboot
+                                </code></pre>
+                            </li>
+                            <li>Inicia el proyecto y accede a:
+                                <a href="https://localhost:8443" target="_blank">https://localhost:8443</a>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        <p><i class="fas fa-copyright"></i> 2025 - Configuración SSL | Desarrollo Seguro</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
