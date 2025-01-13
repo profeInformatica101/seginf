@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SecureNet - Comunicación Segura</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- FontAwesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+ <!-- Bootstrap CSS -->
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+ <!-- FontAwesome -->
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,21 +25,6 @@
         .icon {
             color: #007bff;
             margin-right: 10px;
-        }
-        .steps {
-            margin-top: 30px;
-        }
-        .step-card {
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            background: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .step-card h3 {
-            display: flex;
-            align-items: center;
         }
         footer {
             background-color: #007bff;
@@ -71,34 +56,59 @@
         para proteger la información durante la transmisión. Tu tarea es garantizar una comunicación segura mediante los siguientes pasos:
     </p>
 
-    <div class="steps">
-        <div class="step-card">
-            <h3><i class="fas fa-key icon"></i> Paso 1: Descifrar la clave simétrica</h3>
-            <p>Usa la clave privada de SecureNet para descifrar la clave simétrica enviada por el cliente.</p>
-            <pre><code>openssl pkeyutl -decrypt -inkey clave_privada_securenet.pem -in clave_simetrica_cifrada.bin -out clave_simetrica.txt</code></pre>
+    <div class="accordion" id="stepsAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <i class="fas fa-key icon"></i> Paso 1: Usa la clave privada de SecureNet para descifrar la clave simétrica enviada por el cliente. (Descifrar la clave simétrica)
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#stepsAccordion">
+                <div class="accordion-body">
+                    <pre><code>openssl pkeyutl -decrypt -inkey clave_privada_securenet.pem -in clave_simetrica_cifrada.bin -out clave_simetrica.txt</code></pre>
+                </div>
+            </div>
         </div>
-
-        <div class="step-card">
-            <h3><i class="fas fa-lock-open icon"></i> Paso 2: Descifrar el mensaje</h3>
-            <p>Utiliza la clave simétrica descifrada para descifrar el mensaje.</p>
-            <pre><code>openssl enc -aes-256-cbc -d -pbkdf2 -in mensaje_cifrado.bin -out mensaje_descifrado.txt -k $(cat clave_simetrica.txt)</code></pre>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <i class="fas fa-lock-open icon"></i> Paso 2: Utiliza la clave simétrica descifrada para descifrar el mensaje. 
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#stepsAccordion">
+                <div class="accordion-body">
+                    <pre><code>openssl enc -aes-256-cbc -d -pbkdf2 -in mensaje_cifrado.bin -out mensaje_descifrado.txt -k $(cat clave_simetrica.txt)</code></pre>
+                </div>
+            </div>
         </div>
-
-        <div class="step-card">
-            <h3><i class="fas fa-signature icon"></i> Paso 3: Verificar la firma digital</h3>
-            <p>Verifica la firma digital del cliente para confirmar la autenticidad e integridad del mensaje.</p>
-            <pre><code>openssl pkeyutl -verifyrecover -inkey clave_publica_cliente.pem -pubin -in hash_firma.bin -out hash_verificado.txt
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <i class="fas fa-signature icon"></i> Paso 3: Verifica la firma digital del cliente para confirmar la autenticidad e integridad del mensaje.
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#stepsAccordion">
+                <div class="accordion-body">
+                    <pre><code>openssl pkeyutl -verifyrecover -inkey clave_publica_cliente.pem -pubin -in hash_firma.bin -out hash_verificado.txt
 
 # Compara el hash
 
 diff hash_verificado.txt hash_mensaje.bin</code></pre>
+                </div>
+            </div>
         </div>
-
-        <div class="step-card">
-            <h3><i class="fas fa-share-square icon"></i> Paso 4: Responder al cliente</h3>
-            <p>Genera una nueva clave secreta y envíala cifrada con la clave pública del cliente.</p>
-            <pre><code>openssl rand -base64 32 > nueva_clave_secreta.txt
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    <i class="fas fa-share-square icon"></i> Paso 4:  Genera una nueva clave secreta y envíala cifrada con la clave pública del cliente.
+                </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#stepsAccordion">
+                <div class="accordion-body">
+                    <pre><code>openssl rand -base64 32 > nueva_clave_secreta.txt
 openssl pkeyutl -encrypt -inkey clave_publica_cliente.pem -pubin -in nueva_clave_secreta.txt -out nueva_clave_secreta_cifrada.bin</code></pre>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -129,7 +139,7 @@ openssl pkeyutl -encrypt -inkey clave_publica_cliente.pem -pubin -in nueva_clave
 
     <div class="download">
         <h3><i class="fas fa-download"></i> Descarga los archivos para empezar</h3>
-        <a href="recursos/SecureNet_Alumno.zip" class="btn btn-primary"><i class="fas fa-file-archive"></i> Descargar SecureNet_Alumnos.zip</a>
+        <a href="SecureNet_Alumnos.zip" class="btn btn-primary"><i class="fas fa-file-archive"></i> Descargar SecureNet_Alumnos.zip</a>
     </div>
 </div>
 
@@ -137,5 +147,6 @@ openssl pkeyutl -encrypt -inkey clave_publica_cliente.pem -pubin -in nueva_clave
     <p><i class="fas fa-lock"></i> SecureNet - IES Camas SMR2 | Seguridad Informática 2025</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
