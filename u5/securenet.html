@@ -91,9 +91,16 @@
                 <div class="accordion-body">
                     <pre><code>openssl pkeyutl -verifyrecover -inkey clave_publica_cliente.pem -pubin -in hash_firma.bin -out hash_verificado.txt
 
-# Compara el hash
+# Compara el hash, si son iguales no sale DIFERENCIAS.
 
-diff hash_verificado.txt hash_mensaje.bin</code></pre>
+diff hash_verificado.txt hash_mensaje.bin
+
+# Muestra el contenido de un fichero en hexadecimal, decimal, octal o ascii.
+# hexdump --help
+
+hexdump -C hash_mensaje.bin
+hexdump -C hash_verificado.txt
+</code></pre>
                 </div>
             </div>
         </div>
