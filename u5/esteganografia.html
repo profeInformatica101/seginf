@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esteganografía - Seguridad Informática</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .hero {
+            background-color: #f8f9fa;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .example-section {
+            margin: 20px 0;
+        }
+        .output-box {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Esteganografía</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1 class="display-4">¿Qué es la Esteganografía?</h1>
+        <p class="lead">
+            La esteganografía es la técnica de ocultar información dentro de archivos multimedia como imágenes, videos o audios. 
+            A diferencia de la criptografía, el objetivo es ocultar la existencia misma del mensaje.
+        </p>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="container">
+        <div class="row">
+            <!-- Explicación -->
+            <div class="col-md-6">
+                <h2>¿Cómo funciona?</h2>
+                <p>
+                    La esteganografía modifica un archivo portador, como una imagen, para ocultar datos en su interior 
+                    sin alterar su apariencia o funcionalidad. Esto se combina frecuentemente con criptografía para aumentar la seguridad.
+                </p>
+                <h3>Aplicaciones:</h3>
+                <ul>
+                    <li>Protección de datos sensibles.</li>
+                    <li>Marcado digital para derechos de autor.</li>
+                    <li>Comunicaciones seguras y privadas.</li>
+                </ul>
+            </div>
+            <!-- Ejemplo Práctico -->
+            <div class="col-md-6 example-section">
+                <h2>Ejemplo Práctico en Linux: Enviar Información Confidencial</h2>
+                <p><strong>Contexto del Ejemplo:</strong></p>
+                <p>
+                    Imagina que necesitas enviar un archivo con credenciales a un compañero de trabajo sin que se note. En este caso, ocultaremos un archivo de texto dentro de una imagen usando steghide.
+                </p>
+                <h3>Paso 1: Preparar el Entorno</h3>
+                <p><strong>Instalar steghide:</strong> Si no lo tienes instalado, ejecuta:</p>
+                <pre><code>sudo apt update
+sudo apt install steghide</code></pre>
+                <p><strong>Crear los archivos necesarios:</strong></p>
+                <p>Archivo con la información confidencial:</p>
+                <pre><code>echo "Usuario: admin" > credenciales.txt
+echo "Contraseña: password123" >> credenciales.txt</code></pre>
+                <p>Archivo portador: Usa una imagen, por ejemplo, imagen.jpg.</p>
+
+                <h3>Paso 2: Ocultar el Archivo</h3>
+                <p>Utiliza steghide para incrustar el archivo <code>credenciales.txt</code> dentro de la imagen <code>imagen.jpg</code>:</p>
+                <pre><code>steghide embed -cf imagen.jpg -ef credenciales.txt</code></pre>
+                <p>
+                    Te pedirá establecer una contraseña para proteger el proceso de esteganografía. Introduce una contraseña segura.
+                </p>
+
+                <h3>Paso 3: Verificar el Archivo Oculto</h3>
+                <p>
+                    El archivo portador (imagen) no tendrá cambios visibles, pero el tamaño del archivo puede aumentar ligeramente. Puedes verificar los metadatos con:
+                </p>
+                <pre><code>file imagen.jpg</code></pre>
+
+                <h3>Paso 4: Extraer el Archivo</h3>
+                <p>
+                    Cuando el destinatario reciba el archivo portador, puede extraer el contenido oculto con el siguiente comando:
+                </p>
+                <pre><code>steghide extract -sf imagen.jpg</code></pre>
+                <p>
+                    Te pedirá la contraseña que definiste durante el proceso de ocultación. Una vez ingresada, el archivo <code>credenciales.txt</code> será extraído.
+                </p>
+
+                <h3>Resultado</h3>
+                <ul>
+                    <li><strong>Antes de ocultar:</strong> La imagen era simplemente un archivo visual.</li>
+                    <li><strong>Después de ocultar:</strong> La imagen contiene información confidencial que puede ser extraída con la contraseña correcta.</li>
+                </ul>
+
+                <h3>Ventajas del Ejemplo</h3>
+                <ul>
+                    <li><strong>Bajo perfil:</strong> La imagen parece inofensiva, lo que evita levantar sospechas.</li>
+                    <li><strong>Seguridad adicional:</strong> Incluso si alguien encuentra el archivo portador, necesitará la contraseña para extraer los datos.</li>
+                    <li><strong>Compatibilidad:</strong> Puedes usar este método con cualquier archivo multimedia.</li>
+                </ul>
+
+                <h3>Preguntas para Reflexionar</h3>
+                <ul>
+                    <li>¿Qué harías si alguien intercepta la imagen?</li>
+                    <li>¿Cómo mejorarías la seguridad combinando esteganografía con criptografía?</li>
+                    <li>¿Qué tipos de archivos podrían usarse como portadores para diferentes escenarios?</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Videos -->
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <h2 class="text-center">Parte 1</h2>
+                <div class="ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/6KVrsKG5CVg" title="YouTube video" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2 class="text-center">Parte 2: Estegranoalisis</h2>
+                <div class="ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/h5K-xNTmTcM" title="YouTube video" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
