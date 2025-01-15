@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de Certificado Digital y XAMPP</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .hero-section {
+            background: url('https://via.placeholder.com/1200x400') no-repeat center center/cover;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            padding: 60px 20px;
+            text-align: center;
+            background-color: silver;
+        }
+        .step-image {
+            max-width: 100%;
+            height: auto;
+        }
+
+    </style>
+</head>
+<body>
+    <header class="hero-section">
+        <h1>Configuración de Certificado Digital Autofirmado</h1>
+        <p>Aprende a crear y configurar un certificado digital con Apache en XAMPP.</p>
+    </header>
+
+    <main class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h2>Paso 1: Crear Claves y Certificado</h2>
+                <p>Genera una clave privada, un CSR y un certificado autofirmado válido por 10 años:</p>
+                <pre class="bg-light p-3 border rounded"><code>openssl genpkey -algorithm RSA -out server.priv -pkeyopt rsa_keygen_bits:2048
+openssl req -new -key server.priv -out server.csr -subj "/C=ES/ST=Sevilla/L=Camas/O=IES Camas/CN=www.examen.es"
+openssl x509 -req -days 3650 -in server.csr -signkey server.priv -out server.crt</code></pre>
+                <img src="recursos/img/generacion.png" alt="Generación de claves" class="step-image">
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <h2>Paso 2: Configurar XAMPP</h2>
+                <p>Copia los archivos generados a la carpeta <code>cert</code> de Apache:</p>
+                <pre class="bg-light p-3 border rounded"><code>C:\xampp\apache\cert\server.priv
+C:\xampp\apache\cert\server.crt</code></pre>
+                <img src="https://via.placeholder.com/500x300" alt="Configuración de XAMPP" class="step-image">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h2>Paso 3: Editar la Configuración</h2>
+                <p>Edita el archivo <code>httpd-ssl.conf</code> para habilitar HTTPS:</p>
+                <pre class="bg-light p-3 border rounded"><code>&lt;VirtualHost *:443&gt;
+    DocumentRoot "C:/xampp/htdocs"
+    ServerName www.examen.es
+
+    SSLEngine on
+    SSLCertificateFile "C:/xampp/apache/cert/server.crt"
+    SSLCertificateKeyFile "C:/xampp/apache/cert/server.priv"
+&lt;/VirtualHost&gt;</code></pre>
+                <img src="https://via.placeholder.com/500x300" alt="Archivo de configuración" class="step-image">
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <h2>Paso 4: Prueba la Configuración</h2>
+                <p>Accede a <code>https://www.examen.es</code> desde tu navegador:</p>
+                <ul class="list-group">
+                    <li class="list-group-item">Edita tu archivo <code>hosts</code> para añadir <code>127.0.0.1 www.examen.es</code>.</li>
+                    <li class="list-group-item">Reinicia Apache desde el Panel de Control de XAMPP.</li>
+                    <li class="list-group-item">Acepta la advertencia del certificado autofirmado en el navegador.</li>
+                </ul>
+                <img src="https://via.placeholder.com/500x300" alt="Prueba en navegador" class="step-image">
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-primary">Descargar Guía Completa</a>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
