@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de Certificado Digital y SSH</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .hero-section {
+            background: url('https://via.placeholder.com/1200x400') no-repeat center center/cover;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            padding: 60px 20px;
+            text-align: center;
+            background-color: tomato;
+        }
+        .step-image {
+            max-width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .step-image:hover {
+            transform: scale(1.5);
+            z-index: 1000;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero-section">
+        <h1><i class="fab fa-github"></i> Uso de SSH para Autenticación en GitHub</h1>
+        <p>Aprende qué es SSH y cómo usarlo para autenticar en GitHub mediante claves públicas y privadas.</p>
+    </header>
+
+    <main class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h2><i class="fas fa-lock"></i> Paso 1: ¿Qué es SSH?</h2>
+                <p><strong>SSH (Secure Shell)</strong> es un protocolo que permite la comunicación segura entre dos sistemas mediante cifrado. Es ampliamente utilizado para acceso remoto y transferencia segura de archivos.</p>
+                <p>En el contexto de GitHub, SSH se utiliza para autenticar las operaciones con repositorios sin necesidad de introducir credenciales en cada operación.</p>
+                <p><a href="https://docs.github.com/es/authentication/connecting-to-github-with-ssh/about-ssh"><i class="fas fa-book"></i> Leer más sobre SSH en GitHub (Guía oficial)</a></p>
+                <img src="recursos/img/ssh.png" alt="Introducción a SSH" class="step-image">
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <h2><i class="fas fa-key"></i> Paso 2: Generar Claves SSH</h2>
+                <p>Genera un par de claves SSH (privada y pública):</p>
+                <pre class="bg-light p-3 border rounded"><code>ssh-keygen -t rsa -b 4096 -C "tu_email@ejemplo.com"</code></pre>
+                <p>Este comando:</p>
+                <ul>
+                    <li>Genera un par de claves RSA de 4096 bits.</li>
+                    <li>Asocia la clave con tu correo electrónico como etiqueta.</li>
+                </ul>
+                <p>Cuando se te pregunte, guarda las claves en la ubicación predeterminada (<code>~/.ssh/id_rsa</code>).</p>
+                <p><a href="https://docs.github.com/es/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent"><i class="fas fa-book"></i> Guía oficial: Generar una nueva clave SSH</a></p>
+                <img src="recursos/img/clave_publica.png" alt="Generación de claves SSH" class="step-image">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h2><i class="fas fa-upload"></i> Paso 3: Agregar la Clave Pública a GitHub</h2>
+                <p>Sigue estos pasos para añadir tu clave pública a GitHub:</p>
+                <ol>
+                    <li>Abre el archivo de la clave pública generada con el siguiente comando:
+                        <pre class="bg-light p-3 border rounded"><code>cat ~/.ssh/id_rsa.pub</code></pre>
+                    </li>
+                    <li>Copia el contenido del archivo.</li>
+                    <li>Entra a tu cuenta de GitHub y ve a <strong>Settings &gt; SSH and GPG keys</strong>.</li>
+                    <li>Haz clic en <strong>New SSH Key</strong>, pega la clave pública copiada y guarda los cambios.</li>
+                </ol>
+                <p><a href="https://docs.github.com/es/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account"><i class="fas fa-book"></i> Guía oficial: Agregar una clave SSH nueva a GitHub</a></p>
+                <img src="recursos/img/configuracion.png" alt="Configuración en GitHub" class="step-image">
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <h2><i class="fas fa-check-circle"></i> Paso 4: Probar la Configuración</h2>
+                <p>Verifica que la configuración sea correcta ejecutando:</p>
+                <pre class="bg-light p-3 border rounded"><code>ssh -T git@github.com</code></pre>
+                <p>Si todo está bien, deberías ver un mensaje como:</p>
+                <pre class="bg-light p-3 border rounded"><code>Hi <usuario>! You've successfully authenticated, but GitHub does not provide shell access.</code></pre>
+                <p><a href="https://docs.github.com/es/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection"><i class="fas fa-book"></i> Guía oficial: Probar la conexión SSH</a></p>
+                <img src="recursos/img/pruebaConexion.png" alt="Prueba de configuración" class="step-image">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <h2><i class="fas fa-code-branch"></i> Paso 5: Crear y Subir un Repositorio a GitHub</h2>
+                <p>A continuación, se muestra un ejemplo práctico de cómo crear un repositorio, añadir un archivo básico y subirlo usando SSH:</p>
+                <ol>
+                    <li>Crea un nuevo repositorio en GitHub (sin un README ni archivos adicionales).</li>
+                    <li>Abre tu terminal y clona el repositorio vacío:
+                        <pre class="bg-light p-3 border rounded"><code>git clone git@github.com:tu_usuario/tu_repositorio.git</code></pre>
+                    </li>
+                    <li>Navega al directorio del repositorio:
+                        <pre class="bg-light p-3 border rounded"><code>cd tu_repositorio</code></pre>
+                    </li>
+                    <li>Crea un archivo básico y añádelo al repositorio:
+                        <pre class="bg-light p-3 border rounded"><code>echo "# Mi nuevo repositorio" > README.md
+git add README.md
+git commit -m "Añadir README inicial"</code></pre>
+                    </li>
+                    <li>Sube los cambios a GitHub:
+                        <pre class="bg-light p-3 border rounded"><code>git push origin main</code></pre>
+                    </li>
+                    <li>Si necesitas actualizar la URL remota del repositorio, usa:
+                        <pre class="bg-light p-3 border rounded"><code>git remote set-url origin git@github.com:tu_usuario/tu_repositorio.git</code></pre>
+                    </li>
+                </ol>
+                <p>Este flujo básico asegura que tu repositorio esté configurado correctamente y que puedas gestionarlo usando SSH.</p>
+            </div>
+        </div>
+
+        <h2 class="mt-5">Resumen de Pasos</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Paso</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Entender qué es SSH y su utilidad en GitHub.</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Generar un par de claves SSH.</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Agregar la clave pública a tu cuenta de GitHub.</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Probar la configuración para confirmar que la autenticación funciona.</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Crear y subir un repositorio a GitHub usando SSH.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="text-center mt-5">
+            <a href="https://github.com/profeInformatica101/git" class="btn btn-primary"><i class="fab fa-github"></i> Resumen GitHub</a>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
