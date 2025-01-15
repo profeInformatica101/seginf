@@ -23,6 +23,22 @@
             height: auto;
         }
 
+        code{
+            color:chocolate;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 30px;
+        }
+        .step-image {
+            max-width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .step-image:hover {
+            transform: scale(1.5);
+            z-index: 1000;
+            position: relative;
+        }
     </style>
 </head>
 <body>
@@ -32,6 +48,81 @@
     </header>
 
     <main class="container mt-5">
+
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <h2>1. <code>server.priv</code> (Clave Privada RSA)</h2>
+                <p><strong>¿Qué es?</strong></p>
+                <p>Es una clave criptográfica privada utilizada para firmar y cifrar datos. Forma parte del par de claves (privada y pública) en el modelo de criptografía asimétrica.</p>
+                <p><strong>¿Para qué sirve?</strong></p>
+                <ul>
+                    <li>Es el elemento confidencial y nunca debe compartirse.</li>
+                    <li>Se utiliza para firmar digitalmente certificados y mensajes, garantizando su autenticidad.</li>
+                    <li>Desencripta datos cifrados con su clave pública correspondiente.</li>
+                    <li>En este caso, se usa para firmar el certificado autofirmado.</li>
+                </ul>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <h2>2. <code>server.csr</code> (Solicitud de Firma de Certificado)</h2>
+                <p><strong>¿Qué es?</strong></p>
+                <p>Es un archivo que contiene la información del solicitante del certificado (nombre de dominio, organización, etc.) y su clave pública.</p>
+                <p><strong>¿Para qué sirve?</strong></p>
+                <ul>
+                    <li>Solicita a una Autoridad de Certificación (CA) la emisión de un certificado firmado que asocie una identidad (dominio) con la clave pública incluida en el CSR.</li>
+                    <li>En este caso, aunque no se utiliza una CA externa, el CSR se emplea para generar un certificado autofirmado.</li>
+                </ul>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <h2>3. <code>server.crt</code> (Certificado Autofirmado)</h2>
+                <p><strong>¿Qué es?</strong></p>
+                <p>Es un archivo que contiene la clave pública y la información de identidad del solicitante, firmado con la clave privada del solicitante. En un entorno real, sería firmado por una CA para ser reconocido como confiable por navegadores o sistemas.</p>
+                <p><strong>¿Para qué sirve?</strong></p>
+                <ul>
+                    <li>Autentica una identidad (por ejemplo, un dominio web como <code>www.examen.es</code>).</li>
+                    <li>Permite establecer comunicaciones seguras mediante SSL/TLS al cifrar las conexiones.</li>
+                    <li>En este caso, como es autofirmado, no será reconocido como confiable por navegadores sin intervención manual (p. ej., añadirlo como excepción en el navegador).</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 class="mt-5">Resumen de Roles</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Archivo</th>
+                    <th>Rol Principal</th>
+                    <th>Confidencialidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>server.priv</code></td>
+                    <td>Clave privada usada para firmar datos y descifrar información.</td>
+                    <td><strong>Debe mantenerse secreta.</strong></td>
+                </tr>
+                <tr>
+                    <td><code>server.csr</code></td>
+                    <td>Solicitud que contiene los datos de identidad y la clave pública.</td>
+                    <td>Puede compartirse.</td>
+                </tr>
+                <tr>
+                    <td><code>server.crt</code></td>
+                    <td>Certificado que autentica la identidad del servidor y contiene la clave pública.</td>
+                    <td>Puede compartirse.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="mt-5">Flujo de Uso</h2>
+        <ol>
+            <li>Generas la clave privada (<code>server.priv</code>): Es el punto de partida.</li>
+            <li>Creas el CSR (<code>server.csr</code>): Incluye tu clave pública y los datos de identidad para solicitar un certificado.</li>
+            <li>Generas el certificado (<code>server.crt</code>): Este combina tu clave pública con tu identidad, firmado con la clave privada.</li>
+        </ol>
+        <p>Este flujo asegura la autenticidad, la privacidad y la capacidad de cifrar comunicaciones.</p>
+
         <div class="row">
             <div class="col-md-6 mb-4">
                 <h2>Paso 1: Crear Claves y Certificado</h2>
@@ -78,9 +169,6 @@ C:\xampp\apache\cert\server.crt</code></pre>
             </div>
         </div>
 
-        <div class="text-center mt-5">
-            <a href="#" class="btn btn-primary">Descargar Guía Completa</a>
-        </div>
     </main>
 
     <!-- Bootstrap JS -->
