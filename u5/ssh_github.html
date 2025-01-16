@@ -55,10 +55,15 @@
                 <pre class="bg-light p-3 border rounded"><code>ssh-keygen -t rsa -b 4096 -C "tu_email@ejemplo.com"</code></pre>
                 <p>Este comando:</p>
                 <ul>
-                    <li>Genera un par de claves RSA de 4096 bits.</li>
+                    <li>Genera un par de claves RSA de 4096 bits.
+                        <ul>
+                            <li>Clave privada: <code>~/.ssh/id_rsa</code></li>
+                            <li>Clave pública: <code>~/.ssh/id_rsa.pub</code></li>
+                        </ul>
+
+                    </li>
                     <li>Asocia la clave con tu correo electrónico como etiqueta.</li>
                 </ul>
-                <p>Cuando se te pregunte, guarda las claves en la ubicación predeterminada (<code>~/.ssh/id_rsa</code>).</p>
                 <p><a href="https://docs.github.com/es/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent"><i class="fas fa-book"></i> Guía oficial: Generar una nueva clave SSH</a></p>
                 <img src="recursos/img/clave_publica.png" alt="Generación de claves SSH" class="step-image">
             </div>
