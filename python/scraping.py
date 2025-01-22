@@ -1,8 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 
+ciudad = "camas"
+
 # URL de la página
-url = "https://www.paginasamarillas.es/search/informatica/all-ma/all-pr/all-is/sevilla/all-ba/all-pu/all-nc/1"
+url = "https://www.paginasamarillas.es/search/informatica/all-ma/all-pr/all-is/"+ciudad+"/all-ba/all-pu/all-nc/1"
 
 
 # Encabezados para simular un navegador real
@@ -10,7 +12,7 @@ headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "en-US,en;q=0.5",
-    "Referer": "https://www.google.com/",
+    "Referer": "https://www.google.com/", # de dode viene supuestamente la petición 
     "Connection": "keep-alive"
 }
 response = requests.get(url, headers=headers)
@@ -24,7 +26,7 @@ if response.status_code == 200:
 
     # Buscar los elementos de los negocios
     businesses = soup.find_all("div", class_="listado-item")
-    
+    total = 0
     for business in businesses:
         # Extraer nombre de la empresa
         name_tag = business.find("h2")
@@ -37,7 +39,7 @@ if response.status_code == 200:
         # Extraer teléfono
         phone_tag = business.find("span", itemprop="telephone")
         phone = phone_tag.text.strip() if phone_tag else "No disponible"
-        
-        print(f"Nombre: {name}\nDirección: {address}\nTeléfono: {phone}\n{'-'*40}")
+        total +=1
+        print(f"{total} .- Nombre: {name}\nDirección: {address}\nTeléfono: {phone}\n{'-'*40}")
 else:
     print("Error al acceder a la página")
