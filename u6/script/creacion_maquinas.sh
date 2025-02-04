@@ -17,7 +17,7 @@ MACHINES=(
     "Endian_UTM Linux26_64 $RAM_FIREWALL 10000 $ISO_DIR/Endian-Community-Edition.iso"
     "PCINTERNET Debian_64 $RAM_PCINTERNET 10000 $ISO_DIR/debian-12.9.0-amd64-netinst.iso"
     "Public_Web Debian_64 $RAM_SERVER 20000 $ISO_DIR/debian-12.9.0-amd64-netinst.iso"
-    "PC1_LAN Ubuntu_64 $RAM_CLIENT 15000 $ISO_DIR/linux-lite-6.4-64bit.iso"
+    "PC1_LAN Ubuntu_64 $RAM_CLIENT 18000 $ISO_DIR/linux-lite-6.4-64bit.iso"
 )
 
 # 📌 Función para imprimir mensajes en color
