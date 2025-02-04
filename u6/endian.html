@@ -11,20 +11,25 @@
         .table { margin-top: 20px; }
         .alert-info { background-color: #e7f3fe; border-left: 5px solid #2196F3; padding: 10px; margin-top: 10px; }
         .alert-warning { background-color: #fff3cd; border-left: 5px solid #ff9800; padding: 10px; margin-top: 10px; }
-    </style>
+   code{
+    color:brown;
+   }
+   </style>
 </head>
 <body>
 
 <div class="container mt-4">
     <h2 class="text-center">📌 Configuración de Endian UTM y Máquinas Virtuales</h2>
 
-    <!-- Introducción -->
+    <!-- Sección informativa inicial -->
     <div class="alert alert-info">
-        <p>Esta guía detalla la configuración de Endian UTM y máquinas virtuales utilizando VirtualBox. Se incluyen pasos de instalación, configuración de red y pruebas de seguridad.</p>
-        <p><a href="script/creacion_maquinas.sh" class="btn btn-primary">📥 Descargar Script de Creación de Máquinas Virtuales</a></p>
+        <p>Esta guía detalla la configuración de Endian UTM y máquinas virtuales. Se incluye un script para automatizar la creación de las máquinas en VirtualBox, pasos de configuración de red y pruebas de seguridad.</p>
+        <p>
+            <a href="script/creacion_maquinas.sh" class="btn btn-primary">📥 Descargar Script de Creación de Máquinas Virtuales</a>
+        </p>
     </div>
 
-    <!-- Tabla Resumen -->
+    <!-- Tabla resumen de configuración -->
     <div class="card">
         <div class="card-header">
             <h5>📊 Tabla Resumen de Configuración</h5>
@@ -37,65 +42,111 @@
                         <th>IP</th>
                         <th>Gateway</th>
                         <th>Función</th>
+                        <th>Usuario</th>
+                        <th>Contraseña</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td><strong>Endian UTM</strong></td><td>192.168.1.1 / 192.168.2.1 / DHCP</td><td>-</td><td>Firewall</td></tr>
-                    <tr><td><strong>PC1_LAN</strong></td><td>192.168.1.100</td><td>192.168.1.1</td><td>Cliente LAN</td></tr>
-                    <tr><td><strong>Public_Web</strong></td><td>192.168.2.100</td><td>192.168.2.1</td><td>Servidor Web DMZ</td></tr>
-                    <tr><td><strong>PCINTERNET</strong></td><td>DHCP</td><td>-</td><td>Equipo externo</td></tr>
+                    <tr>
+                        <td><strong>Endian UTM</strong></td>
+                        <td>192.168.1.1 / 192.168.2.1 / DHCP</td>
+                        <td>-</td>
+                        <td>Firewall</td>
+                        <td>admin</td>
+                        <td>endian</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PC1_LAN</strong></td>
+                        <td>192.168.1.100</td>
+                        <td>192.168.1.1</td>
+                        <td>Cliente LAN</td>
+                        <td>usuario</td>
+                        <td>S3gur@2024?</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Public_Web</strong></td>
+                        <td>192.168.2.100</td>
+                        <td>192.168.2.1</td>
+                        <td>Servidor Web DMZ</td>
+                        <td>usuario</td>
+                        <td>S3gur@2024?</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PCINTERNET</strong></td>
+                        <td>DHCP</td>
+                        <td>-</td>
+                        <td>Equipo externo</td>
+                        <td>usuario</td>
+                        <td>S3gur@2024?</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Paso 1: Creación de Máquinas Virtuales -->
+    <!-- Paso 1: Ejecutar script de creación de Máquinas Virtuales -->
     <div class="card step-card">
         <div class="card-header" data-bs-toggle="collapse" href="#step1">
-            <h5>1️⃣ Creación de Máquinas Virtuales con VirtualBox</h5>
+            <h5>1️⃣ Ejecutar el Script para Crear las Máquinas en VirtualBox</h5>
         </div>
         <div id="step1" class="collapse show">
             <div class="card-body">
-                <h6>📌 Configuración de Cliente_LAN (Linux Lite con Entorno Gráfico)</h6>
+                <p>
+                    Para evitar configurar cada parámetro manualmente, use el script:
+                    <code>creacion_maquinas.sh</code>. Este script creará:
+                </p>
+                <ul>
+                    <li>Endian_UTM (Firewall)</li>
+                    <li>PCINTERNET (Red WAN)</li>
+                    <li>Public_Web (DMZ)</li>
+                    <li>PC1_LAN (LAN)</li>
+                </ul>
+                <p>
+                    Asegúrese de que el archivo ISO correspondiente a cada sistema operativo se encuentra en <code>$HOME/ISOs</code> (o en la ruta que especifique el script) y, luego, ejecute:
+                </p>
                 <pre>
-# Configuración de red en Cliente_LAN (Linux Lite)
-auto enp0s3
-iface enp0s3 inet static
-    address 192.168.1.100
-    netmask 255.255.255.0
-    gateway 192.168.1.1
-    dns-nameservers 8.8.8.8 1.1.1.1
+chmod +x creacion_maquinas.sh
+./creacion_maquinas.sh
                 </pre>
+                <p>
+                    Tras la ejecución, las máquinas virtuales quedarán preparadas con las interfaces de red y discos duros. Continúe con los siguientes pasos para instalar y configurar cada sistema operativo.
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- Paso 2: Instalación de Sistemas Operativos -->
+    <!-- Paso 2: Configurar Endian UTM -->
     <div class="card step-card">
         <div class="card-header" data-bs-toggle="collapse" href="#step2">
-            <h5>2️⃣ Instalación de Sistemas Operativos</h5>
+            <h5>2️⃣ Configurar Endian UTM</h5>
         </div>
         <div id="step2" class="collapse">
             <div class="card-body">
-                <h6>💻 Instalación de Cliente_LAN</h6>
+                <p>Inicie la máquina <strong>Endian_UTM</strong> e instale el sistema. Una vez finalizado, configure sus interfaces de red:</p>
+                <ul>
+                    <li><strong>GREEN (LAN)</strong>: 192.168.1.1/24</li>
+                    <li><strong>ORANGE (DMZ)</strong>: 192.168.2.1/24</li>
+                    <li><strong>RED (WAN)</strong>: DHCP</li>
+                </ul>
+                <p>Reinicie y acceda desde <strong>Cliente_LAN</strong> mediante:</p>
                 <pre>
-1. Iniciar la máquina Cliente_LAN e instalar Linux Lite.
-2. Configurar la red según la configuración establecida.
-3. Probar conectividad con Endian UTM y acceso a Internet.
+👉 https://192.168.1.1:10443/
+Usuario: admin
+Contraseña predeterminada: endian
                 </pre>
-                
-                <h6>💻 Configuración de Endian UTM</h6>
-                <pre>
-1. Iniciar la máquina Endian_UTM e instalar el sistema.
-2. Configurar interfaces de red:
-   - GREEN (LAN): 192.168.1.1/24
-   - ORANGE (DMZ): 192.168.2.1/24
-   - RED (WAN): DHCP
-3. Reiniciar y acceder desde Cliente_LAN:
-   👉 https://192.168.1.1:10443/
-                </pre>
-                
-                <h6>🌐 Configuración de Servidor DMZ con una Web Sencilla</h6>
+                <p>Es recomendable cambiar las credenciales predeterminadas apenas ingrese al panel de Endian.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paso 3: Configurar Public_Web (Servidor DMZ) -->
+    <div class="card step-card">
+        <div class="card-header" data-bs-toggle="collapse" href="#step3">
+            <h5>3️⃣ Configurar Public_Web (Servidor DMZ)</h5>
+        </div>
+        <div id="step3" class="collapse">
+            <div class="card-body">
+                <p>En la máquina <strong>Public_Web</strong> (servidor DMZ), instale el sistema operativo Debian o similar y configure la interfaz de red:</p>
                 <pre>
 # Configuración de red en Servidor DMZ
 auto enp0s3
@@ -104,9 +155,12 @@ iface enp0s3 inet static
     netmask 255.255.255.0
     gateway 192.168.2.1
     dns-nameservers 8.8.8.8 1.1.1.1
-
-# Instalación de Apache en Debian
+                </pre>
+                <p>Instale Apache y cree una página web simple en HTML para verificar que el servidor esté activo:</p>
+                <pre>
+# Instalar Apache
 sudo apt update && sudo apt install apache2 -y
+
 
 # Creación de una página web simple
 <code>echo "&lt;h1&gt;Servidor DMZ funcionando&lt;/h1&gt;" | sudo tee /var/www/html/index.html</code>
@@ -118,23 +172,77 @@ sudo systemctl restart apache2
         </div>
     </div>
 
-    <!-- Navegación de pestañas -->
-    <ul class="nav nav-tabs mt-4" id="myTab" role="tablist">
+    <!-- Paso 4: Configurar PC1_LAN -->
+    <div class="card step-card">
+        <div class="card-header" data-bs-toggle="collapse" href="#step4">
+            <h5>4️⃣ Configurar PC1_LAN</h5>
+        </div>
+        <div id="step4" class="collapse">
+            <div class="card-body">
+                <p>En la máquina <strong>PC1_LAN</strong> (Linux Lite), instale el sistema operativo e indique la configuración de red dentro del sistema:</p>
+                <pre>
+# Configuración de red en Cliente_LAN (Linux Lite)
+auto enp0s3
+iface enp0s3 inet static
+    address 192.168.1.100
+    netmask 255.255.255.0
+    gateway 192.168.1.1
+    dns-nameservers 8.8.8.8 1.1.1.1
+                </pre>
+                <p>Una vez en el sistema, verifique conectividad con Endian UTM y con Internet (si Red está configurada correctamente) realizando pings:</p>
+                <pre>
+ping 192.168.1.1
+ping 8.8.8.8
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paso 5: Configurar PCINTERNET y realizar pruebas desde WAN -->
+    <div class="card step-card">
+        <div class="card-header" data-bs-toggle="collapse" href="#step5">
+            <h5>5️⃣ Configurar PCINTERNET y Pruebas desde WAN</h5>
+        </div>
+        <div id="step5" class="collapse">
+            <div class="card-body">
+                <p>
+                    Para <strong>PCINTERNET</strong> (equipo externo con interfaz WAN), se utiliza <strong>DHCP</strong> para obtener la IP.
+                    Tras instalar un sistema operativo base (como Debian), verifique que la interfaz reciba correctamente la configuración por DHCP.
+                </p>
+                <h6>Pruebas de validación WAN:</h6>
+                <ul>
+                    <li><strong>Ping</strong> hacia la IP pública/RED de Endian para comprobar conectividad.</li>
+                    <li>Si se configuran reglas de <strong>NAT/Port Forward</strong> en Endian, verificar acceso a la DMZ (192.168.2.100) desde PCINTERNET.</li>
+                    <li>Probar acceso a la página web de <strong>Public_Web</strong> ingresando la IP pública o dominio configurado.</li>
+                    <li>Asegurarse de que la LAN (192.168.1.x) sea inaccesible desde la WAN, salvo las reglas explícitamente permitidas.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+     <!-- Navegación de pestañas (Resumen y Comandos) -->
+     <ul class="nav nav-tabs mt-4" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="resumen-tab" data-bs-toggle="tab" data-bs-target="#resumen" type="button" role="tab" aria-controls="resumen" aria-selected="true">📋 Resumen Rápido</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="comandos-tab" data-bs-toggle="tab" data-bs-target="#comandos_utiles" type="button" role="tab" aria-controls="comandos_utiles" aria-selected="false">🔧 Comandos Útiles</button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="otros-tab" data-bs-toggle="tab" data-bs-target="#otros_comandos" type="button" role="tab" aria-controls="otros_comandos" aria-selected="false">📝 Otros Comandos</button>
+        </li>
     </ul>
 
-    <!-- Contenido de las pestañas -->
     <div class="tab-content" id="myTabContent">
         <!-- Resumen Rápido -->
         <div id="resumen" class="container tab-pane fade show active" role="tabpanel" aria-labelledby="resumen-tab">
             <h4 class="mt-3">📋 Resumen Rápido</h4>
             <pre id="resumenConfig">
-# Configurar IP temporal
+# Ejecutar script de creación de máquinas
+chmod +x creacion_maquinas.sh
+./creacion_maquinas.sh
+
+# Configurar IP temporal (ej. en PC1_LAN)
 sudo ip addr add 192.168.1.100/24 dev enp0s3
 
 # Configurar Gateway
@@ -143,7 +251,7 @@ sudo ip route add default via 192.168.1.1
 # Configurar DNS
 echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 
-# Hacer cambios permanentes (Editar archivo de red)
+# Hacer cambios permanentes (ej. en /etc/network/interfaces)
 sudo nano /etc/network/interfaces
 
 # Reiniciar la red
@@ -171,6 +279,62 @@ sudo ip route add default via 192.168.1.1
 ping 8.8.8.8
 ping 192.168.1.1
             </pre>
+        </div>
+
+        <!-- Otros Comandos -->
+        <div id="otros_comandos" class="container tab-pane fade" role="tabpanel" aria-labelledby="otros-tab">
+            <h4 class="mt-3">📝 Otros Comandos</h4>
+
+            <h5>1. Información sobre la configuración de red</h5>
+            <ul>
+                <li><code>ip a</code> → Muestra las direcciones IP y las interfaces de red.</li>
+                <li><code>ip r</code> → Muestra la tabla de rutas.</li>
+                <li><code>ifconfig</code> (obsoleto, usar ip) → Muestra información sobre interfaces de red.</li>
+                <li><code>hostname -I</code> → Muestra la dirección IP asignada a la máquina.</li>
+                <li><code>nmcli dev show</code> → Información detallada sobre las interfaces de red.</li>
+                <li><code>iwconfig</code> → Muestra información de red inalámbrica (Wi-Fi).</li>
+                <li><code>ethtool eth0</code> → Información detallada sobre la interfaz de red eth0.</li>
+            </ul>
+
+            <h5>2. Diagnóstico y prueba de conectividad</h5>
+            <ul>
+                <li><code>ping &lt;IP/Dominio&gt;</code> → Comprueba la conectividad con otro dispositivo.</li>
+                <li><code>traceroute &lt;IP/Dominio&gt;</code> → Muestra la ruta que sigue un paquete hasta el destino.</li>
+                <li><code>tracepath &lt;IP/Dominio&gt;</code> → Alternativa a traceroute, pero sin privilegios root.</li>
+                <li><code>mtr &lt;IP/Dominio&gt;</code> → Diagnóstico de red en tiempo real (traceroute + ping).</li>
+                <li><code>nc -zv &lt;IP&gt; &lt;Puerto&gt;</code> → Comprueba si un puerto está abierto en un host.</li>
+                <li><code>telnet &lt;IP&gt; &lt;Puerto&gt;</code> → Prueba manual de conexión a un puerto específico.</li>
+                <li><code>curl -I &lt;URL&gt;</code> → Obtiene los encabezados HTTP de un servidor web.</li>
+                <li><code>wget --spider &lt;URL&gt;</code> → Verifica si una página web está disponible.</li>
+            </ul>
+
+            <h5>3. Gestión de conexiones y puertos</h5>
+            <ul>
+                <li><code>netstat -tulnp</code> → Muestra los puertos abiertos y las conexiones activas.</li>
+                <li><code>ss -tulnp</code> → Alternativa moderna a netstat, más rápida y detallada.</li>
+                <li><code>lsof -i</code> → Lista procesos que están usando puertos de red.</li>
+                <li><code>nmap -p 1-65535 &lt;IP&gt;</code> → Escanea los puertos abiertos de un host.</li>
+                <li><code>whois &lt;dominio&gt;</code> → Información sobre un dominio.</li>
+                <li><code>dig &lt;dominio&gt;</code> → Consulta registros DNS de un dominio.</li>
+                <li><code>nslookup &lt;dominio&gt;</code> → Alternativa a dig para obtener información DNS.</li>
+            </ul>
+
+            <h5>4. Configuración de red y servicios</h5>
+            <ul>
+                <li><code>systemctl restart networking</code> → Reinicia la red en distros basadas en Systemd.</li>
+                <li><code>service networking restart</code> → Reinicia la red en distros antiguas.</li>
+                <li><code>nmcli con show</code> → Lista conexiones de red activas.</li>
+                <li><code>nmcli con up &lt;nombre&gt;</code> → Activa una conexión de red.</li>
+                <li><code>nmcli con down &lt;nombre&gt;</code> → Desactiva una conexión de red.</li>
+                <li><code>ifdown eth0 &amp;&amp; ifup eth0</code> → Reinicia la interfaz de red eth0.
+            </ul>
+
+            <h5>5. Captura de paquetes y análisis</h5>
+            <ul>
+                <li><code>tcpdump -i eth0</code> → Captura paquetes en la interfaz eth0.</li>
+                <li><code>tcpdump -nn -i eth0 port 80</code> → Captura tráfico HTTP en eth0.</li>
+                <li><code>tshark</code> → Interfaz de línea de comandos de Wireshark para análisis de paquetes.</li>
+            </ul>
         </div>
     </div>
 </div>
