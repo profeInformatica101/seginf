@@ -32,11 +32,40 @@ print_color() {
     esac
 }
 
+# Función para descargar ISOs con manejo de errores
+descargar_iso() {
+    local url=$1
+    local output=$2
+    echo "🔽 Descargando $output..."
+    if ! wget -O "$output" "$url"; then
+        print_color "red" "❌ Error: No se pudo descargar $output desde $url."
+        exit 1
+    fi
+}
+
 # 📌 Verificar si VBoxManage está instalado
 if ! command -v VBoxManage &> /dev/null; then
     print_color "red" "❌ Error: VBoxManage no está instalado. Instala VirtualBox primero."
     exit 1
 fi
+
+# Crear carpetas necesarias
+mkdir -p "$VM_DIR"
+mkdir -p "$ISO_DIR"
+
+# Descargar ISOs si no existen
+if [ ! -f "$ISO_DIR/Endian-Community-Edition.iso" ]; then
+    descargar_iso "https://sourceforge.net/projects/efw/files/latest/download" "$ISO_DIR/Endian-Community-Edition.iso"
+fi
+
+if [ ! -f "$ISO_DIR/debian-12.9.0-amd64-netinst.iso" ]; then
+    descargar_iso "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.9.0-amd64-netinst.iso" "$ISO_DIR/debian-12.9.0-amd64-netinst.iso"
+fi
+
+if [ ! -f "$ISO_DIR/linux-lite-6.4-64bit.iso" ]; then
+    descargar_iso "https://fosszone.csd.auth.gr/linuxlite/isos/7.2/linux-lite-7.2-64bit.iso" "$ISO_DIR/linux-lite-6.4-64bit.iso"
+fi
+
 
 # 📌 Función para eliminar discos huérfanos
 eliminar_disco() {
@@ -105,22 +134,7 @@ if ! command -v VBoxManage &> /dev/null; then
     exit 1
 fi
 
-# Crear carpetas necesarias
-mkdir -p "$VM_DIR"
-mkdir -p "$ISO_DIR"
 
-# Descargar ISOs si no existen
-if [ ! -f "$ISO_DIR/Endian-Community-Edition.iso" ]; then
-    descargar_iso "https://sourceforge.net/projects/efw/files/latest/download" "$ISO_DIR/Endian-Community-Edition.iso"
-fi
-
-if [ ! -f "$ISO_DIR/debian-12.9.0-amd64-netinst.iso" ]; then
-    descargar_iso "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.9.0-amd64-netinst.iso" "$ISO_DIR/debian-12.9.0-amd64-netinst.iso"
-fi
-
-if [ ! -f "$ISO_DIR/linux-lite-6.4-64bit.iso" ]; then
-    descargar_iso "https://fosszone.csd.auth.gr/linuxlite/isos/7.2/linux-lite-7.2-64bit.iso" "$ISO_DIR/linux-lite-6.4-64bit.iso"
-fi
 
 # Configurar adaptadores de red
 configurar_adaptadores_red
