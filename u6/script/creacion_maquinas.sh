@@ -127,17 +127,38 @@ crear_vm() {
     print_color "green" "✅ Máquina virtual '$NAME' creada correctamente."
 }
 
+# 📌 Configurar la red de cada máquina virtual
+configurar_redes() {
+    VBoxManage modifyvm "Endian_UTM" --nic1 nat \
+                                     --nic2 hostonly --hostonlyadapter2 vboxnet0 \
+                                     --nic3 hostonly --hostonlyadapter3 vboxnet1 \
+                                     --nic4 hostonly --hostonlyadapter4 vboxnet2
+
+    VBoxManage modifyvm "PCINTERNET" --nic1 hostonly --hostonlyadapter1 vboxnet2
+    VBoxManage modifyvm "Public_Web" --nic1 hostonly --hostonlyadapter1 vboxnet1
+    VBoxManage modifyvm "PC1_LAN" --nic1 hostonly --hostonlyadapter1 vboxnet0
+
+
+# 📌 Mensaje final
+    echo -e "\033[32m✅ Configuración de máquinas y redes completada.\033[0m"
+}
+
 # 📌 Crear todas las máquinas virtuales
 for MACHINE in "${MACHINES[@]}"; do
     IFS=' ' read -r NAME OS_TYPE RAM DISK_SIZE ISO <<< "$MACHINE"
     crear_vm "$NAME" "$OS_TYPE" "$RAM" "$DISK_SIZE" "$ISO"
 done
 
-# 📌 Configurar red para cada máquina
-VBoxManage modifyvm "Endian_UTM" --nic1 nat --nic2 hostonly --hostonlyadapter2 vboxnet0 --nic3 hostonly --hostonlyadapter3 vboxnet1 --nic4 hostonly --hostonlyadapter4 vboxnet2
-VBoxManage modifyvm "PCINTERNET" --nic1 hostonly --hostonlyadapter1 vboxnet2
-VBoxManage modifyvm "Public_Web" --nic1 hostonly --hostonlyadapter1 vboxnet1
-VBoxManage modifyvm "PC1_LAN" --nic1 hostonly --hostonlyadapter1 vboxnet0
+# 📌 Verificar y crear interfaces de red host-only si no existen
+for i in 0 1 2; do
+    if ! VBoxManage list hostonlyifs | grep -q "vboxnet$i"; then
+        print_color "yellow" "⚠️ Creando interfaz vboxnet$i..."
+        VBoxManage hostonlyif create
+        VBoxManage hostonlyif ipconfig vboxnet$i --ip 192.168.$((56 + i)).1 --netmask 255.255.255.0
+    fi
+done
+
+
 
 # 📌 Mensaje final
 print_color "green" "✅ Todas las máquinas virtuales han sido creadas correctamente en VirtualBox."
