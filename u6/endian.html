@@ -65,9 +65,13 @@
                 <tbody>
                     <tr>
                         <td><strong>Endian UTM</strong></td>
-                        <td>192.168.1.1 <br> 192.168.2.1<br>  DHCP</td>
+                        <td>
+                            192.168.1.1 (LAN - Green) <br> 
+                            192.168.2.1 (DMZ - Orange) <br> 
+                            DHCP (WAN Interna)
+                        </td>
                         <td>-</td>
-                        <td>Firewall</td>
+                        <td>Firewall y Router</td>
                         <td>
                             <ul>
                                 <li><code>nic1</code> (LAN - Green)</li>
@@ -84,7 +88,10 @@
                                 <li>NAT</li>
                             </ul>
                         </td>
-                        <td>Firewall y router que gestiona tráfico entre LAN, DMZ y WAN</td>
+                        <td>
+                            Firewall y router que gestiona el tráfico entre la LAN, DMZ y WAN. 
+                            <br><strong>Nota:</strong> Solo <code>nic4</code> (NAT) tiene acceso directo a Internet.
+                        </td>
                         <td>admin</td>
                         <td>endian</td>
                     </tr>
@@ -104,9 +111,12 @@
                         <td>192.168.2.100</td>
                         <td>192.168.2.1</td>
                         <td>Servidor Web DMZ</td>
-                        <td><code>nic1</code></td>
+                        <td><code>nic2</code></td>
                         <td>Host-Only (vboxnet1)</td>
-                        <td>Conectado a la red DMZ (Orange) de Endian</td>
+                        <td>
+                            Conectado a la red DMZ (Orange) de Endian. 
+                            <br><strong>Accesible solo mediante reglas de NAT y Firewall en Endian.</strong>
+                        </td>
                         <td>usuario</td>
                         <td>S3gur@2024?</td>
                     </tr>
@@ -114,15 +124,19 @@
                         <td><strong>PCINTERNET</strong></td>
                         <td>DHCP</td>
                         <td>-</td>
-                        <td>Equipo externo</td>
-                        <td><code>nic1</code></td>
-                        <td>NAT</td>
-                        <td>Conectado directamente a Internet sin pasar por Endian</td>
+                        <td>Equipo externo (WAN Interna)</td>
+                        <td><code>nic3</code></td>
+                        <td>Host-Only (vboxnet2)</td>
+                        <td>
+                            Simula una conexión externa en la WAN interna. 
+                            <br><strong>Nota:</strong> No tiene acceso directo a Internet, solo puede interactuar con Endian UTM.
+                        </td>
                         <td>usuario</td>
                         <td>S3gur@2024?</td>
                     </tr>
                 </tbody>
             </table>
+            
         </div>
     </div>
 
