@@ -88,7 +88,31 @@
                     </div>
                 </div>
             </div>
-       
+       <!-- RED Zone (Nueva Sección) -->
+       <div class="accordion-item">
+        <h2 class="accordion-header" id="headingRed">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRed" aria-expanded="false" aria-controls="collapseRed">
+                🔴 Red (Externa - WAN)
+            </button>
+        </h2>
+        <div id="collapseRed" class="accordion-collapse collapse" aria-labelledby="headingRed" data-bs-parent="#zonesAccordion">
+            <div class="accordion-body">
+                <p>Zona que se conecta directamente a Internet o a una red externa no confiable.</p>
+                <ul>
+                    <li>Interfaz WAN principal</li>
+                    <li>Configuración IP suministrada por DHCP o estática, según tu ISP</li>
+                    <li>Tráfico entrante considerado no confiable hasta que se apliquen reglas de firewall</li>
+                </ul>
+                <h5>Ejemplo de Configuración:</h5>
+                <p>
+                    Si tu proveedor de Internet te asigna IP por DHCP, selecciona “Ethernet por DHCP”.  
+                    Si te brinda una IP fija, elige “Ethernet estático” e introduce la IP, máscara, gateway y DNS.
+                </p>
+                <h5>Objetivo:</h5>
+                <p>Filtrar y proteger el tráfico proveniente de Internet antes de que alcance las zonas internas (Green, Orange, Blue, etc.).</p>
+            </div>
+        </div>
+    </div>
       
             <!-- Blue Zone -->
             <div class="accordion-item">
