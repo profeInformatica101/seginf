@@ -94,10 +94,10 @@ crear_red_hostonly() {
 }
 
 # 📌 Crear las redes necesarias
-crear_red_hostonly "vboxnet0" "192.168.1.1"  # GREEN (LAN)
-crear_red_hostonly "vboxnet1" "192.168.2.1"  # ORANGE (DMZ)
-crear_red_hostonly "vboxnet2" "192.168.3.1"  # BLUE (WiFi)
-crear_red_hostonly "vboxnet3" "192.168.4.1"  # WAN INTERNA (opcional)
+crear_red_hostonly "192.168.1.1"  # GREEN (LAN)
+crear_red_hostonly "192.168.2.1"  # ORANGE (DMZ)
+crear_red_hostonly "192.168.3.1"  # BLUE (WAN INTERNA)
+
 
 
 
@@ -154,33 +154,33 @@ crear_vm() {
 }
 
 # 📌 Configurar la red de cada máquina virtual
-# 📌 Configurar la red de cada máquina virtual
 configurar_redes() {
     print_color "yellow" "🔧 Configurando redes en VirtualBox..."
 
-# 🛡️ Configuración de Endian UTM con las interfaces correctas
-VBoxManage modifyvm "$VM_NAME" --nic1 hostonly --hostonlyadapter1 "vboxnet0" \  # GREEN (LAN)
-                               --nic2 hostonly --hostonlyadapter2 "vboxnet1" \  # ORANGE (DMZ)
-                               --nic3 hostonly --hostonlyadapter3 "vboxnet2" \  # BLUE (WAN INTERNA)
-                               --nic4 nat                                       # NAT (salida a Internet)
+    # 🛡️ Configuración de Endian UTM con las interfaces correctas
+    VBoxManage modifyvm "Endian_UTM" --nic1 hostonly --hostonlyadapter1 "vboxnet0"
+    VBoxManage modifyvm "Endian_UTM" --nic2 hostonly --hostonlyadapter2 "vboxnet1"
+    VBoxManage modifyvm "Endian_UTM" --nic3 hostonly --hostonlyadapter3 "vboxnet2"
+    VBoxManage modifyvm "Endian_UTM" --nic4 nat
 
+    # 🔌 Habilitar modo promiscuo en Endian para permitir tráfico de red en LAN, DMZ y WAN INTERNA
+    for i in 1 2 3; do
+        VBoxManage modifyvm "Endian_UTM" --nicpromisc$i allow-all
+    done
 
-# 🔌 Habilitar modo promiscuo en Endian para permitir tráfico de red en LAN, DMZ y WAN INTERNA
-for i in 1 2 3; do
-    VBoxManage modifyvm "$VM_NAME" --nicpromisc$i allow-all
-done
+    # 💻 PC1_LAN - Conectado a la LAN (GREEN)
+    VBoxManage modifyvm "PC1_LAN" --nic1 hostonly --hostonlyadapter1 "vboxnet0"
 
-# 💻 PC1_LAN - Conectado a la LAN (GREEN)
-VBoxManage modifyvm "$PC1_LAN" --nic1 hostonly --hostonlyadapter1 "vboxnet0"
+    # 🌐 Public_Web - Conectado a la DMZ (ORANGE)
+    VBoxManage modifyvm "Public_Web" --nic1 hostonly --hostonlyadapter1 "vboxnet1"
 
-# 🌐 Public_Web - Conectado a la DMZ (ORANGE)
-VBoxManage modifyvm "$PUBLIC_WEB" --nic1 hostonly --hostonlyadapter1 "vboxnet1"
-
-# 🛜 PCINTERNET - 🔄 Configurado en NAT para acceso directo a Internet
-VBoxManage modifyvm "$PCINTERNET" --nic1 nat
+    # 🛜 PCINTERNET - 🔄 Configurado en NAT para acceso directo a Internet
+    VBoxManage modifyvm "PCINTERNET" --nic1 nat
 
     print_color "green" "✅ Redes configuradas correctamente."
 }
+
+
 
 
 # 📌 Crear todas las máquinas virtuales
@@ -198,7 +198,6 @@ for i in {0..2}; do
 done
 
 configurar_redes
-
 
 # 📌 Mensaje final
 print_color "green" "✅ Todas las máquinas virtuales han sido creadas correctamente en VirtualBox."
