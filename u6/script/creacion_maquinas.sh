@@ -32,6 +32,7 @@ print_color() {
     esac
 }
 
+
 # Función para descargar ISOs con manejo de errores
 descargar_iso() {
     local url=$1
@@ -75,6 +76,31 @@ eliminar_disco() {
         VBoxManage closemedium disk "$DISK_UUID" --delete
     fi
 }
+
+# 📌 Crear redes Host-Only si no existen
+crear_red_hostonly() {
+    local IP=$1
+    local INTERFACE_NAME=$(VBoxManage list hostonlyifs | grep -B3 "$IP" | grep "Name" | awk '{print $2}')
+
+    if [ -z "$INTERFACE_NAME" ]; then
+        print_color "yellow" "⚠️ Creando una nueva interfaz Host-Only para la IP $IP..."
+        VBoxManage hostonlyif create
+        INTERFACE_NAME=$(VBoxManage list hostonlyifs | tail -n1 | awk '{print $2}')
+        VBoxManage hostonlyif ipconfig "$INTERFACE_NAME" --ip "$IP" --netmask 255.255.255.0
+        print_color "green" "✅ Red Host-Only creada: $INTERFACE_NAME ($IP)"
+    else
+        print_color "green" "✅ Red existente: $INTERFACE_NAME ($IP)"
+    fi
+}
+
+# 📌 Crear las redes necesarias
+crear_red_hostonly "vboxnet0" "192.168.1.1"  # GREEN (LAN)
+crear_red_hostonly "vboxnet1" "192.168.2.1"  # ORANGE (DMZ)
+crear_red_hostonly "vboxnet2" "192.168.3.1"  # BLUE (WiFi)
+crear_red_hostonly "vboxnet3" "192.168.4.1"  # WAN INTERNA (opcional)
+
+
+
 
 # 📌 Función para crear una máquina virtual
 crear_vm() {
@@ -128,20 +154,33 @@ crear_vm() {
 }
 
 # 📌 Configurar la red de cada máquina virtual
+# 📌 Configurar la red de cada máquina virtual
 configurar_redes() {
+    print_color "yellow" "🔧 Configurando redes en VirtualBox..."
+
+    # 🛡️ Configuración de Endian UTM con cuatro adaptadores
     VBoxManage modifyvm "Endian_UTM" --nic1 nat \
-                                     --nic2 hostonly --hostonlyadapter2 vboxnet0 \
-                                     --nic3 hostonly --hostonlyadapter3 vboxnet1 \
-                                     --nic4 hostonly --hostonlyadapter4 vboxnet2
+                                     --nic2 hostonly --hostonlyadapter2 "vboxnet0" \
+                                     --nic3 hostonly --hostonlyadapter3 "vboxnet1" \
+                                     --nic4 hostonly --hostonlyadapter4 "vboxnet2"
 
-    VBoxManage modifyvm "PCINTERNET" --nic1 hostonly --hostonlyadapter1 vboxnet2
-    VBoxManage modifyvm "Public_Web" --nic1 hostonly --hostonlyadapter1 vboxnet1
-    VBoxManage modifyvm "PC1_LAN" --nic1 hostonly --hostonlyadapter1 vboxnet0
+    # 🔌 Habilitar modo promiscuo en Endian para permitir tráfico de red
+    for i in 2 3 4; do
+        VBoxManage modifyvm "Endian_UTM" --nicpromisc$i allow-all
+    done
 
+    # 💻 PC1_LAN - Conectado a la LAN (GREEN)
+    VBoxManage modifyvm "PC1_LAN" --nic1 hostonly --hostonlyadapter1 "vboxnet0"
 
-# 📌 Mensaje final
-    echo -e "\033[32m✅ Configuración de máquinas y redes completada.\033[0m"
+    # 🌐 Public_Web - Conectado a la DMZ (ORANGE)
+    VBoxManage modifyvm "Public_Web" --nic1 hostonly --hostonlyadapter1 "vboxnet1"
+
+    # 🛜 PCINTERNET - Conectado a la WAN INTERNA
+    VBoxManage modifyvm "PCINTERNET" --nic1 hostonly --hostonlyadapter1 "vboxnet2"
+
+    print_color "green" "✅ Redes configuradas correctamente."
 }
+
 
 # 📌 Crear todas las máquinas virtuales
 for MACHINE in "${MACHINES[@]}"; do
@@ -149,15 +188,15 @@ for MACHINE in "${MACHINES[@]}"; do
     crear_vm "$NAME" "$OS_TYPE" "$RAM" "$DISK_SIZE" "$ISO"
 done
 
-# 📌 Verificar y crear interfaces de red host-only si no existen
-for i in 0 1 2; do
-    if ! VBoxManage list hostonlyifs | grep -q "vboxnet$i"; then
-        print_color "yellow" "⚠️ Creando interfaz vboxnet$i..."
-        VBoxManage hostonlyif create
-        VBoxManage hostonlyif ipconfig vboxnet$i --ip 192.168.$((56 + i)).1 --netmask 255.255.255.0
-    fi
+# 📌 Verificar si las interfaces están listas antes de asignarlas
+for i in {0..2}; do
+    while ! VBoxManage list hostonlyifs | grep -q "vboxnet$i"; do
+        print_color "yellow" "⏳ Esperando que vboxnet$i esté disponible..."
+        sleep 2
+    done
 done
 
+configurar_redes
 
 
 # 📌 Mensaje final
