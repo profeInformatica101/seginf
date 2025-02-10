@@ -158,25 +158,26 @@ crear_vm() {
 configurar_redes() {
     print_color "yellow" "🔧 Configurando redes en VirtualBox..."
 
-    # 🛡️ Configuración de Endian UTM con cuatro adaptadores
-    VBoxManage modifyvm "Endian_UTM" --nic1 nat \
-                                     --nic2 hostonly --hostonlyadapter2 "vboxnet0" \
-                                     --nic3 hostonly --hostonlyadapter3 "vboxnet1" \
-                                     --nic4 hostonly --hostonlyadapter4 "vboxnet2"
+# 🛡️ Configuración de Endian UTM con las interfaces correctas
+VBoxManage modifyvm "$VM_NAME" --nic1 hostonly --hostonlyadapter1 "vboxnet0" \  # GREEN (LAN)
+                               --nic2 hostonly --hostonlyadapter2 "vboxnet1" \  # ORANGE (DMZ)
+                               --nic3 hostonly --hostonlyadapter3 "vboxnet2" \  # BLUE (WAN INTERNA)
+                               --nic4 nat                                       # NAT (salida a Internet)
 
-    # 🔌 Habilitar modo promiscuo en Endian para permitir tráfico de red
-    for i in 2 3 4; do
-        VBoxManage modifyvm "Endian_UTM" --nicpromisc$i allow-all
-    done
 
-    # 💻 PC1_LAN - Conectado a la LAN (GREEN)
-    VBoxManage modifyvm "PC1_LAN" --nic1 hostonly --hostonlyadapter1 "vboxnet0"
+# 🔌 Habilitar modo promiscuo en Endian para permitir tráfico de red en LAN, DMZ y WAN INTERNA
+for i in 1 2 3; do
+    VBoxManage modifyvm "$VM_NAME" --nicpromisc$i allow-all
+done
 
-    # 🌐 Public_Web - Conectado a la DMZ (ORANGE)
-    VBoxManage modifyvm "Public_Web" --nic1 hostonly --hostonlyadapter1 "vboxnet1"
+# 💻 PC1_LAN - Conectado a la LAN (GREEN)
+VBoxManage modifyvm "$PC1_LAN" --nic1 hostonly --hostonlyadapter1 "vboxnet0"
 
-    # 🛜 PCINTERNET - Conectado a la WAN INTERNA
-    VBoxManage modifyvm "PCINTERNET" --nic1 hostonly --hostonlyadapter1 "vboxnet2"
+# 🌐 Public_Web - Conectado a la DMZ (ORANGE)
+VBoxManage modifyvm "$PUBLIC_WEB" --nic1 hostonly --hostonlyadapter1 "vboxnet1"
+
+# 🛜 PCINTERNET - 🔄 Configurado en NAT para acceso directo a Internet
+VBoxManage modifyvm "$PCINTERNET" --nic1 nat
 
     print_color "green" "✅ Redes configuradas correctamente."
 }

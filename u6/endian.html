@@ -55,6 +55,9 @@
                         <th>IP</th>
                         <th>Gateway</th>
                         <th>Función</th>
+                        <th>Interfaz</th>
+                        <th>Modo de Red</th>
+                        <th>Descripción</th>
                         <th>Usuario</th>
                         <th>Contraseña</th>
                     </tr>
@@ -62,9 +65,26 @@
                 <tbody>
                     <tr>
                         <td><strong>Endian UTM</strong></td>
-                        <td>192.168.1.1 / 192.168.2.1 / DHCP</td>
+                        <td>192.168.1.1 <br> 192.168.2.1<br>  DHCP</td>
                         <td>-</td>
                         <td>Firewall</td>
+                        <td>
+                            <ul>
+                                <li><code>nic1</code> (LAN - Green)</li>
+                                <li><code>nic2</code> (DMZ - Orange)</li>
+                                <li><code>nic3</code> (WAN Interna - Blue)</li>
+                                <li><code>nic4</code> (Salida a Internet - NAT)</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Host-Only (vboxnet0)</li>
+                                <li>Host-Only (vboxnet1)</li>
+                                <li>Host-Only (vboxnet2)</li>
+                                <li>NAT</li>
+                            </ul>
+                        </td>
+                        <td>Firewall y router que gestiona tráfico entre LAN, DMZ y WAN</td>
                         <td>admin</td>
                         <td>endian</td>
                     </tr>
@@ -73,6 +93,9 @@
                         <td>192.168.1.100</td>
                         <td>192.168.1.1</td>
                         <td>Cliente LAN</td>
+                        <td><code>nic1</code></td>
+                        <td>Host-Only (vboxnet0)</td>
+                        <td>Conectado a la red LAN (Green) a través de Endian</td>
                         <td>usuario</td>
                         <td>S3gur@2024?</td>
                     </tr>
@@ -81,6 +104,9 @@
                         <td>192.168.2.100</td>
                         <td>192.168.2.1</td>
                         <td>Servidor Web DMZ</td>
+                        <td><code>nic1</code></td>
+                        <td>Host-Only (vboxnet1)</td>
+                        <td>Conectado a la red DMZ (Orange) de Endian</td>
                         <td>usuario</td>
                         <td>S3gur@2024?</td>
                     </tr>
@@ -89,6 +115,9 @@
                         <td>DHCP</td>
                         <td>-</td>
                         <td>Equipo externo</td>
+                        <td><code>nic1</code></td>
+                        <td>NAT</td>
+                        <td>Conectado directamente a Internet sin pasar por Endian</td>
                         <td>usuario</td>
                         <td>S3gur@2024?</td>
                     </tr>
