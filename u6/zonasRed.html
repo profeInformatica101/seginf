@@ -39,7 +39,9 @@
     <div class="container mt-5">
         <h1 class="text-center mb-4">Zonas de Seguridad en Endian</h1>
         
+        <!-- Acordeón principal -->
         <div class="accordion" id="zonesAccordion">
+            <!-- 1. GREEN Zone -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingGreen">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGreen" aria-expanded="true" aria-controls="collapseGreen">
@@ -55,13 +57,14 @@
                             <li>Rango IP: <span class="ip-range">192.168.1.0/24</span></li>
                         </ul>
                         <h5>Ejemplo de Configuración:</h5>
-                        <p>Configurar reglas de firewall para permitir solo tráfico interno y bloquear accesos desde la WAN.</p>
+                        <p>Configura reglas de firewall para permitir solo tráfico interno y bloquear accesos no deseados desde otras zonas.</p>
                         <h5>Objetivo:</h5>
-                        <p>Garantizar la seguridad de los datos internos y la comunicación segura entre dispositivos de la organización.</p>
+                        <p>Garantizar la seguridad de los datos internos y la comunicación confiable entre dispositivos de la organización.</p>
                     </div>
                 </div>
             </div>
             
+            <!-- 2. ORANGE Zone (DMZ) -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOrange">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrange" aria-expanded="false" aria-controls="collapseOrange">
@@ -77,44 +80,19 @@
                             <li>Rangos IP posibles:</li>
                             <ul>
                                 <li><span class="ip-range">200.100.50.0/24</span> (IP pública asignada por ISP)</li>
-                                <li><span class="ip-range">192.168.100.0/24</span> (IP privada con NAT a una pública)</li>
-                                <li><span class="ip-range">201.45.78.200</span> (Proxy inverso con IP pública)</li>
+                                <li><span class="ip-range">192.168.100.0/24</span> (IP privada con NAT)</li>
+                                <li><span class="ip-range">201.45.78.200</span> (IP pública estática o proxy inverso)</li>
                             </ul>
                         </ul>
                         <h5>Ejemplo de Configuración:</h5>
-                        <p>Se pueden asignar direcciones públicas o privadas con NAT para exponer servicios al exterior.</p>
+                        <p>Asignar direcciones públicas o privadas con NAT para exponer servicios al exterior.</p>
                         <h5>Objetivo:</h5>
                         <p>Ofrecer servicios accesibles desde Internet sin comprometer la seguridad de la red interna.</p>
                     </div>
                 </div>
             </div>
-       <!-- RED Zone (Nueva Sección) -->
-       <div class="accordion-item">
-        <h2 class="accordion-header" id="headingRed">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRed" aria-expanded="false" aria-controls="collapseRed">
-                🔴 Red (Externa - WAN)
-            </button>
-        </h2>
-        <div id="collapseRed" class="accordion-collapse collapse" aria-labelledby="headingRed" data-bs-parent="#zonesAccordion">
-            <div class="accordion-body">
-                <p>Zona que se conecta directamente a Internet o a una red externa no confiable.</p>
-                <ul>
-                    <li>Interfaz WAN principal</li>
-                    <li>Configuración IP suministrada por DHCP o estática, según tu ISP</li>
-                    <li>Tráfico entrante considerado no confiable hasta que se apliquen reglas de firewall</li>
-                </ul>
-                <h5>Ejemplo de Configuración:</h5>
-                <p>
-                    Si tu proveedor de Internet te asigna IP por DHCP, selecciona “Ethernet por DHCP”.  
-                    Si te brinda una IP fija, elige “Ethernet estático” e introduce la IP, máscara, gateway y DNS.
-                </p>
-                <h5>Objetivo:</h5>
-                <p>Filtrar y proteger el tráfico proveniente de Internet antes de que alcance las zonas internas (Green, Orange, Blue, etc.).</p>
-            </div>
-        </div>
-    </div>
-      
-            <!-- Blue Zone -->
+
+            <!-- 3. BLUE Zone (WiFi) -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingBlue">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBlue" aria-expanded="false" aria-controls="collapseBlue">
@@ -133,7 +111,35 @@
                 </div>
             </div>
 
-            <!-- Admin Zone -->
+            <!-- 4. RED Zone (WAN) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingRed">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRed" aria-expanded="false" aria-controls="collapseRed">
+                        🔴 Red (Externa - WAN)
+                    </button>
+                </h2>
+                <div id="collapseRed" class="accordion-collapse collapse" aria-labelledby="headingRed" data-bs-parent="#zonesAccordion">
+                    <div class="accordion-body">
+                        <p>Zona conectada directamente a Internet o a una red externa no confiable.</p>
+                        <ul>
+                            <li>Interfaz WAN principal</li>
+                            <li>IP obtenida por DHCP o estática (según ISP)</li>
+                            <li>Tráfico entrante se considera “no confiable” hasta pasar por las reglas de firewall</li>
+                        </ul>
+                        <h5>Ejemplo de Configuración:</h5>
+                        <p>
+                            Seleccionar “Ethernet por DHCP” si el ISP asigna IP automáticamente,  
+                            o “Ethernet estático” si dispones de IP fija.
+                        </p>
+                        <h5>Objetivo:</h5>
+                        <p>Filtrar y proteger el tráfico que proviene de Internet antes de que alcance las zonas internas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- (Opcionales) Administración y Seguridad -->
+
+            <!-- 5. Administración (Restringida) -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingAdmin">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">
@@ -142,7 +148,7 @@
                 </h2>
                 <div id="collapseAdmin" class="accordion-collapse collapse" aria-labelledby="headingAdmin" data-bs-parent="#zonesAccordion">
                     <div class="accordion-body">
-                        <p>Zona exclusiva para administración de red y acceso restringido.</p>
+                        <p>Zona exclusiva para administración de la red con acceso restringido.</p>
                         <ul>
                             <li>Consola de administración de Endian</li>
                             <li>Acceso solo desde IPs autorizadas</li>
@@ -152,7 +158,7 @@
                 </div>
             </div>
 
-            <!-- Security Exchange Zone -->
+            <!-- 6. Intercambio de Nivel de Seguridad -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingSecurity">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecurity" aria-expanded="false" aria-controls="collapseSecurity">
@@ -197,8 +203,8 @@
                     <tr>
                         <td><strong>IP Pública</strong></td>
                         <td>Asignada por el ISP, fuera de los rangos privados.</td>
-                        <td>Orange (DMZ - Pública)</td>
-                        <td>Permite acceso a servicios y servidores desde Internet.</td>
+                        <td>Orange (DMZ) o Red (WAN)</td>
+                        <td>Permite acceso a servidores/servicios desde Internet.</td>
                     </tr>
                 </tbody>
             </table>
