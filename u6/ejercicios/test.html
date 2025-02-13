@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solución - Direccionamiento IPv4 y Enrutamiento</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Solución - Direccionamiento IPv4 y Enrutamiento</h1>
+    <img src="src/ejercicio5.png">
+    
+    <h2>Paso 1: Ordenar las subredes de mayor a menor número de hosts</h2>
+    <table>
+        <tr>
+            <th>Red</th>
+            <th>Hosts</th>
+        </tr>
+        <tr><td>Red 1</td><td>200</td></tr>
+        <tr><td>Red 2</td><td>58</td></tr>
+        <tr><td>Red 3</td><td>20</td></tr>
+        <tr><td>Red 4</td><td>12</td></tr>
+    </table>
+    
+    <h2>Paso 2: Calcular el tamaño del bloque de direcciones a asignar</h2>
+    <table>
+        <tr>
+            <th>Red</th>
+            <th>Hosts</th>
+            <th>Tamaño del Bloque</th>
+        </tr>
+        <tr><td>Red 1</td><td>200</td><td>2<sup>8</sup> = 256 | /24</td></tr>
+        <tr><td>Red 2</td><td>58</td><td>2<sup>6</sup> = 64 | /26</td></tr>
+        <tr><td>Red 3</td><td>20</td><td>2<sup>5</sup> = 32 | /27</td></tr>
+        <tr><td>Red 4</td><td>12</td><td>2<sup>4</sup> = 16 | /28</td></tr>
+    </table>
+    
+    <h2>Paso 3: Calcular las máscaras de red</h2>
+    <table>
+        <tr>
+            <th>Red</th>
+            <th>Máscara de Subred</th>
+        </tr>
+        <tr><td>Red 1</td><td>255.255.255.0</td></tr>
+        <tr><td>Red 2</td><td>255.255.255.192</td></tr>
+        <tr><td>Red 3</td><td>255.255.255.224</td></tr>
+        <tr><td>Red 4</td><td>255.255.255.240</td></tr>
+    </table>
+
+    <h2>Paso 4: Calcular las direcciones de red</h2>
+    <table>
+        <tr>
+            <th>Red</th>
+            <th>Dirección de Red</th>
+            <th>Explicación</th>
+        </tr>
+        <tr><td>Red 1</td><td>80.0.0.0</td><td>Es la primera dirección disponible del rango asignado</td></tr>
+        <tr><td>Red 2</td><td>80.0.1.0</td><td>Se asigna después de la dirección de broadcast de Red 1 (80.0.0.255 + 1)</td></tr>
+        <tr><td>Red 3</td><td>80.0.1.64</td><td>Se asigna después de la dirección de broadcast de Red 2 (80.0.1.63 + 1)</td></tr>
+        <tr><td>Red 4</td><td>80.0.1.96</td><td>Se asigna después de la dirección de broadcast de Red 3 (80.0.1.95 + 1)</td></tr>
+    </table>
+    
+    <h2>Paso 5: Calcular las direcciones de broadcast</h2>
+    <table>
+        <tr>
+            <th>Red</th>
+            <th>Dirección de Broadcast</th>
+        </tr>
+        <tr><td>Red 1</td><td>80.0.0.255</td></tr>
+        <tr><td>Red 2</td><td>80.0.1.63</td></tr>
+        <tr><td>Red 3</td><td>80.0.1.95</td></tr>
+        <tr><td>Red 4</td><td>80.0.1.111</td></tr>
+    </table>
+    
+    <h2>Paso 6: Plasmar las redes sobre el esquema</h2>
+    <p>Se actualizan las interfaces de los routers con las direcciones IP según el esquema.</p>
+    
+    <h2>Paso 7: Asignación de direcciones a las interfaces</h2>
+    <p>Se asignan las direcciones IP a cada interfaz de router según su conexión con cada red.</p>
+
+    <h2>Esquema de Direccionamiento IPv4 con VLSM</h2>
+    <table>
+        <tr>
+            <th>Red</th>
+            <th>Hosts</th>
+            <th>Tamaño del Bloque</th>
+            <th>Dirección de Red</th>
+            <th>Máscara de Subred</th>
+            <th>Dirección de Broadcast</th>
+        </tr>
+        <tr>
+            <td>Red 1 (200 hosts)</td>
+            <td>200(+2)</td>
+            <td>2<sup>8</sup> = 256 | /24</td>
+            <td>80.0.0.0</td>
+            <td>255.255.255.0</td>
+            <td>80.0.0.255</td>
+        </tr>
+        <tr>
+            <td>Red 2 (58 hosts)</td>
+            <td>58(+2)</td>
+            <td>2<sup>6</sup> = 64  | /26</td>
+            <td>80.0.1.0</td>
+            <td>255.255.255.192</td>
+            <td>80.0.1.63</td>
+        </tr>
+        <tr>
+            <td>Red 3 (20 hosts)</td>
+            <td>20(+2)</td>
+            <td>2<sup>5</sup> = 32 |  /27</td>
+            <td>80.0.1.64</td>
+            <td>255.255.255.224</td>
+            <td>80.0.1.95</td>
+        </tr>
+        <tr>
+            <td>Red 4 (12 hosts)</td>
+            <td>12(+2)  </td>
+            <td> 2<sup>4</sup> = 16 |  /28</td>
+            <td>80.0.1.96</td>
+            <td>255.255.255.240</td>
+            <td>80.0.1.111</td>
+        </tr>
+    </table>
+
+
+</body>
+</html>
