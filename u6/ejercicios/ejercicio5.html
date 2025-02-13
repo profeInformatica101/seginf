@@ -3,55 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Direccionamiento IPv4 y Enrutamiento</title>
+    <title>Solución - Direccionamiento IPv4 y Enrutamiento</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
         }
         th, td {
             border: 1px solid black;
-            padding: 10px;
-            text-align: center;
+            padding: 8px;
+            text-align: left;
         }
         th {
-            background-color: #4CAF50;
-            color: white;
+            background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
-    <h2>Ejercicio 5 - Direccionamiento IPv4 y Enrutamiento</h2>
-    <img src="src/ejercicio5.png" alt="ejercicoi">
-    <h3> Esquema de Direccionamiento VLSM</h3>
-    <p>El prefijo global asignado es <strong>80.0.0.0/16</strong>. Se ha realizado la asignación de subredes usando VLSM siguiendo estos pasos:</p>
-    <ol>
-        <li>Ordenar las redes por cantidad de hosts requeridos de mayor a menor.</li>
-        <li>Calcular el tamaño de bloque de direcciones asignado a cada subred, redondeando a la potencia de 2 más cercana.</li>
-        <li>Asignar la primera dirección disponible a cada subred.</li>
-        <li>Calcular la máscara de subred restando la cantidad de bits usados del total (32).</li>
-        <li>Calcular la dirección de broadcast sumando el tamaño del bloque y restando 1.</li>
-    </ol>
-    
-    <h2>Ejercicio 5 - Direccionamiento IPv4 y Enrutamiento</h2>
-    
-    <h3>Paso 1: Esquema de Direccionamiento VLSM</h3>
-    <p>El prefijo global asignado es <strong>80.0.0.0/16</strong>. Se ha realizado la asignación de subredes usando VLSM siguiendo estos pasos:</p>
-    <ol>
-        <li>Ordenar las redes por cantidad de hosts requeridos de mayor a menor.</li>
-        <li>Calcular el tamaño de bloque de direcciones asignado a cada subred, redondeando a la potencia de 2 más cercana.</li>
-        <li>Asignar la primera dirección disponible a cada subred.</li>
-        <li>Calcular la máscara de subred restando la cantidad de bits usados del total (32).</li>
-        <li>Calcular la dirección de broadcast sumando el tamaño del bloque y restando 1.</li>
-    </ol>
-    
+    <h1>Solución - Direccionamiento IPv4 y Enrutamiento</h1>
+    <img src="src/ejercicio5.png">
+    <h2>Esquema de Direccionamiento IPv4 con VLSM</h2>
     <table>
         <tr>
             <th>Red</th>
@@ -61,72 +32,117 @@
             <th>Máscara de Subred</th>
             <th>Dirección de Broadcast</th>
         </tr>
-        <tr><td>B</td><td>300</td><td>512</td><td>80.0.0.0</td><td>/23</td><td>80.0.1.255</td></tr>
-        <tr><td>A</td><td>128</td><td>256</td><td>80.0.2.0</td><td>/24</td><td>80.0.2.255</td></tr>
-        <tr><td>C</td><td>35</td><td>64</td><td>80.0.3.0</td><td>/26</td><td>80.0.3.63</td></tr>
-        <tr><td>D</td><td>2</td><td>4</td><td>80.0.3.64</td><td>/30</td><td>80.0.3.67</td></tr>
-        <tr><td>E</td><td>2</td><td>4</td><td>80.0.3.68</td><td>/30</td><td>80.0.3.71</td></tr>
-    </table>
-    
-    <h3> Tablas de Enrutamiento</h3>
-    <p>Para cada router, se han definido las rutas óptimas utilizando el número de saltos como métrica.</p>
-    
-    <h4>Router 1</h4>
-    <table>
-        <tr><th>Red Destino</th><th>Máscara</th><th>Next Hop</th><th>Interfaz</th></tr>
-        <tr><td>80.0.0.0/23</td><td>255.255.254.0</td><td>Directo</td><td>eth2</td></tr>
-        <tr><td>80.0.2.0/24</td><td>255.255.255.0</td><td>Directo</td><td>eth3</td></tr>
-        <tr><td>80.0.3.0/26</td><td>255.255.255.192</td><td>Directo</td><td>eth1</td></tr>
-    </table>
-    
-    <h4>Router 2</h4>
-    <table>
-        <tr><th>Red Destino</th><th>Máscara</th><th>Next Hop</th><th>Interfaz</th></tr>
-        <tr><td>80.0.3.64/30</td><td>255.255.255.252</td><td>Directo</td><td>eth0</td></tr>
-        <tr><td>80.0.3.68/30</td><td>255.255.255.252</td><td>Directo</td><td>eth1</td></tr>
-    </table>
-    
-    <h4>Router 3</h4>
-    <table>
-        <tr><th>Red Destino</th><th>Máscara</th><th>Next Hop</th><th>Interfaz</th></tr>
-        <tr><td>80.0.3.0/26</td><td>255.255.255.192</td><td>Directo</td><td>eth1</td></tr>
-        <tr><td>80.0.3.64/30</td><td>255.255.255.252</td><td>Directo</td><td>eth2</td></tr>
+        <tr>
+            <td>Red 1 (200 hosts)</td>
+            <td>200(+2)</td>
+            <td>2<sup>8</sup> = 256 | /24</td>
+            <td>80.0.0.0</td>
+            <td>255.255.255.0</td>
+            <td>80.0.0.255</td>
+        </tr>
+        <tr>
+            <td>Red 2 (58 hosts)</td>
+            <td>58(+2)</td>
+            <td>2<sup>6</sup> = 64  | /26</td>
+            <td>80.0.1.0</td>
+            <td>255.255.255.192</td>
+            <td>80.0.1.63</td>
+        </tr>
+        <tr>
+            <td>Red 3 (20 hosts)</td>
+            <td>20(+2)</td>
+            <td>2<sup>5</sup> = 32 |  /27</td>
+            <td>80.0.1.64</td>
+            <td>255.255.255.224</td>
+            <td>80.0.1.95</td>
+        </tr>
+        <tr>
+            <td>Red 4 (12 hosts)</td>
+            <td>12(+2)  </td>
+            <td> 2<sup>4</sup> = 16 |  /28</td>
+            <td>80.0.1.96</td>
+            <td>255.255.255.240</td>
+            <td>80.0.1.111</td>
+        </tr>
     </table>
 
-
-
-
-
-
-    <h3>Paso 2: Tablas de Enrutamiento</h3>
-    <p>Para cada router, se han definido las rutas óptimas utilizando el número de saltos como métrica.</p>
-    
-    <h4>Router 1</h4>
+    <h2>Tablas de Enrutamiento</h2>
+    <h3>Router 1</h3>
     <table>
-        <tr><th>Red Destino</th><th>Máscara</th><th>Next Hop</th><th>Interfaz</th></tr>
-        <tr><td>80.0.1.0/24</td><td>255.255.255.0</td><td>Directo</td><td>eth2</td></tr>
-        <tr><td>80.0.3.0/27</td><td>255.255.255.224</td><td>Directo</td><td>eth3</td></tr>
-        <tr><td>80.0.5.0/30</td><td>255.255.255.252</td><td>Directo</td><td>eth0</td></tr>
-        <tr><td>80.0.5.4/30</td><td>255.255.255.252</td><td>Directo</td><td>eth1</td></tr>
+        <tr>
+            <th>Red Destino</th>
+            <th>Máscara</th>
+            <th>Next Hop  | Próximo Salto</th>
+            <th>Métrica (Saltos)</th>
+        </tr>
+        <tr>
+            <td>80.0.1.0</td>
+            <td>/26</td>
+            <td>Router 2</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>80.0.1.64</td>
+            <td>/27</td>
+            <td>Router 3</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>80.0.1.96</td>
+            <td>/28</td>
+            <td>Router 3</td>
+            <td>2</td>
+        </tr>
     </table>
     
-    <h4>Router 2</h4>
+    <h3>Router 2</h3>
     <table>
-        <tr><th>Red Destino</th><th>Máscara</th><th>Next Hop</th><th>Interfaz</th></tr>
-        <tr><td>80.0.2.0/26</td><td>255.255.255.192</td><td>Directo</td><td>eth2</td></tr>
-        <tr><td>80.0.5.0/30</td><td>255.255.255.252</td><td>Directo</td><td>eth1</td></tr>
-        <tr><td>80.0.5.8/30</td><td>255.255.255.252</td><td>Directo</td><td>eth0</td></tr>
+        <tr>
+            <th>Red Destino</th>
+            <th>Máscara</th>
+            <th>Next Hop | Próximo Salto</th>
+            <th>Métrica (Saltos)</th>
+        </tr>
+        <tr>
+            <td>80.0.0.0</td>
+            <td>/24</td>
+            <td>Router 1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>80.0.1.64</td>
+            <td>/27</td>
+            <td>Router 3</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>80.0.1.96</td>
+            <td>/28</td>
+            <td>Router 3</td>
+            <td>1</td>
+        </tr>
     </table>
-    
-    <h4>Router 3</h4>
+
+    <h3>Router 3</h3>
     <table>
-        <tr><th>Red Destino</th><th>Máscara</th><th>Next Hop</th><th>Interfaz</th></tr>
-        <tr><td>80.0.4.0/28</td><td>255.255.255.240</td><td>Directo</td><td>eth2</td></tr>
-        <tr><td>80.0.5.4/30</td><td>255.255.255.252</td><td>Directo</td><td>eth0</td></tr>
-        <tr><td>80.0.5.8/30</td><td>255.255.255.252</td><td>Directo</td><td>eth1</td></tr>
+        <tr>
+            <th>Red Destino</th>
+            <th>Máscara</th>
+            <th>Next Hop  | Próximo Salto</th>
+            <th>Métrica (Saltos)</th>
+        </tr>
+        <tr>
+            <td>80.0.0.0</td>
+            <td>/24</td>
+            <td>Router 1</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>80.0.1.0</td>
+            <td>/26</td>
+            <td>Router 2</td>
+            <td>1</td>
+        </tr>
     </table>
-    
-    <h3>Conclusión</h3>
-    <p>Este diseño optimiza el uso de direcciones IP con VLSM y minimiza el tamaño de las tablas de enrutamiento mediante el uso de rutas eficientes.</p>
 </body>
 </html>
