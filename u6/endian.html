@@ -208,7 +208,10 @@ Contraseña predeterminada: endian
         </div>
         <div id="step3" class="collapse">
             <div class="card-body">
-                <p>En la máquina <strong>Public_Web</strong> (servidor DMZ), instale el sistema operativo Debian o similar y configure la interfaz de red:</p>
+                <p><mark>Manual de <a href="https://servidordebian.org/es/buster/install/start">Servidor Debian 10 'Buster'</a>
+                </mark>
+                </p>
+                    <p>En la máquina <strong>Public_Web</strong> (servidor DMZ), instale el sistema operativo Debian o similar y configure la interfaz de red:</p>
                 <pre>
 # Configuración de red en Servidor DMZ
 auto enp0s3
@@ -218,6 +221,7 @@ iface enp0s3 inet static
     gateway 192.168.2.1
     dns-nameservers 8.8.8.8 1.1.1.1
                 </pre>
+              
                 <p>Instale Apache y cree una página web simple en HTML para verificar que el servidor esté activo:</p>
                 <pre>
 # Instalar Apache
