@@ -201,7 +201,7 @@ Contraseña predeterminada: endian
         </div>
     </div>
 
-    <!-- Paso 3: Configurar Public_Web (Servidor DMZ) -->
+ <!-- Paso 3: Configurar Public_Web (Servidor DMZ) -->
 <div class="card step-card">
     <div class="card-header" data-bs-toggle="collapse" href="#step3">
         <h5>3️⃣ Configurar Public_Web (Servidor DMZ)</h5>
@@ -222,7 +222,6 @@ iface enp0s3 inet static
             </pre>
             
             <p><strong>🔹 Configurar Endian Firewall para permitir tráfico HTTP/HTTPS</strong></p>
-            <p>Para que el servidor DMZ pueda acceder a los repositorios de Debian, se debe permitir tráfico saliente en Endian.</p>
             <ol>
                 <li>Acceder a la interfaz web de Endian Firewall.</li>
                 <li>Ir a <strong>Firewall > Tráfico de salida</strong>.</li>
@@ -240,18 +239,16 @@ iface enp0s3 inet static
             </ol>
             
             <p><strong>🔹 Agregar repositorios de Debian</strong></p>
-            <p>Para agregar los repositorios oficiales, edite el archivo <code>/etc/apt/sources.list</code> con un editor de texto como nano:</p>
             <pre>
 sudo nano /etc/apt/sources.list
             </pre>
-            <p>Luego, agregue las siguientes líneas:</p>
+            <p>Agregar las siguientes líneas:</p>
             <pre>
 deb http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
 deb http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
 deb http://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
             </pre>
-            <p>Guarde y cierre el archivo (`CTRL + X`, luego `Y` y `ENTER`).</p>
-            <p>Después, actualice la lista de paquetes:</p>
+            <p>Guardar y cerrar (`CTRL + X`, luego `Y` y `ENTER`).</p>
             <pre>
 sudo apt update
             </pre>
@@ -262,22 +259,43 @@ sudo apt update
 sudo apt install apache2 -y
 
 # Creación de una página web simple
-<code>echo "&lt;h1&gt;Servidor DMZ funcionando&lt;/h1&gt;" | sudo tee /var/www/html/index.html</code>
+echo "&lt;h1&gt;Servidor DMZ funcionando&lt;/h1&gt;" | sudo tee /var/www/html/index.html
 
 # Reiniciar el servicio
 sudo systemctl restart apache2
             </pre>
             
+            <p><strong>🔹 Permitir acceso desde la zona ROJA (LAN) al DMZ</strong></p>
+            <ol>
+                <li>Acceder a la interfaz web de Endian Firewall.</li>
+                <li>Ir a <strong>Firewall > Tráfico de entrada</strong>.</li>
+                <li>Hacer clic en <strong>"Añadir una nueva regla"</strong>.</li>
+                <li>Configurar los siguientes valores:
+                    <ul>
+                        <li><strong>Origen:</strong> Zona ROJA (LAN)</li>
+                        <li><strong>Destino:</strong> IP del servidor DMZ (192.168.2.100)</li>
+                        <li><strong>Servicio:</strong> HTTP (80) y HTTPS (443)</li>
+                        <li><strong>Protocolo:</strong> TCP</li>
+                        <li><strong>Acción:</strong> Permitir</li>
+                    </ul>
+                </li>
+                <li>Guardar los cambios y aplicar la configuración.</li>
+            </ol>
+            
             <p><strong>🔹 Verificar conexión</strong></p>
             <pre>
 # Comprobar conectividad con los repositorios de Debian
 curl -I http://deb.debian.org
-
 # Si responde con "HTTP/1.1 200 OK", la conexión funciona.
+
+# Comprobar acceso desde la zona ROJA (LAN) al servidor DMZ
+curl -I http://192.168.2.100
+# Si responde con "HTTP/1.1 200 OK", el acceso está permitido.
             </pre>
         </div>
     </div>
 </div>
+
 
     <!-- Paso 4: Configurar PC1_LAN -->
     <div class="card step-card">
