@@ -3,138 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solución - Direccionamiento IPv4 y Enrutamiento</title>
+    <title>Rúbrica de Corrección - Seguridad Informática</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
+            background: white;
         }
         th, td {
             border: 1px solid black;
-            padding: 8px;
+            padding: 10px;
             text-align: left;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #ddd;
         }
     </style>
 </head>
 <body>
-    <h1>Solución - Direccionamiento IPv4 y Enrutamiento</h1>
-    <img src="src/ejercicio5.png">
-    
-    <h2>Paso 1: Ordenar las subredes de mayor a menor número de hosts</h2>
+    <h2>Rúbrica de Corrección - Seguridad Informática</h2>
     <table>
         <tr>
-            <th>Red</th>
-            <th>Hosts</th>
+            <th>Criterio</th>
+            <th>Puntos</th>
+            <th>100% (2 puntos)</th>
+            <th>75% (1.5 puntos)</th>
+            <th>50% (1 punto)</th>
+            <th>25% (0.5 puntos)</th>
+            <th>0% (0 puntos)</th>
         </tr>
-        <tr><td>Red 1</td><td>200</td></tr>
-        <tr><td>Red 2</td><td>58</td></tr>
-        <tr><td>Red 3</td><td>20</td></tr>
-        <tr><td>Red 4</td><td>12</td></tr>
+        <tr>
+            <td>Definición de términos</td>
+            <td>2</td>
+            <td>Define correctamente los cuatro términos con claridad, usando terminología técnica adecuada.</td>
+            <td>Define los términos correctamente, pero con leves imprecisiones o falta de detalle.</td>
+            <td>Define al menos dos términos correctamente, pero los otros dos son vagos o incorrectos.</td>
+            <td>Define solo un término correctamente o las definiciones son muy superficiales.</td>
+            <td>No responde o todas las definiciones son incorrectas.</td>
+        </tr>
+        <tr>
+            <td>Diferencias entre integridad y confidencialidad</td>
+            <td>2</td>
+            <td>Explica claramente las diferencias, menciona herramientas adecuadas y da ejemplos relevantes.</td>
+            <td>Explica correctamente las diferencias, pero con ejemplos o herramientas poco precisas.</td>
+            <td>Explica parcialmente las diferencias, pero con errores conceptuales o sin ejemplos claros.</td>
+            <td>Responde de forma vaga o con errores graves en los conceptos.</td>
+            <td>No responde o la respuesta es completamente incorrecta.</td>
+        </tr>
+        <tr>
+            <td>Firma digital en el mensaje de Carlos a Diana</td>
+            <td>2</td>
+            <td>Explica correctamente los pasos del proceso de firma digital y verificación con terminología técnica adecuada.</td>
+            <td>Explica bien el proceso, pero omite algún detalle clave.</td>
+            <td>Explica parcialmente el proceso con errores o confusión en los pasos.</td>
+            <td>Menciona la firma digital, pero sin una explicación clara de su funcionamiento.</td>
+            <td>No responde o la respuesta es completamente incorrecta.</td>
+        </tr>
+        <tr>
+            <td>Funciones hash e integridad de datos</td>
+            <td>2</td>
+            <td>Explica claramente el papel de las funciones hash en la integridad de datos y proporciona un ejemplo práctico adecuado.</td>
+            <td>Explica correctamente las funciones hash, pero el ejemplo es poco claro o incompleto.</td>
+            <td>Menciona las funciones hash, pero con errores o sin un ejemplo claro.</td>
+            <td>La respuesta es vaga o presenta conceptos incorrectos.</td>
+            <td>No responde o la respuesta es completamente incorrecta.</td>
+        </tr>
+        <tr>
+            <td>Selección de respuestas correctas</td>
+            <td>2</td>
+            <td>Todas las respuestas son correctas.</td>
+            <td>7-8 respuestas correctas.</td>
+            <td>5-6 respuestas correctas.</td>
+            <td>3-4 respuestas correctas.</td>
+            <td>Menos de 3 respuestas correctas o no responde.</td>
+        </tr>
     </table>
-    
-    <h2>Paso 2: Calcular el tamaño del bloque de direcciones a asignar</h2>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rúbrica de Corrección - Seguridad Informática</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h2>Rúbrica de Corrección - Seguridad Informática</h2>
     <table>
         <tr>
-            <th>Red</th>
-            <th>Hosts</th>
-            <th>Tamaño del Bloque</th>
-        </tr>
-        <tr><td>Red 1</td><td>200</td><td>2<sup>8</sup> = 256 | /24</td></tr>
-        <tr><td>Red 2</td><td>58</td><td>2<sup>6</sup> = 64 | /26</td></tr>
-        <tr><td>Red 3</td><td>20</td><td>2<sup>5</sup> = 32 | /27</td></tr>
-        <tr><td>Red 4</td><td>12</td><td>2<sup>4</sup> = 16 | /28</td></tr>
-    </table>
-    
-    <h2>Paso 3: Calcular las máscaras de red</h2>
-    <table>
-        <tr>
-            <th>Red</th>
-            <th>Máscara de Subred</th>
-        </tr>
-        <tr><td>Red 1</td><td>255.255.255.0</td></tr>
-        <tr><td>Red 2</td><td>255.255.255.192</td></tr>
-        <tr><td>Red 3</td><td>255.255.255.224</td></tr>
-        <tr><td>Red 4</td><td>255.255.255.240</td></tr>
-    </table>
-
-    <h2>Paso 4: Calcular las direcciones de red</h2>
-    <table>
-        <tr>
-            <th>Red</th>
-            <th>Dirección de Red</th>
-            <th>Explicación</th>
-        </tr>
-        <tr><td>Red 1</td><td>80.0.0.0</td><td>Es la primera dirección disponible del rango asignado</td></tr>
-        <tr><td>Red 2</td><td>80.0.1.0</td><td>Se asigna después de la dirección de broadcast de Red 1 (80.0.0.255 + 1)</td></tr>
-        <tr><td>Red 3</td><td>80.0.1.64</td><td>Se asigna después de la dirección de broadcast de Red 2 (80.0.1.63 + 1)</td></tr>
-        <tr><td>Red 4</td><td>80.0.1.96</td><td>Se asigna después de la dirección de broadcast de Red 3 (80.0.1.95 + 1)</td></tr>
-    </table>
-    
-    <h2>Paso 5: Calcular las direcciones de broadcast</h2>
-    <table>
-        <tr>
-            <th>Red</th>
-            <th>Dirección de Broadcast</th>
-        </tr>
-        <tr><td>Red 1</td><td>80.0.0.255</td></tr>
-        <tr><td>Red 2</td><td>80.0.1.63</td></tr>
-        <tr><td>Red 3</td><td>80.0.1.95</td></tr>
-        <tr><td>Red 4</td><td>80.0.1.111</td></tr>
-    </table>
-    
-    <h2>Paso 6: Plasmar las redes sobre el esquema</h2>
-    <p>Se actualizan las interfaces de los routers con las direcciones IP según el esquema.</p>
-    
-    <h2>Paso 7: Asignación de direcciones a las interfaces</h2>
-    <p>Se asignan las direcciones IP a cada interfaz de router según su conexión con cada red.</p>
-
-    <h2>Esquema de Direccionamiento IPv4 con VLSM</h2>
-    <table>
-        <tr>
-            <th>Red</th>
-            <th>Hosts</th>
-            <th>Tamaño del Bloque</th>
-            <th>Dirección de Red</th>
-            <th>Máscara de Subred</th>
-            <th>Dirección de Broadcast</th>
+            <th>Criterio</th>
+            <th>Puntos</th>
+            <th>100% (2 puntos)</th>
+            <th>75% (1.5 puntos)</th>
+            <th>50% (1 punto)</th>
+            <th>25% (0.5 puntos)</th>
+            <th>0% (0 puntos)</th>
         </tr>
         <tr>
-            <td>Red 1 (200 hosts)</td>
-            <td>200(+2)</td>
-            <td>2<sup>8</sup> = 256 | /24</td>
-            <td>80.0.0.0</td>
-            <td>255.255.255.0</td>
-            <td>80.0.0.255</td>
+            <td>1. Definición de términos</td>
+            <td>2</td>
+            <td>Define correctamente los cuatro términos con claridad, usando terminología técnica adecuada.</td>
+            <td>Define los términos correctamente, pero con leves imprecisiones o falta de detalle.</td>
+            <td>Define al menos dos términos correctamente, pero los otros dos son vagos o incorrectos.</td>
+            <td>Define solo un término correctamente o las definiciones son muy superficiales.</td>
+            <td>No responde o todas las definiciones son incorrectas.</td>
         </tr>
         <tr>
-            <td>Red 2 (58 hosts)</td>
-            <td>58(+2)</td>
-            <td>2<sup>6</sup> = 64  | /26</td>
-            <td>80.0.1.0</td>
-            <td>255.255.255.192</td>
-            <td>80.0.1.63</td>
+            <td>2. Diferencias entre integridad y confidencialidad</td>
+            <td>2</td>
+            <td>Explica claramente las diferencias, menciona herramientas adecuadas y da ejemplos relevantes.</td>
+            <td>Explica correctamente las diferencias, pero con ejemplos o herramientas poco precisas.</td>
+            <td>Explica parcialmente las diferencias, pero con errores conceptuales o sin ejemplos claros.</td>
+            <td>Responde de forma vaga o con errores graves en los conceptos.</td>
+            <td>No responde o la respuesta es completamente incorrecta.</td>
         </tr>
         <tr>
-            <td>Red 3 (20 hosts)</td>
-            <td>20(+2)</td>
-            <td>2<sup>5</sup> = 32 |  /27</td>
-            <td>80.0.1.64</td>
-            <td>255.255.255.224</td>
-            <td>80.0.1.95</td>
+            <td>3. Firma digital en el mensaje de Carlos a Diana</td>
+            <td>2</td>
+            <td>Explica correctamente los pasos del proceso de firma digital y verificación con terminología técnica adecuada.</td>
+            <td>Explica bien el proceso, pero omite algún detalle clave.</td>
+            <td>Explica parcialmente el proceso con errores o confusión en los pasos.</td>
+            <td>Menciona la firma digital, pero sin una explicación clara de su funcionamiento.</td>
+            <td>No responde o la respuesta es completamente incorrecta.</td>
         </tr>
         <tr>
-            <td>Red 4 (12 hosts)</td>
-            <td>12(+2)  </td>
-            <td> 2<sup>4</sup> = 16 |  /28</td>
-            <td>80.0.1.96</td>
-            <td>255.255.255.240</td>
-            <td>80.0.1.111</td>
+            <td>4. Funciones hash e integridad de datos</td>
+            <td>2</td>
+            <td>Explica claramente el papel de las funciones hash en la integridad de datos y proporciona un ejemplo práctico adecuado.</td>
+            <td>Explica correctamente las funciones hash, pero el ejemplo es poco claro o incompleto.</td>
+            <td>Menciona las funciones hash, pero con errores o sin un ejemplo claro.</td>
+            <td>La respuesta es vaga o presenta conceptos incorrectos.</td>
+            <td>No responde o la respuesta es completamente incorrecta.</td>
+        </tr>
+        <tr>
+            <td>5. Selección de respuestas correctas</td>
+            <td>2</td>
+            <td>Todas las respuestas son correctas.</td>
+            <td>7-8 respuestas correctas.</td>
+            <td>5-6 respuestas correctas.</td>
+            <td>3-4 respuestas correctas.</td>
+            <td>Menos de 3 respuestas correctas o no responde.</td>
         </tr>
     </table>
-
-
 </body>
 </html>
