@@ -287,15 +287,7 @@ sudo systemctl restart apache2
             <p>✅ Ahora, los usuarios externos pueden acceder al servidor web de la DMZ ingresando la IP pública de Endian.</p>
             <img src="img/redireccion.png" alt="Imagen de Firewall > Port Forwarding">
             <p><strong>🔹 Verificar conexión</strong></p>
-            <pre>
-# Comprobar conectividad con los repositorios de Debian
-curl -I http://deb.debian.org
-# Si responde con "HTTP/1.1 200 OK", la conexión funciona.
 
-# Comprobar acceso desde la zona ROJA (LAN) al servidor DMZ
-curl -I http://192.168.2.100
-# Si responde con "HTTP/1.1 200 OK", el acceso está permitido.
-            </pre>
         </div>
     </div>
 </div>
