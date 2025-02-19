@@ -22,4 +22,4 @@ curl -I http://$PUBLIC_WEB
 echo "[+] Comprobando que la LAN no es accesible desde la WAN..."
 ping -c 4 $LAN_TEST_IP && echo "[!] Advertencia: Acceso a LAN permitido" || echo "[✔] Acceso a LAN bloqueado (correcto)"
 
-echo "[+] Pruebas finalizadas."
+echo "[+] Pruebas finalizadas." 
