@@ -237,7 +237,7 @@ iface enp0s3 inet static
                 </li>
                 <li>Guardar los cambios y aplicar la configuración.</li>
             </ol>
-            
+            <img src="img/naranja_accede_rojo.png" alt="Nueva regla para permitir el tráfico de salida">
             <p><strong>🔹 Agregar repositorios de Debian</strong></p>
             <pre>
 sudo nano /etc/apt/sources.list
@@ -265,23 +265,27 @@ echo "&lt;h1&gt;Servidor DMZ funcionando&lt;/h1&gt;" | sudo tee /var/www/html/in
 sudo systemctl restart apache2
             </pre>
             
-            <p><strong>🔹 Permitir acceso desde la zona ROJA (LAN) al DMZ</strong></p>
+            <h4>🔹 Configurar Port Forwarding (DNAT) en Endian para acceso externo</h4>
+            <p>Para permitir acceso desde Internet al servidor <strong>Public_Web</strong> en la DMZ, debemos configurar Port Forwarding en Endian.</p>
             <ol>
                 <li>Acceder a la interfaz web de Endian Firewall.</li>
-                <li>Ir a <strong>Firewall > Tráfico de entrada</strong>.</li>
+                <li>Ir a <strong>Firewall > Port Forwarding</strong>.</li>
                 <li>Hacer clic en <strong>"Añadir una nueva regla"</strong>.</li>
                 <li>Configurar los siguientes valores:
                     <ul>
-                        <li><strong>Origen:</strong> Zona ROJA (LAN)</li>
-                        <li><strong>Destino:</strong> IP del servidor DMZ (192.168.2.100)</li>
-                        <li><strong>Servicio:</strong> HTTP (80) y HTTPS (443)</li>
-                        <li><strong>Protocolo:</strong> TCP</li>
-                        <li><strong>Acción:</strong> Permitir</li>
+                        <li><strong>Origen:</strong> Zona ROJA (Internet).</li>
+                        <li><strong>Destino:</strong> IP pública de Endian.</li>
+                        <li><strong>Servicio:</strong> HTTP (80) y HTTPS (443).</li>
+                        <li><strong>Protocolo:</strong> TCP.</li>
+                        <li><strong>Redirección a:</strong> `192.168.2.100` (servidor en la DMZ).</li>
+                        <li><strong>Puerto de redirección:</strong> 80 y 443.</li>
+                        <li><strong>Acción:</strong> Permitir.</li>
                     </ul>
                 </li>
                 <li>Guardar los cambios y aplicar la configuración.</li>
             </ol>
-            
+            <p>✅ Ahora, los usuarios externos pueden acceder al servidor web de la DMZ ingresando la IP pública de Endian.</p>
+            <img src="img/redireccion.png" alt="Imagen de Firewall > Port Forwarding">
             <p><strong>🔹 Verificar conexión</strong></p>
             <pre>
 # Comprobar conectividad con los repositorios de Debian
