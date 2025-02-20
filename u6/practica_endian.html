@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Práctica: Configuración de Endian con Zona Verde y Naranja</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+        code{
+            color: purple;
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2>Práctica: Configuración de Endian con Zona Verde y Naranja</h2>
+            </div>
+            <div class="card-body">
+                <h4>Descripción</h4>
+                <p>El objetivo de esta práctica es configurar un firewall <strong>Endian</strong> con una estructura de red segmentada en tres zonas: <strong>Zona Verde</strong> (red interna), <strong>Zona Naranja</strong> (DMZ) y <strong>Zona Roja</strong> (Internet). Los alumnos deberán documentar todo el proceso en un <strong>manual técnico</strong> con capturas de pantalla y explicaciones detalladas.</p>
+                
+                <h4>Objetivos</h4>
+                <p>Es fundamental asegurarse de que las interfaces de las máquinas virtuales estén correctamente configuradas para garantizar la conectividad y el correcto funcionamiento del firewall.</p>
+                <ul>
+                    <li>Instalar y configurar Endian en una máquina virtual o física.</li>
+                    <li>Configurar las interfaces de red: Zona Verde (LAN), Zona Naranja (DMZ) y Zona Roja (Internet).</li>
+                    <li>Establecer reglas de firewall adecuadas para garantizar la seguridad.</li>
+                    <li>Implementar un servidor Apache básico en la DMZ y probar la conectividad.</li>
+                    <li>Configurar Endian Firewall para permitir tráfico HTTP/HTTPS.</li>
+                    <li>Configurar Port Forwarding (DNAT) en Endian para acceso externo.</li>
+                    <li>Configurar NAT para permitir que una IP de la Zona Roja redireccione a la DMZ.</li>
+                    <li>Documentar el proceso en un manual detallado.</li>
+                </ul>
+
+                <h4>Configuración del Servidor Apache en la DMZ</h4>
+                <p>El servidor Apache deberá estar instalado en la DMZ y configurado para servir una página de prueba accesible desde la Zona Verde pero protegida de accesos externos no autorizados.</p>
+                <ol>
+                    <li>Instalar Apache en la máquina de la DMZ: <code>sudo apt update && sudo apt install apache2 -y</code></li>
+                    <li>Asegurar que el servicio está activo: <code>sudo systemctl start apache2</code></li>
+                    <li>Verificar la accesibilidad mediante el navegador: <code>http://IP-DMZ</code></li>
+                    <li>Configurar reglas de firewall en Endian para permitir tráfico solo desde la Zona Verde.</li>
+                </ol>
+                
+                <h4>Configuración de Port Forwarding (DNAT) en Endian</h4>
+                <p>Para permitir acceso externo a servicios HTTP/HTTPS en la DMZ, se debe configurar DNAT en Endian:</p>
+                <ol>
+                    <li>Acceder a la interfaz web de Endian.</li>
+                    <li>Navegar a la sección <strong>Firewall → Port Forwarding</strong>.</li>
+                    <li>Agregar una nueva regla con los siguientes parámetros:</li>
+                    <ul>
+                        <li><strong>Protocolo:</strong> TCP</li>
+                        <li><strong>Puertos de origen:</strong> 80 (HTTP), 443 (HTTPS)</li>
+                        <li><strong>IP de destino:</strong> Dirección IP del servidor en la DMZ</li>
+                        <li><strong>Puerto de destino:</strong> 80, 443</li>
+                    </ul>
+                    <li>Guardar los cambios y aplicar las reglas.</li>
+                    <li>Probar la conectividad desde una red externa.</li>
+                </ol>
+                
+                <h4>Configuración de NAT en Endian para la Zona Roja</h4>
+                <p>Para permitir que una IP de la Zona Roja (Internet) pueda redirigir tráfico hacia la DMZ, se deben seguir los siguientes pasos:</p>
+                <ol>
+                    <li>Acceder a la interfaz web de Endian.</li>
+                    <li>Ir a <strong>Firewall → NAT</strong>.</li>
+                    <li>Crear una nueva regla de NAT con los siguientes parámetros:</li>
+                    <ul>
+                        <li><strong>Protocolo:</strong> TCP</li>
+                        <li><strong>IP de origen:</strong> Dirección IP específica de la Zona Roja</li>
+                        <li><strong>IP de destino:</strong> Dirección IP del servidor en la DMZ</li>
+                        <li><strong>Puertos:</strong> 80, 443</li>
+                    </ul>
+                    <li>Aplicar la configuración y realizar pruebas de conectividad.</li>
+                </ol>
+
+                <h4>Entrega</h4>
+                <p>El manual deberá entregarse en formato <strong>PDF o Markdown (.md)</strong> y subirse a la plataforma establecida por el profesor.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
