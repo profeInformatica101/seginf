@@ -49,48 +49,77 @@
                     <li>Documentar el proceso en un manual detallado.</li>
                 </ul>
 
-                <h4>Configuración del Servidor Apache en la DMZ</h4>
-                <p>El servidor Apache deberá estar instalado en la DMZ y configurado para servir una página de prueba accesible desde la Zona Verde pero protegida de accesos externos no autorizados.</p>
-                <ol>
-                    <li>Instalar Apache en la máquina de la DMZ: <code>sudo apt update && sudo apt install apache2 -y</code></li>
-                    <li>Asegurar que el servicio está activo: <code>sudo systemctl start apache2</code></li>
-                    <li>Verificar la accesibilidad mediante el navegador: <code>http://IP-DMZ</code></li>
-                    <li>Configurar reglas de firewall en Endian para permitir tráfico solo desde la Zona Verde.</li>
-                </ol>
-                
-                <h4>Configuración de Port Forwarding (DNAT) en Endian</h4>
-                <p>Para permitir acceso externo a servicios HTTP/HTTPS en la DMZ, se debe configurar DNAT en Endian:</p>
-                <ol>
-                    <li>Acceder a la interfaz web de Endian.</li>
-                    <li>Navegar a la sección <strong>Firewall → Port Forwarding</strong>.</li>
-                    <li>Agregar una nueva regla con los siguientes parámetros:</li>
-                    <ul>
-                        <li><strong>Protocolo:</strong> TCP</li>
-                        <li><strong>Puertos de origen:</strong> 80 (HTTP), 443 (HTTPS)</li>
-                        <li><strong>IP de destino:</strong> Dirección IP del servidor en la DMZ</li>
-                        <li><strong>Puerto de destino:</strong> 80, 443</li>
-                    </ul>
-                    <li>Guardar los cambios y aplicar las reglas.</li>
-                    <li>Probar la conectividad desde una red externa.</li>
-                </ol>
-                
-                <h4>Configuración de NAT en Endian para la Zona Roja</h4>
-                <p>Para permitir que una IP de la Zona Roja (Internet) pueda redirigir tráfico hacia la DMZ, se deben seguir los siguientes pasos:</p>
-                <ol>
-                    <li>Acceder a la interfaz web de Endian.</li>
-                    <li>Ir a <strong>Firewall → NAT</strong>.</li>
-                    <li>Crear una nueva regla de NAT con los siguientes parámetros:</li>
-                    <ul>
-                        <li><strong>Protocolo:</strong> TCP</li>
-                        <li><strong>IP de origen:</strong> Dirección IP específica de la Zona Roja</li>
-                        <li><strong>IP de destino:</strong> Dirección IP del servidor en la DMZ</li>
-                        <li><strong>Puertos:</strong> 80, 443</li>
-                    </ul>
-                    <li>Aplicar la configuración y realizar pruebas de conectividad.</li>
-                </ol>
-
                 <h4>Entrega</h4>
-                <p>El manual deberá entregarse en formato <strong>PDF o Markdown (.md)</strong> y subirse a la plataforma establecida por el profesor.</p>
+                <p>El manual deberá entregarse en formato <strong>PDF</strong> y subirse a la plataforma establecida por el profesor.</p>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header text-center">
+                <h3>Rúbrica de Evaluación</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>Criterio</th>
+                            <th>Descripción</th>
+                            <th>Puntuación Máxima</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Estructura y Presentación del Manual</td>
+                            <td>El documento tiene una estructura clara (portada, índice, introducción, desarrollo, conclusiones). Uso correcto de formato, imágenes y numeración de secciones.</td>
+                            <td>1 punto</td>
+                        </tr>
+                        <tr>
+                            <td>Instalación y Configuración de Endian</td>
+                            <td>Explica paso a paso la instalación de Endian con capturas de pantalla y configuración inicial correctamente documentada.</td>
+                            <td>1 punto</td>
+                        </tr>
+                        <tr>
+                            <td>Configuración de la DMZ (Naranja) y Red Interna (Verde)</td>
+                            <td>Se configuran correctamente ambas redes con direcciones IP adecuadas y su funcionalidad está explicada con justificación.</td>
+                            <td>1 punto</td>
+                        </tr>
+                        <tr>
+                            <td>Configuración de Reglas de Firewall y Seguridad</td>
+                            <td>Creación de reglas que permiten la segmentación correcta de la red, bloqueando accesos no autorizados y permitiendo tráfico seguro.</td>
+                            <td>1 punto</td>
+                        </tr>
+                        <tr>
+                            <td>Implementación de Servicios en la DMZ</td>
+                            <td>Se configura correctamente un servicio en la DMZ (ej. servidor web o SSH) con accesos bien definidos.</td>
+                            <td>1 punto</td>
+                        </tr>
+                        <tr>
+                            <td>Pruebas de Conectividad y Seguridad</td>
+                            <td>Se realizan pruebas de conectividad. Opcional usar herramientas como <code>nmap</code> o <code>Wireshark</code> y analizar los resultados.</td>
+                            <td>1 punto</td>
+                        </tr>
+                        <tr>
+                            <td>Explicación Técnica y Justificación</td>
+                            <td>Cada configuración está explicada con argumentos técnicos sólidos y capturas de pantalla. No solo describe, sino que justifica cada paso.</td>
+                            <td>1 punto</td>
+                        </tr>
+                        <tr>
+                            <td>Calidad de Redacción y Ortografía</td>
+                            <td>Texto bien redactado, sin errores gramaticales ni ortográficos. Explicaciones claras y precisas.</td>
+                            <td>1 punto</td>
+                        </tr>
+                        <tr>
+                            <td>Conclusiones y Análisis</td>
+                            <td>Se incluyen conclusiones bien argumentadas, evaluando el impacto de la configuración y posibles mejoras.</td>
+                            <td>1 punto</td>
+                        </tr>
+                        <tr>
+                            <td>Originalidad y Trabajo Propio</td>
+                            <td>El manual muestra un esfuerzo personal, sin copia literal de fuentes externas. Uso de ejemplos personalizados o mejoras en la configuración.</td>
+                            <td>1 punto</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
