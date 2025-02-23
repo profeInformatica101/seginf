@@ -81,12 +81,7 @@
         <div class="card-body">
             <a href="zonasRed.html">Enlace</a>
         </div>
-        <div class="card-header">
-            <h5>📌 CyberMap 📌</h5>
-        </div>
-        <div class="card-body">
-            <a href="https://cybermap.kaspersky.com/es">Enlace</a>
-        </div>
+        
 
         <div class="card-header">
             <h5>📊 Tabla Resumen de Configuración</h5>
@@ -176,7 +171,7 @@
             <td><code>nic4 (Salida a Internet - NAT)</code></td>
             <td>NAT</td>
             <td>
-                Simula una conexión externa a Internet. Ideal para realizar ataques de RedTeam y evaluar la respuesta de seguridad.
+                Simula una conexión externa a Internet. Ideal para realizar ataques de <span class="redteam">Red Team</span>  y evaluar la respuesta de seguridad.
             </td>
             <td>usuario</td>
             <td>S3gur@2024?</td>
@@ -193,7 +188,7 @@
             <td><code>nic3</code></td>
             <td>Host-Only (vboxnet3)</td>
             <td>
-                Sensor de seguridad que analiza el tráfico de la red interna y DMZ. Fundamental para las tareas de BlueTeam en la defensa y respuesta a incidentes.
+                Sensor de seguridad que analiza el tráfico de la red interna y DMZ. Fundamental para las tareas de  <span class="blueteam">Blue Team</span> en la defensa y respuesta a incidentes.
             </td>
             <td>usuario</td>
             <td>S3gur@2024?</td>
@@ -417,33 +412,54 @@ ping 8.8.8.8
     </div>
 </div>
 
-<!-- Paso 6: Configurar Security Onion y Pruebas BlueTeam -->
+<!-- Paso 6: Configurar Security Onion y Pruebas <span class="blueteam">BlueTeam</span> -->
 <div class="card step-card">
     <div class="card-header" data-bs-toggle="collapse" href="#step6">
-        <h5>6️⃣ Configurar Security Onion y Pruebas <span class="blueteam">BlueTeam</span> </h5>
+        <h5>6️⃣ Configurar Security Onion y Pruebas <span class="blueteam">BlueTeam</span></h5>
     </div>
     <div id="step6" class="collapse">
         <div class="card-body">
             <p>
-                Para <strong>Security Onion</strong>, asigne un disco de al menos 100 GB y configure su red en la zona azul, por ejemplo, con IP <code>192.168.4.100</code> y gateway <code>192.168.4.1</code>. Esta máquina actuará como sensor <span class="blueteam">BlueTeam</span> encargado del monitoreo y la detección de intrusiones.
+                Para <strong>Security Onion</strong>, asigne un disco de al menos 100 GB y configure su red en la zona azul. Se recomienda asignarle una IP estática, por ejemplo, <code>192.168.4.100</code> con gateway <code>192.168.4.1</code>.
             </p>
             <p>
-                Una vez instalado, realice las siguientes pruebas profesionales:
+                Durante la instalación, seleccione el rol de <strong>Manager Server</strong> (por ejemplo, denominándolo <code>SecurityOnion-Manager</code>), que actuará como el nodo central de monitoreo para el equipo <span class="blueteam">BlueTeam</span>.
             </p>
-            <ul>
+            <p><strong>Pasos para configurarlo adecuadamente:</strong></p>
+            <ol>
                 <li>
-                    <strong>Verificación de Captura de Tráfico:</strong> Asegúrese de que Security Onion capture el tráfico en modo promiscuo y que se refleje en sus dashboards (por ejemplo, en Kibana).
+                    Arranque la VM de Security Onion e inicie el instalador. Cuando se le solicite, seleccione la opción para instalar en modo <strong>Manager Server</strong> (o "Sensor Manager", según la versión).
                 </li>
                 <li>
-                    <strong>Análisis de Logs y Alertas:</strong> Revise los registros de Suricata, Zeek y otros sensores; simule ataques para verificar que se generen alertas y que los eventos se correlacionen adecuadamente.
+                    Durante la configuración de red, asigne la IP estática <code>192.168.4.100</code> y configure el gateway como <code>192.168.4.1</code> en la interfaz correspondiente (idealmente en una red Host-Only destinada a la zona azul).
                 </li>
                 <li>
-                    <strong>Pruebas de Correlación y Reporte:</strong> Utilice las herramientas de análisis integradas para correlacionar eventos y generar reportes que respalden la respuesta a incidentes.
+                    Configure la cuenta de administrador con credenciales seguras y finalice el proceso de instalación.
                 </li>
                 <li>
-                    <strong>Validación de Integración:</strong> Verifique que los datos de Security Onion se integren correctamente con su SIEM o sistema de análisis centralizado.
+                    Una vez instalado, reinicie la VM y acceda al panel de administración web (por ejemplo, mediante <code>https://192.168.4.100</code>) para confirmar que servicios como Suricata, Zeek, Kibana y ElasticSearch estén funcionando.
                 </li>
-            </ul>
+                <li>
+                    Realice las siguientes pruebas profesionales:
+                    <ul>
+                        <li>
+                            <strong>Verificación de Captura de Tráfico:</strong> Confirme que la interfaz opera en modo promiscuo y captura el tráfico esperado.
+                        </li>
+                        <li>
+                            <strong>Análisis de Logs y Alertas:</strong> Simule ataques (por ejemplo, desde la máquina Parrot RedTeam) y verifique que se generen alertas y que los registros de Suricata y Zeek se actualicen.
+                        </li>
+                        <li>
+                            <strong>Correlación y Reporte:</strong> Utilice las herramientas integradas para correlacionar eventos y generar reportes de incidentes.
+                        </li>
+                        <li>
+                            <strong>Validación de Integración:</strong> Si se utiliza un SIEM o sistema centralizado, compruebe que los datos de Security Onion se integren correctamente.
+                        </li>
+                    </ul>
+                </li>
+            </ol>
+            <p>
+                Con estos pasos, Security Onion se configurará como el Manager Server de su <span class="blueteam">BlueTeam</span>, proporcionando visibilidad centralizada y capacidad de respuesta ante incidentes.
+            </p>
         </div>
     </div>
 </div>
