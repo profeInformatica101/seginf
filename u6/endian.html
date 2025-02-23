@@ -14,6 +14,44 @@
    code{
     color:brown;
    }
+   /* Estilo para BlueTeam */
+.blueteam {
+  color: #007bff; /* Azul principal */
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+}
+
+.blueteam::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="%23007bff" stroke="%230055aa" stroke-width="2"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* Estilo para RedTeam */
+.redteam {
+  color: #dc3545; /* Rojo principal */
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+}
+
+.redteam::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="%23dc3545" stroke="%23a71d2a" stroke-width="2"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
    </style>
 </head>
 <body>
@@ -70,7 +108,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Endian UTM</strong></td>
+                        <td><strong>Endian UTM [Firewall]</strong></td>
                         <td>
                             192.168.1.1 (LAN - Green) <br> 
                             192.168.2.1 (DMZ - Orange) <br> 
@@ -102,7 +140,7 @@
                         <td>endian</td>
                     </tr>
                     <tr>
-                        <td><strong>PC1_LAN</strong></td>
+                        <td><strong>PC1_LAN (Linux Mint OS)</strong></td>
                         <td>192.168.1.100</td>
                         <td>192.168.1.1</td>
                         <td>Cliente LAN</td>
@@ -113,7 +151,7 @@
                         <td>S3gur@2024?</td>
                     </tr>
                     <tr>
-                        <td><strong>Public_Web</strong></td>
+                        <td><strong>Public_Web (Debian Server OS)</strong></td>
                         <td>192.168.2.100</td>
                         <td>192.168.2.1</td>
                         <td>Servidor Web DMZ</td>
@@ -126,22 +164,42 @@
                         <td>usuario</td>
                         <td>S3gur@2024?</td>
                     </tr>
-                    <tr>
-                        <td><strong>PCINTERNET</strong></td>
-                        <td>DHCP</td>
-                        <td>-</td>
-                        <td>Equipo externo (WAN Interna)</td>
-                        <td><code>nic3</code></td>
-                        <td>Host-Only (vboxnet2)</td>
-                        <td>
-                            Simula una conexión externa en la WAN interna. 
-                            <br><strong>Nota:</strong> No tiene acceso directo a Internet, solo puede interactuar con Endian UTM.
-                        </td>
-                        <td>usuario</td>
-                        <td>S3gur@2024?</td>
-                    </tr>
-                </tbody>
-            </table>
+          <!-- Fila 4: Parrot sobre RedTeam -->
+          <tr>
+            <td><strong>PCINTERNET (Parrot OS)</strong></td>
+            <td>DHCP</td>
+            <td>-</td>
+            <td>
+                <strong>RedTeam</strong><br>
+                Equipo externo para pruebas de intrusión y evaluación de seguridad.
+            </td>
+            <td><code>nic4 (Salida a Internet - NAT)</code></td>
+            <td>NAT</td>
+            <td>
+                Simula una conexión externa a Internet. Ideal para realizar ataques de RedTeam y evaluar la respuesta de seguridad.
+            </td>
+            <td>usuario</td>
+            <td>S3gur@2024?</td>
+        </tr>
+        <!-- Fila 5: Onion sobre BlueTeam -->
+        <tr>
+            <td><strong>MONITOR (Security Onion)</strong></td>
+            <td>192.168.4.100</td>
+            <td>192.168.4.1</td>
+            <td>
+                <strong>BlueTeam</strong><br>
+                Plataforma de monitoreo y detección de intrusiones.
+            </td>
+            <td><code>nic3</code></td>
+            <td>Host-Only (vboxnet3)</td>
+            <td>
+                Sensor de seguridad que analiza el tráfico de la red interna y DMZ. Fundamental para las tareas de BlueTeam en la defensa y respuesta a incidentes.
+            </td>
+            <td>usuario</td>
+            <td>S3gur@2024?</td>
+        </tr>
+    </tbody>
+</table>
             
         </div>
     </div>
@@ -328,27 +386,67 @@ ping 8.8.8.8
         </div>
     </div>
 
-    <!-- Paso 5: Configurar PCINTERNET y realizar pruebas desde WAN -->
-    <div class="card step-card">
-        <div class="card-header" data-bs-toggle="collapse" href="#step5">
-            <h5>5️⃣ Configurar PCINTERNET y Pruebas desde WAN</h5>
-        </div>
-        <div id="step5" class="collapse">
-            <div class="card-body">
-                <p>
-                    Para <strong>PCINTERNET</strong> (equipo externo con interfaz WAN), se utiliza <strong>DHCP</strong> para obtener la IP.
-                    Tras instalar un sistema operativo base (como Debian), verifique que la interfaz reciba correctamente la configuración por DHCP.
-                </p>
-                <h6>Pruebas de validación WAN:</h6>
-                <ul>
-                    <li><strong>Ping</strong> hacia la IP pública/RED de Endian para comprobar conectividad.</li>
-                    <li>Si se configuran reglas de <strong>NAT/Port Forward</strong> en Endian, verificar acceso a la DMZ (192.168.2.100) desde PCINTERNET.</li>
-                    <li>Probar acceso a la página web de <strong>Public_Web</strong> ingresando la IP pública o dominio configurado.</li>
-                    <li>Asegurarse de que la LAN (192.168.1.x) sea inaccesible desde la WAN, salvo las reglas explícitamente permitidas.</li>
-                </ul>
-            </div>
+<!-- Paso 5: Configurar Parrot en Internet y Pruebas RedTeam -->
+<div class="card step-card">
+    <div class="card-header" data-bs-toggle="collapse" href="#step5">
+        <h5>5️⃣ Configurar Parrot en Internet y Pruebas <span class="redteam">Red Team</span> </h5>
+    </div>
+    <div id="step5" class="collapse">
+        <div class="card-body">
+            <p>
+                Para <strong>Parrot en Internet</strong>, instale Parrot OS y configure la interfaz NAT para que obtenga la IP vía DHCP. Esta máquina funcionará como plataforma de pruebas <span class="redteam">Red Team</span> .
+            </p>
+            <p>
+                Una vez instalado, realice las siguientes pruebas profesionales:
+            </p>
+            <ul>
+                <li>
+                    <strong>Escaneo de Puertos y Vulnerabilidades:</strong> Use herramientas como <code>nmap</code>, <code>OpenVAS</code> o <code>Nessus</code> para identificar puertos abiertos y posibles vulnerabilidades en los sistemas objetivo.
+                </li>
+                <li>
+                    <strong>Pruebas de Explotación:</strong> Emplee frameworks como <code>Metasploit</code> para simular ataques y evaluar la seguridad de la red.
+                </li>
+                <li>
+                    <strong>Análisis de Tráfico:</strong> Utilice herramientas integradas en Parrot OS (por ejemplo, <code>Wireshark</code> o <code>tcpdump</code>) para capturar y analizar el tráfico, comprobando la respuesta del entorno a las pruebas.
+                </li>
+                <li>
+                    <strong>Generación de Reportes:</strong> Documente los hallazgos y genere informes de seguridad para respaldar las evaluaciones.
+                </li>
+            </ul>
         </div>
     </div>
+</div>
+
+<!-- Paso 6: Configurar Security Onion y Pruebas BlueTeam -->
+<div class="card step-card">
+    <div class="card-header" data-bs-toggle="collapse" href="#step6">
+        <h5>6️⃣ Configurar Security Onion y Pruebas <span class="blueteam">BlueTeam</span> </h5>
+    </div>
+    <div id="step6" class="collapse">
+        <div class="card-body">
+            <p>
+                Para <strong>Security Onion</strong>, asigne un disco de al menos 100 GB y configure su red en la zona azul, por ejemplo, con IP <code>192.168.4.100</code> y gateway <code>192.168.4.1</code>. Esta máquina actuará como sensor <span class="blueteam">BlueTeam</span> encargado del monitoreo y la detección de intrusiones.
+            </p>
+            <p>
+                Una vez instalado, realice las siguientes pruebas profesionales:
+            </p>
+            <ul>
+                <li>
+                    <strong>Verificación de Captura de Tráfico:</strong> Asegúrese de que Security Onion capture el tráfico en modo promiscuo y que se refleje en sus dashboards (por ejemplo, en Kibana).
+                </li>
+                <li>
+                    <strong>Análisis de Logs y Alertas:</strong> Revise los registros de Suricata, Zeek y otros sensores; simule ataques para verificar que se generen alertas y que los eventos se correlacionen adecuadamente.
+                </li>
+                <li>
+                    <strong>Pruebas de Correlación y Reporte:</strong> Utilice las herramientas de análisis integradas para correlacionar eventos y generar reportes que respalden la respuesta a incidentes.
+                </li>
+                <li>
+                    <strong>Validación de Integración:</strong> Verifique que los datos de Security Onion se integren correctamente con su SIEM o sistema de análisis centralizado.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
      <!-- Navegación de pestañas (Resumen y Comandos) -->
      <ul class="nav nav-tabs mt-4" id="myTab" role="tablist">
