@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración del Firewall en Windows Server</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: Consolas, monospace;
+            font-size: 14px;
+        }
+        ul {
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📌 Configuración del Firewall en Windows Server</h1>
+    
+    <h2>1️⃣ Ver las reglas del Firewall</h2>
+    <p>Para visualizar las reglas actuales del Firewall, usa:</p>
+    <pre><code>Get-NetFirewallRule -DisplayGroup "File and Printer Sharing"</code></pre>
+    <p>Para buscar específicamente reglas que afecten a ICMP (ping):</p>
+    <pre><code>Get-NetFirewallRule | Where-Object { $_.DisplayName -like "*ICMP*" }</code></pre>
+
+    <h2>2️⃣ Permitir tráfico ICMP (Ping) desde Endian</h2>
+    <p>Si el servidor Windows está en la DMZ y debe recibir pings desde Endian:</p>
+    <pre><code>New-NetFirewallRule -DisplayName "Allow ICMP from Endian" -Direction Inbound -Protocol ICMPv4 -RemoteAddress 192.168.2.0/24 -Action Allow</code></pre>
+    <p>Para permitir pings desde cualquier red:</p>
+    <pre><code>New-NetFirewallRule -DisplayName "Allow ICMP" -Direction Inbound -Protocol ICMPv4 -Action Allow</code></pre>
+
+    <h2>3️⃣ Permitir acceso a Windows Server desde Internet</h2>
+    <h3>🔹 Permitir acceso RDP (Escritorio Remoto)</h3>
+    <p>Para permitir conexiones remotas a través de RDP (puerto 3389):</p>
+    <pre><code>New-NetFirewallRule -DisplayName "Allow RDP" -Direction Inbound -Protocol TCP -LocalPort 3389 -Action Allow</code></pre>
+
+    <h3>🔹 Permitir tráfico HTTP y HTTPS</h3>
+    <p>Para permitir tráfico web:</p>
+    <pre><code>New-NetFirewallRule -DisplayName "Allow HTTP" -Direction Inbound -Protocol TCP -LocalPort 80 -Action Allow</code></pre>
+    <pre><code>New-NetFirewallRule -DisplayName "Allow HTTPS" -Direction Inbound -Protocol TCP -LocalPort 443 -Action Allow</code></pre>
+
+    <h2>4️⃣ Comprobar reglas activas</h2>
+    <p>Para verificar que las reglas se aplicaron correctamente:</p>
+    <pre><code>Get-NetFirewallRule -DisplayName "Allow ICMP*"</code></pre>
+    <p>Para ver todas las reglas activas:</p>
+    <pre><code>Get-NetFirewallRule | Where-Object { $_.Enabled -eq "True" }</code></pre>
+
+    <h2>5️⃣ Reiniciar el servicio del Firewall</h2>
+    <p>Si realizaste cambios y deseas reiniciar el servicio del firewall:</p>
+    <pre><code>Restart-Service mpssvc</code></pre>
+
+    <h2>6️⃣ Habilitar acceso RDP desde Internet</h2>
+    <h3>🔹 Habilitar RDP en el sistema</h3>
+    <p>Si RDP no está habilitado, ejecuta:</p>
+    <pre><code>Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0</code></pre>
+
+    <h3>🔹 Permitir RDP en el Firewall</h3>
+    <p>Para asegurarte de que el firewall permite RDP:</p>
+    <pre><code>Enable-NetFirewallRule -DisplayGroup "Remote Desktop"</code></pre>
+    <pre><code>New-NetFirewallRule -DisplayName "Allow RDP from Internet" -Direction Inbound -Protocol TCP -LocalPort 3389 -Action Allow</code></pre>
+
+    <h2>🔎 Conclusión</h2>
+    <p>Con estos comandos lograrás:</p>
+    <ul>
+        <li>✅ Permitir ICMP (ping) desde Endian.</li>
+        <li>✅ Habilitar acceso HTTP/HTTPS si el servidor web está en la DMZ.</li>
+        <li>✅ Configurar y revisar reglas del firewall para asegurar conectividad remota.</li>
+    </ul>
+</body>
+</html>
