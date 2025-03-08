@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPTables - Estados y Configuración</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        pre {
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            background: #444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .copy-btn:hover {
+            background: #666;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">IPTables</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+               
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#inicio">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#estados">Estados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#reglas">Reglas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ejercicios">Ejercicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#recursos">Recursos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="container mt-5">
+        <h1 class="text-center text-primary">IPTables - Estados y Configuración</h1>
+        <p class="lead text-center">Aprende a configurar y gestionar reglas de IPTables en un entorno controlado.</p>
+<!-- Sección de Reglas de IPTables -->
+<div class="card shadow mb-4">
+    <div class="card-header bg-info text-white">Reglas de IPTables</div>
+    <div class="card-body">
+        <p>Las reglas de IPTables se organizan en <strong>cadenas</strong> (chains) que definen cómo se maneja el tráfico. Las cadenas principales son:</p>
+        <ul>
+            <li><strong>INPUT:</strong> Para tráfico entrante al servidor.</li>
+            <li><strong>OUTPUT:</strong> Para tráfico saliente del servidor.</li>
+            <li><strong>FORWARD:</strong> Para tráfico que se reenvía a través del servidor.</li>
+        </ul>
+        <p>Las reglas se aplican en orden, y pueden realizar las siguientes acciones:</p>
+        <ul>
+            <li><strong>ACCEPT:</strong> Permitir el tráfico.</li>
+            <li><strong>DROP:</strong> Descartar el tráfico sin notificar al remitente.</li>
+            <li><strong>REJECT:</strong> Rechazar el tráfico y notificar al remitente.</li>
+            <li><strong>LOG:</strong> Registrar el tráfico en los logs.</li>
+        </ul>
+        <p>Ejemplo de reglas comunes:</p>
+        <pre class="bg-dark text-white p-3 rounded">
+# Permitir tráfico SSH (puerto 22)
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+# Permitir tráfico HTTP (puerto 80) y HTTPS (puerto 443)
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+
+# Bloquear todo el tráfico entrante no permitido
+iptables -A INPUT -j DROP
+
+# Habilitar NAT para una red interna
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+        </pre>
+        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+    </div>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header bg-info text-white">Tipos de Reglas en IPTables</div>
+    <div class="card-body">
+        <p>IPTables maneja diferentes reglas organizadas en <strong>tablas</strong> y <strong>cadenas</strong>. A continuación, se presentan los principales tipos de reglas:</p>
+        <ul>
+            <li><strong>Reglas de Filtrado (filter):</strong> Controlan el tráfico permitido o bloqueado.</li>
+            <li><strong>Reglas de NAT (nat):</strong> Modifican direcciones IP y puertos en los paquetes.</li>
+            <li><strong>Reglas de Mangle (mangle):</strong> Alteran bits en los paquetes para QoS o routing avanzado.</li>
+            <li><strong>Reglas de Raw (raw):</strong> Excluyen paquetes del seguimiento de conexiones.</li>
+            <li><strong>Reglas de Seguridad (security):</strong> Aplican políticas de seguridad reforzada.</li>
+        </ul>
+        <h5 class="mt-3">Ejemplo de Reglas:</h5>
+        <pre class="bg-dark text-white p-3 rounded">
+# Reglas de filtrado
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -p tcp --dport 22 -j DROP
+
+# Reglas de NAT
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+# Reglas de Mangle
+iptables -t mangle -A PREROUTING -p tcp --dport 443 -j TOS --set-tos 0x10
+        </pre>
+        <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+    </div>
+</div>
+
+        <!-- Sección de Estados -->
+        <div id="estados" class="card shadow mb-4">
+            <div class="card-header bg-primary text-white">Estados en IPTables</div>
+            <div class="card-body">
+                <img src="img/estadosIPTable.png" alt="Imagen estados iptable">
+
+                <ul>
+                    <li><strong>NEW:</strong> Indica que el paquete es el inicio de una nueva conexión.</li>
+                    <li><strong>ESTABLISHED:</strong> Paquete pertenece a una conexión ya establecida.</li>
+                    <li><strong>RELATED:</strong> Conexión relacionada con otra ya existente.</li>
+                    <li><strong>INVALID:</strong> Paquete desconocido o mal formado.</li>
+                    <li><strong>UNTRACKED:</strong> Excluido del seguimiento de conexiones.</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 id="ejercicios" class="text-center text-secondary">Ejercicios Prácticos con Soluciones en IPTables</h3>
+        <p class="text-center">Estos ejercicios están diseñados para aplicarse en las máquinas virtuales creadas, especialmente en <strong>Endian_UTM</strong> (el firewall) y <strong>Public_Web</strong> (el servidor en la DMZ).</p>
+        <div class="accordion" id="accordionExercises">
+            <!-- Ejercicio 1 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#exercise1">Ejercicio 1: Configurar un Firewall Básico en Endian_UTM</button>
+                </h2>
+                <div id="exercise1" class="accordion-collapse collapse show" data-bs-parent="#accordionExercises">
+                    <div class="accordion-body">
+                        <p><strong>Objetivo:</strong> Configurar reglas básicas de IPTables para permitir tráfico SSH y bloquear el resto.</p>
+                        <pre class="bg-dark text-white p-3 rounded">
+        # Permitir tráfico SSH (puerto 22) desde la red GREEN (192.168.1.0/24)
+        iptables -A INPUT -p tcp --dport 22 -s 192.168.1.0/24 -j ACCEPT
+        
+        # Permitir tráfico ESTABLISHED y RELATED
+        iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+        
+        # Bloquear todo el tráfico entrante no permitido
+        iptables -A INPUT -j DROP
+        
+        # Guardar las reglas
+        iptables-save > /etc/iptables/rules.v4
+                        </pre>
+                    </div>
+                </div>
+            </div>
+            <!-- Ejercicio 2 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#exercise2">Ejercicio 2: Permitir Tráfico HTTP/HTTPS en Public_Web</button>
+                </h2>
+                <div id="exercise2" class="accordion-collapse collapse" data-bs-parent="#accordionExercises">
+                    <div class="accordion-body">
+                        <p><strong>Objetivo:</strong> Configurar IPTables para permitir tráfico web en el servidor Public_Web.</p>
+                        <pre class="bg-dark text-white p-3 rounded">
+        # Permitir tráfico HTTP (puerto 80) y HTTPS (puerto 443)
+        iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+        iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+        
+        # Permitir tráfico ESTABLISHED y RELATED
+        iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+        
+        # Bloquear todo el tráfico entrante no permitido
+        iptables -A INPUT -j DROP
+        
+        # Guardar las reglas
+        iptables-save > /etc/iptables/rules.v4
+                        </pre>
+                    </div>
+                </div>
+            </div>
+            <!-- Ejercicio 3 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#exercise3">Ejercicio 3: Configurar NAT en Endian_UTM</button>
+                </h2>
+                <div id="exercise3" class="accordion-collapse collapse" data-bs-parent="#accordionExercises">
+                    <div class="accordion-body">
+                        <p><strong>Objetivo:</strong> Permitir que las máquinas en la red GREEN accedan a Internet.</p>
+                        <pre class="bg-dark text-white p-3 rounded">
+        # Habilitar el forwarding de paquetes
+        echo 1 > /proc/sys/net/ipv4/ip_forward
+        
+        # Configurar NAT para la red GREEN
+        iptables -t nat -A POSTROUTING -o eth3 -j MASQUERADE
+        
+        # Permitir tráfico desde GREEN a WAN
+        iptables -A FORWARD -i eth1 -o eth3 -j ACCEPT
+        
+        # Guardar las reglas
+        iptables-save > /etc/iptables/rules.v4
+                        </pre>
+                    </div>
+                </div>
+            </div>
+            <!-- Ejercicio 4 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#exercise4">Ejercicio 4: Bloquear Tráfico ICMP en PC1_LAN</button>
+                </h2>
+                <div id="exercise4" class="accordion-collapse collapse" data-bs-parent="#accordionExercises">
+                    <div class="accordion-body">
+                        <p><strong>Objetivo:</strong> Configurar IPTables para bloquear tráfico ICMP en PC1_LAN.</p>
+                        <pre class="bg-dark text-white p-3 rounded">
+        # Bloquear tráfico ICMP (ping)
+        iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
+        
+        # Permitir tráfico ESTABLISHED y RELATED
+        iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+        
+        # Guardar las reglas
+        iptables-save > /etc/iptables/rules.v4
+                        </pre>
+                    </div>
+                </div>
+            </div>
+            <!-- Ejercicio 5 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#exercise5">Ejercicio 5: Registrar Tráfico en Security_Onion</button>
+                </h2>
+                <div id="exercise5" class="accordion-collapse collapse" data-bs-parent="#accordionExercises">
+                    <div class="accordion-body">
+                        <p><strong>Objetivo:</strong> Configurar IPTables para registrar tráfico en Security_Onion.</p>
+                        <pre class="bg-dark text-white p-3 rounded">
+        # Registrar tráfico entrante
+        iptables -A INPUT -j LOG --log-prefix "IPTables-INPUT: "
+        
+        # Registrar tráfico saliente
+        iptables -A OUTPUT -j LOG --log-prefix "IPTables-OUTPUT: "
+        
+        # Guardar las reglas
+        iptables-save > /etc/iptables/rules.v4
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+
+        <!-- Footer -->
+        <footer class="mt-5 text-center text-muted">
+            <p>Desarrollado con ❤️ usando Bootstrap | <a href="#" class="text-decoration-none">Recursos Adicionales</a></p>
+        </footer>
+    </div>
+
+    <!-- Script para copiar código -->
+    <script>
+        function copyCode(button) {
+            const code = button.previousElementSibling.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = "¡Copiado!";
+                setTimeout(() => button.textContent = "Copiar", 2000);
+            });
+        }
+    </script>
+</body>
+</html>
