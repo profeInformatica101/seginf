@@ -33,7 +33,7 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Índice</a>
+                <a class="navbar-brand" href="#">🛡️ IPTables</a>
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="#estados">Estados</a></li>
                     <li class="nav-item"><a class="nav-link" href="#reglas">Reglas</a></li>
@@ -45,10 +45,117 @@
         </nav>
 
         <!-- Contenido Principal -->
-        <div class="container mt-5">
-            <h1 class="text-center text-primary">IPTables - Estados y Configuración</h1>
-            <p class="lead text-center">Aprende a configurar y gestionar reglas de IPTables en un entorno controlado.</p>
-            <p>Iptables es una herramienta de línea de comandos que permite a los administradores de sistemas configurar las reglas de filtrado de paquetes en el núcleo de Linux, actuando como un cortafuegos para controlar el tráfico de red que entra y sale del sistema. Funciona en conjunto con Netfilter, un framework en el núcleo de Linux que intercepta y manipula paquetes de red</p>
+<!-- Contenido Principal -->
+<div class="container mt-5">
+    <h1 class="text-center text-primary">🔒 IPTables - Estados y Configuración</h1>
+    <p class="lead text-center">Aprende a configurar y gestionar reglas de IPTables en un entorno controlado y seguro.</p>
+    
+    <!-- Introducción -->
+    <div class="card mb-4 shadow">
+        <div class="card-body">
+            <h2 class="card-title">¿Qué es IPTables? 🛡️</h2>
+            <p class="card-text">
+                IPTables es una herramienta utilizada en sistemas Linux para gestionar reglas de cortafuegos (firewall). Permite definir qué tráfico de red está permitido o bloqueado, garantizando la seguridad del sistema.
+            </p>
+            <p>🔹 IPTables usa reglas organizadas en <strong>tablas</strong> y <strong>cadenas</strong> que controlan el tráfico de red. A continuación, exploraremos cómo listar reglas, establecer políticas y configurar reglas específicas. 🚀</p>
+        </div>
+    </div>
+
+    <!-- Listar Reglas Actuales -->
+    <div class="card mb-4 shadow">
+        <div class="card-body">
+            <h2 class="card-title">📋 Listar las reglas actuales</h2>
+            <p>Para ver las reglas configuradas en el cortafuegos y entender qué tráfico está permitido o bloqueado, usa el siguiente comando:</p>
+            <pre class="bg-dark text-white p-3 rounded"><code>sudo iptables -L -n -v</code></pre>
+            <p>🔹 Este comando mostrará una lista detallada de las reglas activas en el sistema.</p>
+        </div>
+    </div>
+
+    <!-- Establecer Políticas Predeterminadas -->
+    <div class="card mb-4 shadow">
+        <div class="card-body">
+            <h2 class="card-title">⚙️ Establecer políticas predeterminadas</h2>
+            <p>Para mejorar la seguridad, es recomendable definir políticas predeterminadas. Un buen punto de partida es:</p>
+            <pre class="bg-dark text-white p-3 rounded"><code>
+sudo iptables -P INPUT DROP  # Bloquea tráfico entrante no autorizado
+sudo iptables -P FORWARD DROP  # Bloquea tráfico reenviado
+sudo iptables -P OUTPUT ACCEPT  # Permite todo el tráfico saliente</code></pre>
+            <p>📌 <strong>Explicación:</strong></p>
+            <ul>
+                <li><strong>INPUT DROP</strong>: Bloquea conexiones entrantes no especificadas en otras reglas.</li>
+                <li><strong>FORWARD DROP</strong>: Bloquea tráfico que se reenvía a otros dispositivos.</li>
+                <li><strong>OUTPUT ACCEPT</strong>: Permite que el sistema envíe tráfico sin restricciones.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Reglas Básicas -->
+    <div class="card mb-4 shadow">
+        <div class="card-body">
+            <h2 class="card-title">🎯 Reglas básicas de IPTables</h2>
+            <p>Las reglas de IPTables permiten definir qué tráfico se acepta o bloquea. Aquí tienes algunas reglas esenciales:</p>
+            
+            <h3>1️⃣ Permitir tráfico SSH (Puerto 22)</h3>
+            <p>Para permitir conexiones SSH en el puerto 22 y evitar bloqueos accidentales:</p>
+            <pre class="bg-dark text-white p-3 rounded"><code>sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT</code></pre>
+
+            <h3>2️⃣ Permitir tráfico desde una IP específica</h3>
+            <p>Si quieres aceptar tráfico solo de una dirección IP concreta, como 192.168.1.100:</p>
+            <pre class="bg-dark text-white p-3 rounded"><code>sudo iptables -A INPUT -s 192.168.1.100 -j ACCEPT</code></pre>
+
+            <h3>3️⃣ Bloquear tráfico hacia una IP específica</h3>
+            <p>Para denegar el tráfico de salida a una IP concreta, por ejemplo, 203.0.113.1:</p>
+            <pre class="bg-dark text-white p-3 rounded"><code>sudo iptables -A OUTPUT -d 203.0.113.1 -j REJECT</code></pre>
+
+            <h3>4️⃣ Limitar intentos de conexión SSH (Evitar fuerza bruta) 🔐</h3>
+            <p>Para evitar ataques por fuerza bruta en SSH, limita el número de intentos por IP:</p>
+            <pre class="bg-dark text-white p-3 rounded"><code>
+sudo iptables -A INPUT -p tcp --dport 22 -m recent --set --name SSH
+sudo iptables -A INPUT -p tcp --dport 22 -m recent --update --seconds 60 --hitcount 4 --name SSH -j DROP</code></pre>
+
+            <h3>5️⃣ Permitir tráfico web (HTTP y HTTPS)</h3>
+            <p>Si el servidor ejecuta una página web, habilita los puertos 80 y 443:</p>
+            <pre class="bg-dark text-white p-3 rounded"><code>
+sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT</code></pre>
+        </div>
+    </div>
+
+    <!-- Guardar reglas para persistencia -->
+    <div class="card mb-4 shadow">
+        <div class="card-body">
+            <h2 class="card-title">💾 Guardar reglas de IPTables</h2>
+            <p>Por defecto, las reglas de IPTables desaparecen tras reiniciar el sistema. Para hacerlas persistentes en Debian/Ubuntu:</p>
+            <pre class="bg-dark text-white p-3 rounded"><code>sudo apt install iptables-persistent</code></pre>
+            <p>Para guardar las reglas manualmente:</p>
+            <pre class="bg-dark text-white p-3 rounded"><code>sudo iptables-save > /etc/iptables/rules.v4</code></pre>
+            <p>Y para restaurarlas en cada reinicio:</p>
+            <pre class="bg-dark text-white p-3 rounded"><code>sudo iptables-restore < /etc/iptables/rules.v4</code></pre>
+        </div>
+    </div>
+
+    <!-- Buenas prácticas -->
+    <div class="card mb-4 shadow">
+        <div class="card-body">
+            <h2 class="card-title">✅ Buenas prácticas con IPTables</h2>
+            <ul>
+                <li>🛠️ **Define reglas específicas antes de las generales** para evitar bloqueos inesperados.</li>
+                <li>📜 **Registra el tráfico sospechoso antes de bloquearlo**, usando `LOG`:</li>
+                <pre class="bg-dark text-white p-3 rounded"><code>iptables -A INPUT -p tcp --dport 23 -j LOG --log-prefix "Telnet bloqueado: "</code></pre>
+                <li>📌 **Usa listas blancas en lugar de listas negras**, permitiendo solo tráfico necesario.</li>
+                <li>🚀 **Testea las reglas antes de aplicarlas permanentemente**.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Conclusión -->
+    <div class="card mb-4 shadow">
+        <div class="card-body">
+            <h2 class="card-title">🎯 Conclusión</h2>
+            <p>IPTables es una herramienta fundamental en la seguridad de redes Linux. Con estas configuraciones básicas, ya puedes gestionar tráfico de manera segura. ¡Practica y mejora tus reglas! 🔥</p>
+        </div>
+    </div>
+
 
             <!-- Casos de Estudio -->
 <div class="card shadow mb-4">
@@ -197,8 +304,11 @@
 </div>
 
     <!-- Sección de Reglas de IPTables -->
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-4" id="reglas">
+        <br><br>
+        <h2>Reglas:</h2>
         <div class="card-header bg-info text-white">Reglas de IPTables</div>
+   
         <div class="card-body">
             <p>Las reglas de IPTables se organizan en <strong>cadenas</strong> (chains) que definen cómo se maneja el tráfico. Las cadenas principales son:</p>
             <ul>
@@ -617,6 +727,42 @@ iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 ufw allow 22/tcp
         </pre>
         <p><strong>Objetivo:</strong> Mostrar que UFW facilita la configuración sin perder flexibilidad.</p>
+    </div>
+</div>
+        
+<div class="card mb-4">
+    <div class="card-body">
+        <h2 class="card-title">UFW (Uncomplicated Firewall)</h2>
+        <p class="card-text">
+            Para una gestión más sencilla del cortafuegos, especialmente para usuarios que prefieren una interfaz más amigable, se recomienda utilizar UFW (Uncomplicated Firewall), que simplifica la configuración de IPTables. UFW proporciona una interfaz de línea de comandos fácil de usar y también cuenta con una interfaz gráfica llamada Gufw.
+        </p>
+        
+        <h3>Instalación y uso básico de UFW</h3>
+        
+        <h4>Instalar UFW</h4>
+        <p>En la mayoría de las distribuciones basadas en Debian, UFW viene preinstalado. Si no es así, puede instalarlo con:</p>
+        <pre><code>sudo apt-get install ufw</code></pre>
+        
+        <h4>Habilitar UFW</h4>
+        <p>Antes de habilitarlo, asegúrese de permitir las conexiones SSH para no perder acceso remoto:</p>
+        <pre><code>sudo ufw allow ssh
+sudo ufw enable</code></pre>
+        
+        <h4>Permitir o denegar servicios</h4>
+        <p>Para permitir el tráfico HTTP y HTTPS:</p>
+        <pre><code>sudo ufw allow http
+sudo ufw allow https</code></pre>
+        <p>Para denegar un puerto específico, por ejemplo, el 25 (SMTP):</p>
+        <pre><code>sudo ufw deny 25</code></pre>
+        
+        <h4>Ver el estado y las reglas</h4>
+        <p>Para comprobar el estado de UFW y las reglas activas:</p>
+        <pre><code>sudo ufw status verbose</code></pre>
+        
+        <p>Para obtener más información sobre la configuración de UFW en Ubuntu, puede consultar la <a href="https://help.ubuntu.com/community/UFW" target="_blank">documentación oficial de Ubuntu</a>.</p>
+        
+        <h4>Interfaz gráfica (Gufw)</h4>
+        <p>Además, si prefiere una interfaz gráfica para gestionar UFW, puede instalar Gufw, que facilita la configuración del cortafuegos sin necesidad de utilizar la línea de comandos.</p>
     </div>
 </div>
 
