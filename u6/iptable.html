@@ -24,36 +24,23 @@
             .copy-btn:hover {
                 background: #666;
             }
+            .container-fluid{
+                background-color: bisque;
+            }
         </style>
     </head>
     <body class="bg-light">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="#">IPTables</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#inicio">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#estados">Estados</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#reglas">Reglas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#ejercicios">Ejercicios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#recursos">Recursos</a>
-                        </li>
-                    </ul>
-                </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Índice</a>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#estados">Estados</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#reglas">Reglas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#ejercicios">Ejercicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#diagramas">Diagramas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#ufw">UFW</a></li>
+                </ul>
             </div>
         </nav>
 
@@ -61,6 +48,154 @@
         <div class="container mt-5">
             <h1 class="text-center text-primary">IPTables - Estados y Configuración</h1>
             <p class="lead text-center">Aprende a configurar y gestionar reglas de IPTables en un entorno controlado.</p>
+            <p>Iptables es una herramienta de línea de comandos que permite a los administradores de sistemas configurar las reglas de filtrado de paquetes en el núcleo de Linux, actuando como un cortafuegos para controlar el tráfico de red que entra y sale del sistema. Funciona en conjunto con Netfilter, un framework en el núcleo de Linux que intercepta y manipula paquetes de red</p>
+
+            <!-- Casos de Estudio -->
+<div class="card shadow mb-4">
+    <div class="card-header bg-success text-white">📂 Casos de Estudio</div>
+    <div class="card-body">
+        <p>Estos casos de estudio utilizan el script proporcionado para configurar un entorno de red con IPTables.</p>
+        
+        <!-- Caso 1: Firewall Básico -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#caso1">
+                    Caso 1: Configurar un Firewall Básico en Endian_UTM
+                </button>
+            </h2>
+            <div id="caso1" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    <p><strong>Objetivo:</strong> Permitir tráfico SSH y bloquear el resto.</p>
+                    <pre class="bg-dark text-white p-3 rounded">
+    # Permitir SSH desde la red GREEN
+    iptables -A INPUT -p tcp --dport 22 -s 192.168.1.0/24 -j ACCEPT
+
+    # Bloquear todo el tráfico entrante no permitido
+    iptables -A INPUT -j DROP
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Caso 2: DMZ Segura -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#caso2">
+                    Caso 2: Crear una DMZ Segura en Public_Web
+                </button>
+            </h2>
+            <div id="caso2" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    <p><strong>Objetivo:</strong> Permitir tráfico HTTP/HTTPS y bloquear el resto.</p>
+                    <pre class="bg-dark text-white p-3 rounded">
+    # Permitir HTTP y HTTPS
+    iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+    iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+
+    # Bloquear todo el tráfico entrante no permitido
+    iptables -A INPUT -j DROP
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Caso 3: NAT en Endian_UTM -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#caso3">
+                    Caso 3: Configurar NAT en Endian_UTM
+                </button>
+            </h2>
+            <div id="caso3" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    <p><strong>Objetivo:</strong> Permitir que las máquinas en la red GREEN accedan a Internet.</p>
+                    <pre class="bg-dark text-white p-3 rounded">
+    # Habilitar NAT
+    iptables -t nat -A POSTROUTING -o eth3 -j MASQUERADE
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Glosario Interactivo -->
+<div class="card shadow mb-4">
+    <div class="card-header bg-info text-white">📚 Glosario Interactivo</div>
+    <div class="card-body">
+        <div class="accordion" id="glosarioAccordion">
+            <!-- DNAT -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#dnat">
+                        DNAT (Destination Network Address Translation)
+                    </button>
+                </h2>
+                <div id="dnat" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <p><strong>DNAT</strong> se utiliza para redirigir paquetes a una dirección IP y puerto específicos. Es común en servidores que reciben tráfico desde Internet.</p>
+                        <pre class="bg-dark text-white p-3 rounded">
+    # Ejemplo de DNAT
+    iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 192.168.1.10:80
+                        </pre>
+                    </div>
+                </div>
+            </div>
+            <!-- SNAT -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#snat">
+                        SNAT (Source Network Address Translation)
+                    </button>
+                </h2>
+                <div id="snat" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <p><strong>SNAT</strong> modifica la dirección IP de origen de los paquetes antes de enviarlos a Internet. Se usa comúnmente en firewalls para permitir que las redes internas accedan a Internet.</p>
+                        <pre class="bg-dark text-white p-3 rounded">
+    # Ejemplo de SNAT
+    iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source 203.0.113.1
+                        </pre>
+                    </div>
+                </div>
+            </div>
+            <!-- Stateful vs Stateless Firewall -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#stateful">
+                        Stateful vs Stateless Firewall
+                    </button>
+                </h2>
+                <div id="stateful" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <p><strong>Stateful Firewall:</strong> Mantiene un registro de las conexiones activas y permite el tráfico relacionado. IPTables es un firewall stateful.</p>
+                        <p><strong>Stateless Firewall:</strong> No mantiene un registro de conexiones. Cada paquete se evalúa de forma independiente.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Tipos de Ataques -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ataques">
+                        Tipos de Ataques que IPTables Puede Mitigar
+                    </button>
+                </h2>
+                <div id="ataques" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <ul>
+                            <li><strong>Escaneo de Puertos:</strong> Bloquear intentos de escaneo con reglas específicas.</li>
+                            <li><strong>DDoS:</strong> Limitar el número de conexiones por IP.</li>
+                            <li><strong>IP Spoofing:</strong> Filtrar paquetes con direcciones IP falsificadas.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- Sección de Reglas de IPTables -->
     <div class="card shadow mb-4">
         <div class="card-header bg-info text-white">Reglas de IPTables</div>
@@ -139,7 +274,12 @@
                 </div>
             </div>
 
-            <h3 id="ejercicios" class="text-center text-secondary">Ejercicios Prácticos con Soluciones en IPTables</h3>
+
+<!---EJERCCIOS-->
+
+<div  id="ejercicios">
+    <br><br>
+            <h3 class="text-center text-secondary">Ejercicios Prácticos con Soluciones en IPTables</h3>
             <p class="text-center">Estos ejercicios están diseñados para aplicarse en las máquinas virtuales creadas, especialmente en <strong>Endian_UTM</strong> (el firewall) y <strong>Public_Web</strong> (el servidor en la DMZ).</p>
             <div class="accordion" id="accordionExercises">
                 <!-- Ejercicio 1 -->
@@ -368,7 +508,7 @@ iptables-save > /etc/iptables/rules.v4
         <li>🔄 <strong>Equilibrio de Carga:</strong> Distribuir tráfico entre múltiples servidores.</li>
         <li>🛑 <strong>Bloqueo Geo-IP:</strong> Restringir tráfico según la ubicación geográfica.</li>
     </ul>
-    
+
     <!-- Ejercicio 11: Detectar y Bloquear Escaneo de Puertos -->
     <div class="accordion-item">
         <h2 class="accordion-header">
@@ -457,6 +597,142 @@ iptables-save > /etc/iptables/rules.v4
         </div>
     </div>
 </div>
+</div>
+
+
+
+
+<br>
+<h2>ufw</h2>
+            <!-- Sección de ufw -->
+            <div id="ufw" class="card shadow mb-4">
+                <div class="card-header bg-info text-white"> 💡 UFW (Uncomplicated Firewall) en vez de IPTables</div>
+                <div class="card-body">
+        <p>UFW es una interfaz más sencilla para administrar IPTables. Aquí hay ejemplos de equivalencias entre IPTables y UFW:</p>
+        <pre class="bg-dark text-white p-3 rounded">
+# En IPTables:
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+# En UFW:
+ufw allow 22/tcp
+        </pre>
+        <p><strong>Objetivo:</strong> Mostrar que UFW facilita la configuración sin perder flexibilidad.</p>
+    </div>
+</div>
+
+<!--Herramientas -->
+<div class="card shadow mb-4">
+    <div class="card-header bg-secondary text-white"> 🔀 Herramientas relacionada</div>
+    <div class="card-body">
+
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Herramienta</th>
+        <th>Descripción</th>
+        <th>Enlace</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>nftables</td>
+        <td>Sucesor de iptables que proporciona un marco unificado para la filtración y clasificación de paquetes en Linux. Ofrece una sintaxis más sencilla y flexible, y permite actualizaciones dinámicas de las reglas sin necesidad de reemplazar todo el conjunto de reglas. Desde Debian 11 Bullseye, es la herramienta predeterminada para la gestión de firewalls.</td>
+        <td><a href="https://es.wikipedia.org/wiki/Nftables" target="_blank">Wikipedia</a></td>
+      </tr>
+      <tr>
+        <td>firewalld</td>
+        <td>Herramienta de gestión de firewalls que actúa como una interfaz para el marco netfilter del kernel de Linux. Utiliza nftables como backend predeterminado y permite la administración de zonas de firewall con diferentes niveles de confianza. Ofrece una interfaz de línea de comandos y una interfaz gráfica opcional para facilitar la configuración.</td>
+        <td><a href="https://en.wikipedia.org/wiki/Firewalld" target="_blank">Wikipedia</a></td>
+      </tr>
+      <tr>
+        <td>Shorewall</td>
+        <td>Herramienta de configuración de firewalls que simplifica la creación de reglas complejas mediante el uso de archivos de configuración en formato de texto plano. Es adecuada para usuarios que prefieren una configuración basada en archivos y buscan una mayor flexibilidad en la gestión de reglas de firewall.</td>
+        <td><a href="https://en.wikipedia.org/wiki/Shorewall" target="_blank">Wikipedia</a></td>
+      </tr>
+      <tr>
+        <td>Uncomplicated Firewall (UFW)</td>
+        <td>Interfaz simplificada para iptables, diseñada para facilitar la gestión de reglas de firewall en sistemas Linux. Es especialmente popular en distribuciones como Ubuntu y Debian. Aunque no ofrece todas las funcionalidades avanzadas de iptables o nftables, es una opción adecuada para usuarios que requieren una configuración sencilla y rápida de su firewall.</td>
+        <td><a href="https://es.wikipedia.org/wiki/Uncomplicated_Firewall" target="_blank">Wikipedia</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Sección de Diagramas Explicativos de IPTables -->
+<div class="container mt-5" id="diagramas"><br><br>
+    <h2 class="text-center text-primary">Diagramas Explicativos de IPTables</h2>
+    <p class="text-center">Visualiza cómo funcionan las reglas y procesamiento de paquetes en IPTables.</p>
+
+    <!-- Diagrama 1: Flujo General de IPTables -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-dark text-white">🔀 Diagrama de Flujo General de IPTables</div>
+        <div class="card-body text-center">
+            <img src="img/iptable/flujo.png" alt="Diagrama Flujo General IPTables" class="img-fluid">
+            <p class="mt-2">Este diagrama muestra cómo los paquetes viajan a través de las cadenas principales: INPUT, FORWARD y OUTPUT.</p>
+        </div>
+    </div>
+
+    <!-- Diagrama 2: Decisión de Reglas -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-secondary text-white">❔ Diagrama de Decisión para Reglas IPTables</div>
+        <div class="card-body text-center">
+            <img src="img/iptable/decision.png" alt="Diagrama Decisión Reglas IPTables" class="img-fluid">
+            <p class="mt-2">Explica cómo IPTables evalúa cada paquete y decide si lo acepta, rechaza o descarta.</p>
+        </div>
+    </div>
+
+    <!-- Diagrama 3: Estados de Conexión -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-info text-white">🕵️ Diagrama de Estados de Conexión en IPTables</div>
+        <div class="card-body text-center">
+            <img src="img/iptable/estados.png" alt="Diagrama Estados de Conexión IPTables" class="img-fluid">
+            <p class="mt-2">Visualiza cómo se manejan los estados de conexión como NEW, ESTABLISHED, RELATED e INVALID.</p>
+        </div>
+    </div>
+
+    <!-- Diagrama 4: NAT en IPTables -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-success text-white">🌍 Diagrama de Traducción de Direcciones (NAT)</div>
+        <div class="card-body text-center">
+            <img src="img/iptable/nat.png" alt="Diagrama NAT IPTables" class="img-fluid">
+            <p class="mt-2">Ilustra el proceso de NAT, incluyendo DNAT (redirección de tráfico) y SNAT (cambio de dirección de origen).</p>
+        </div>
+    </div>
+
+    <!-- Diagrama 5: Registro de Logs -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-warning text-dark">📜 Diagrama de Registro de Logs en IPTables</div>
+        <div class="card-body text-center">
+            <img src="img/iptable/logs.png" alt="Diagrama Registro Logs IPTables" class="img-fluid">
+            <p class="mt-2">Muestra cómo IPTables registra tráfico en syslog para auditoría y monitoreo de eventos.</p>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Análisis de Logs -->
+<div class="card shadow mb-4">
+    <div class="card-header bg-warning text-white">📜 Análisis de Logs de IPTables</div>
+    <div class="card-body">
+        <p>Los logs de IPTables se registran en <code>/var/log/syslog</code>. Aquí hay ejemplos de cómo analizarlos:</p>
+        <pre class="bg-dark text-white p-3 rounded">
+# Ver logs en tiempo real
+tail -f /var/log/syslog | grep IPTables
+
+# Ejemplo de log:
+# Nov  1 12:34:56 server kernel: [IPTables-INPUT] IN=eth0 OUT= MAC=00:11:22:33:44:55 SRC=192.168.1.100 DST=192.168.1.1 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=12345 DF PROTO=TCP SPT=54321 DPT=22 WINDOW=64240 RES=0x00 SYN URGP=0
+        </pre>
+        <p><strong>Información Relevante:</strong></p>
+        <ul>
+            <li><strong>SRC:</strong> Dirección IP de origen.</li>
+            <li><strong>DST:</strong> Dirección IP de destino.</li>
+            <li><strong>PROTO:</strong> Protocolo (TCP, UDP, ICMP).</li>
+            <li><strong>SPT/DPT:</strong> Puerto de origen/destino.</li>
+        </ul>
+    </div>
+</div>
 
 
             </div>
@@ -465,7 +741,7 @@ iptables-save > /etc/iptables/rules.v4
 
             <!-- Footer -->
             <footer class="mt-5 text-center text-muted">
-                <p>Desarrollado con ❤️ usando Bootstrap | <a href="#" class="text-decoration-none">Recursos Adicionales</a></p>
+                <p>Desarrollado con ❤️ usando Bootstrap y ChatGPT | <a href="#" class="text-decoration-none">Recursos Adicionales</a></p>
             </footer>
         </div>
 
