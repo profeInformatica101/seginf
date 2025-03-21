@@ -681,31 +681,7 @@ iptables-save > /etc/iptables/rules.v4
         </div>
     </div>
     
-    <!-- Ejercicio 14: Bloqueo Geo-IP -->
-    <div class="accordion-item">
-        <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#exercise14">Ejercicio 14: Bloqueo Geo-IP</button>
-        </h2>
-        <div id="exercise14" class="accordion-collapse collapse" data-bs-parent="#accordionExercises">
-            <div class="accordion-body">
-                <p><strong>Objetivo:</strong> Bloquear tráfico desde una región específica (por ejemplo, Rusia) en <strong>Endian_UTM</strong>.</p>
-                <pre class="bg-dark text-white p-3 rounded">
-    # Instalar la herramienta xt_geoip (requiere módulo del kernel)
-    wget https://dl.miyuru.lk/geoip/maxmind/country/maxmind.dat.gz
-    gunzip maxmind.dat.gz
-    sudo mkdir -p /usr/share/xt_geoip
-    sudo cp maxmind.dat /usr/share/xt_geoip/
-    
-    # Bloquear tráfico desde Rusia
-    iptables -A INPUT -m geoip --src-cc RU -j DROP
-    
-    # Guardar las reglas
-    iptables-save > /etc/iptables/rules.v4
-                </pre>
-                <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
-            </div>
-        </div>
-    </div>
+
 </div>
 </div>
 
