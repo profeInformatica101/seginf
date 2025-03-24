@@ -1,0 +1,831 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Escenario de Autoaprendizaje - Seguridad Informática</title>
+  <!-- Bootstrap CSS (CDN) -->
+  <link 
+    rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  >
+  <!-- Bootstrap Icons (opcional) -->
+  <link 
+    rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+  >
+</head>
+<body>
+
+<!-- Encabezado -->
+<nav class="navbar navbar-expand-lg bg-light border-bottom">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <i class="bi bi-shield-shaded"></i> Seguridad Informática
+    </a>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <!-- Título principal -->
+  <div class="text-center mb-4">
+    <h1 class="fw-bold">Escenario de Autoaprendizaje</h1>
+    <p class="lead">“Oficina <strong>TechNova</strong>”</p>
+    <hr>
+  </div>
+
+  <!-- Descripción general (hero section) -->
+  <div class="p-4 mb-3 bg-body-tertiary rounded">
+    <h2 class="h4">
+      <i class="bi bi-laptop"></i> Descripción del Escenario
+    </h2>
+    <p>
+      La empresa <strong>TechNova</strong> es una pequeña oficina con 
+      varios equipos y un servidor local. Se ha detectado que no hay 
+      políticas claras de seguridad y la configuración de los sistemas 
+      puede presentar vulnerabilidades.
+    </p>
+    <ul>
+      <li>1 Servidor con datos de facturación y clientes.</li>
+      <li>2 Ordenadores de sobremesa para empleados.</li>
+      <li>Un router doméstico con contraseñas de fábrica.</li>
+      <li>Empleados con contraseñas débiles.</li>
+      <li>Memorias USB sin cifrar con información importante.</li>
+      <li>Falta de control de acceso físico en la oficina.</li>
+    </ul>
+  </div>
+
+  <!-- Accordion de vulnerabilidades, amenazas y medidas -->
+  <div class="accordion mb-4" id="accordionExample">
+    <!-- Vulnerabilidades -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button 
+          class="accordion-button" 
+          type="button" 
+          data-bs-toggle="collapse" 
+          data-bs-target="#collapseOne"
+          aria-expanded="true" 
+          aria-controls="collapseOne">
+          <i class="bi bi-unlock"></i> Vulnerabilidades Principales
+        </button>
+      </h2>
+      <div 
+        id="collapseOne" 
+        class="accordion-collapse collapse show" 
+        aria-labelledby="headingOne" 
+        data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <ul>
+            <li>
+              <strong>Contraseñas débiles:</strong> 
+              Muchos usuarios usan “1234” o “admin” como credenciales.
+            </li>
+            <li>
+              <strong>Router doméstico sin configuración:</strong> 
+              Password “admin/admin” y firewall desactivado.
+            </li>
+            <li>
+              <strong>Falta de actualizaciones:</strong> 
+              Los sistemas operativos están desactualizados.
+            </li>
+            <li>
+              <strong>Control de acceso físico inexistente:</strong> 
+              Cualquiera puede entrar al despacho sin supervisión.
+            </li>
+            <li>
+              <strong>Memorias USB sin cifrar:</strong> 
+              Contienen datos sensibles y se dejan conectadas o sin supervisión.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Amenazas -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button 
+          class="accordion-button collapsed" 
+          type="button" 
+          data-bs-toggle="collapse" 
+          data-bs-target="#collapseTwo"
+          aria-expanded="false" 
+          aria-controls="collapseTwo">
+          <i class="bi bi-exclamation-triangle-fill"></i> Amenazas Potenciales
+        </button>
+      </h2>
+      <div 
+        id="collapseTwo" 
+        class="accordion-collapse collapse" 
+        aria-labelledby="headingTwo" 
+        data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <ul>
+            <li>
+              <strong>Accesos no autorizados:</strong> 
+              Atacantes podrían entrar en la red local aprovechando contraseñas débiles.
+            </li>
+            <li>
+              <strong>Robo de información:</strong> 
+              Las memorias USB pueden ser sustraídas y contenían datos críticos.
+            </li>
+            <li>
+              <strong>Malware o virus:</strong> 
+              Al no actualizar el software, aumentan las posibilidades de infección.
+            </li>
+            <li>
+              <strong>Ataques físicos:</strong> 
+              Un intruso puede acceder directamente a los equipos (falta de seguridad física).
+            </li>
+            <li>
+              <strong>Phishing o ingeniería social:</strong> 
+              Empleados sin formación podrían caer en correos fraudulentos.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medidas de Seguridad (pasiva y activa) -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingThree">
+        <button 
+          class="accordion-button collapsed" 
+          type="button" 
+          data-bs-toggle="collapse" 
+          data-bs-target="#collapseThree"
+          aria-expanded="false" 
+          aria-controls="collapseThree">
+          <i class="bi bi-lightbulb"></i> Medidas de Seguridad Recomendadas
+        </button>
+      </h2>
+      <div 
+        id="collapseThree" 
+        class="accordion-collapse collapse" 
+        aria-labelledby="headingThree" 
+        data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <h5 class="mb-2">Seguridad Pasiva</h5>
+          <ul>
+            <li>Copias de seguridad regulares (locales y externas).</li>
+            <li>Sistemas de Alimentación Ininterrumpida (SAI).</li>
+            <li>Control de acceso físico (cerraduras, alarmas, registro de visitas).</li>
+            <li>Ubicación segura de equipos y servidores.</li>
+          </ul>
+          <h5 class="mt-4 mb-2">Seguridad Activa</h5>
+          <ul>
+            <li>Política de contraseñas fuertes y renovaciones periódicas.</li>
+            <li>Actualizaciones de software y sistemas operativos.</li>
+            <li>Antimalware y firewall configurados en router y equipos.</li>
+            <li>Cifrado de datos y discos duros (incluidas memorias USB).</li>
+            <li>Formación continua en seguridad (para evitar phishing y malas prácticas).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div><!-- Fin Accordion -->
+
+  <!-- Test interactivo -->
+  <div class="p-4 mb-3 bg-body-tertiary rounded">
+    <h2 class="h4">
+      <i class="bi bi-question-circle"></i> Test de Autoevaluación
+    </h2>
+    <p>Lee cada pregunta y selecciona la opción que consideres correcta. Al final, pulsa <strong>“Comprobar Respuestas”</strong>.</p>
+
+    <!-- Preguntas -->
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8" />
+      <title>Escenario de Autoaprendizaje - Seguridad Informática</title>
+      <!-- Bootstrap CSS (CDN) -->
+      <link 
+        rel="stylesheet" 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      >
+      <!-- Bootstrap Icons (opcional) -->
+      <link 
+        rel="stylesheet" 
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      >
+    </head>
+    <body>
+    
+    <!-- Encabezado -->
+    <nav class="navbar navbar-expand-lg bg-light border-bottom">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-shield-shaded"></i> Seguridad Informática
+        </a>
+      </div>
+    </nav>
+    
+    <div class="container mt-4">
+      <!-- Título principal -->
+      <div class="text-center mb-4">
+        <h1 class="fw-bold">Escenario de Autoaprendizaje</h1>
+        <p class="lead">Test de 10 preguntas</p>
+        <hr>
+      </div>
+    
+      <!-- Descripción o introducción (opcional) -->
+      <div class="mb-3">
+        <p>Lee cada pregunta y selecciona la opción que consideres correcta.  
+           Al final, pulsa <strong>“Comprobar Respuestas”</strong> para ver tu puntuación.</p>
+      </div>
+    
+      <!-- Test interactivo -->
+      <div class="p-4 mb-3 bg-body-tertiary rounded">
+        <h2 class="h4">
+          <i class="bi bi-question-circle"></i> Test de Autoevaluación
+        </h2>
+    
+        <!-- Pregunta 1 -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            1. ¿Cuál de los siguientes NO es un ejemplo de vulnerabilidad?
+          </label>
+          <div>
+            <div class="form-check">
+              <input 
+                class="form-check-input" 
+                type="radio" 
+                name="q1" 
+                id="q1a" 
+                value="a">
+              <label class="form-check-label" for="q1a">
+                Uso de contraseñas débiles.
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input" 
+                type="radio" 
+                name="q1" 
+                id="q1b" 
+                value="b">
+              <label class="form-check-label" for="q1b">
+                Un firewall configurado correctamente.
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input" 
+                type="radio" 
+                name="q1" 
+                id="q1c" 
+                value="c">
+              <label class="form-check-label" for="q1c">
+                Software desactualizado.
+              </label>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Pregunta 2 -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            2. De los tres principios de la seguridad (confidencialidad, integridad, disponibilidad), 
+            ¿cuál se ve comprometido si alguien accede sin permiso a datos confidenciales?
+          </label>
+          <div>
+            <div class="form-check">
+              <input 
+                class="form-check-input" 
+                type="radio" 
+                name="q2" 
+                id="q2a" 
+                value="a">
+              <label class="form-check-label" for="q2a">
+                Integridad
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input" 
+                type="radio" 
+                name="q2" 
+                id="q2b" 
+                value="b">
+              <label class="form-check-label" for="q2b">
+                Disponibilidad
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input" 
+                type="radio" 
+                name="q2" 
+                id="q2c" 
+                value="c">
+              <label class="form-check-label" for="q2c">
+                Confidencialidad
+              </label>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Pregunta 3 -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            3. ¿Cuál de las siguientes opciones pertenece a la <em>seguridad pasiva</em>?
+          </label>
+          <div>
+            <div class="form-check">
+              <input 
+                class="form-check-input" 
+                type="radio" 
+                name="q3" 
+                id="q3a" 
+                value="a">
+              <label class="form-check-label" for="q3a">
+                Uso de un sistema de copias de seguridad.
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input" 
+                type="radio" 
+                name="q3" 
+                id="q3b" 
+                value="b">
+              <label class="form-check-label" for="q3b">
+                Configurar contraseñas robustas y únicas.
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input" 
+                type="radio" 
+                name="q3" 
+                id="q3c" 
+                value="c">
+              <label class="form-check-label" for="q3c">
+                Actualizar el sistema operativo.
+              </label>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Pregunta 4 -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            4. ¿Cuál de los siguientes roles describe mejor a un “hacker ético” (ethical hacker)?
+          </label>
+          <div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q4" 
+                id="q4a" 
+                value="a">
+              <label class="form-check-label" for="q4a">
+                Persona que crea malware para pruebas.
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q4" 
+                id="q4b" 
+                value="b">
+              <label class="form-check-label" for="q4b">
+                Persona que diseña hardware de seguridad.
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q4" 
+                id="q4c" 
+                value="c">
+              <label class="form-check-label" for="q4c">
+                Persona que supervisa la red sin permiso.
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q4" 
+                id="q4d" 
+                value="d">
+              <label class="form-check-label" for="q4d">
+                Persona que audita la seguridad de sistemas con autorización.
+              </label>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Pregunta 5 -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            5. Para garantizar la integridad de un archivo digital, se utiliza habitualmente:
+          </label>
+          <div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q5" 
+                id="q5a" 
+                value="a">
+              <label class="form-check-label" for="q5a">
+                Cifrado simétrico
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q5" 
+                id="q5b" 
+                value="b">
+              <label class="form-check-label" for="q5b">
+                Un firewall configurado
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q5" 
+                id="q5c" 
+                value="c">
+              <label class="form-check-label" for="q5c">
+                Una función hash (resumen criptográfico)
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q5" 
+                id="q5d" 
+                value="d">
+              <label class="form-check-label" for="q5d">
+                Lista de control de acceso (ACL)
+              </label>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Pregunta 6 -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            6. Alguien que se hace pasar por un compañero de trabajo para robar credenciales 
+            está llevando a cabo:
+          </label>
+          <div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q6" 
+                id="q6a" 
+                value="a">
+              <label class="form-check-label" for="q6a">
+                Un ataque de ransomware
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q6" 
+                id="q6b" 
+                value="b">
+              <label class="form-check-label" for="q6b">
+                Un acceso de puerta trasera (backdoor)
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q6" 
+                id="q6c" 
+                value="c">
+              <label class="form-check-label" for="q6c">
+                Un acto de ingeniería social
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q6" 
+                id="q6d" 
+                value="d">
+              <label class="form-check-label" for="q6d">
+                Una botnet
+              </label>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Pregunta 7 -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            7. En una política de contraseñas seguras se recomienda:
+          </label>
+          <div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q7" 
+                id="q7a" 
+                value="a">
+              <label class="form-check-label" for="q7a">
+                Reutilizar la misma contraseña en varias aplicaciones
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q7" 
+                id="q7b" 
+                value="b">
+              <label class="form-check-label" for="q7b">
+                Usar contraseñas complejas (mayúsculas, minúsculas, dígitos, símbolos)
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q7" 
+                id="q7c" 
+                value="c">
+              <label class="form-check-label" for="q7c">
+                Evitar cambiarlas nunca
+              </label>
+            </div>
+            <div class="form-check">
+              <input 
+                class="form-check-input"
+                type="radio" 
+                name="q7" 
+                id="q7d" 
+                value="d">
+              <label class="form-check-label" for="q7d">
+                Apuntarlas siempre en un post-it
+              </label>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Pregunta 8 -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            8. Una brecha de seguridad que permite acceso no autorizado a información sensible 
+            compromete principalmente:
+          </label>
+          <div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q8"
+                id="q8a"
+                value="a">
+              <label class="form-check-label" for="q8a">
+                La disponibilidad
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q8"
+                id="q8b"
+                value="b">
+              <label class="form-check-label" for="q8b">
+                El no repudio
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q8"
+                id="q8c"
+                value="c">
+              <label class="form-check-label" for="q8c">
+                La confidencialidad
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q8"
+                id="q8d"
+                value="d">
+              <label class="form-check-label" for="q8d">
+                La integridad
+              </label>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Pregunta 9 -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            9. ¿Cuál de los siguientes es un ejemplo de medidas de seguridad física en una empresa?
+          </label>
+          <div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q9"
+                id="q9a"
+                value="a">
+              <label class="form-check-label" for="q9a">
+                Emplear cifrado SSL/TLS
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q9"
+                id="q9b"
+                value="b">
+              <label class="form-check-label" for="q9b">
+                Utilizar cerraduras y cámaras de videovigilancia
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q9"
+                id="q9c"
+                value="c">
+              <label class="form-check-label" for="q9c">
+                Definir políticas de contraseñas
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q9"
+                id="q9d"
+                value="d">
+              <label class="form-check-label" for="q9d">
+                Configurar listas de control de acceso (ACL)
+              </label>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Pregunta 10 -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            10. Si un ordenador sufre un corte de alimentación y se pierden datos críticos, 
+            se ha incumplido principalmente el principio de:
+          </label>
+          <div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q10"
+                id="q10a"
+                value="a">
+              <label class="form-check-label" for="q10a">
+                Confidencialidad
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q10"
+                id="q10b"
+                value="b">
+              <label class="form-check-label" for="q10b">
+                Disponibilidad
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q10"
+                id="q10c"
+                value="c">
+              <label class="form-check-label" for="q10c">
+                Integridad
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q10"
+                id="q10d"
+                value="d">
+              <label class="form-check-label" for="q10d">
+                Ninguno de los anteriores
+              </label>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Botón para comprobar respuestas -->
+        <button id="checkAnswersBtn" class="btn btn-primary mb-3">
+          <i class="bi bi-check-lg"></i> Comprobar Respuestas
+        </button>
+    
+        <!-- Mensaje de resultado -->
+        <div id="resultMessage" class="alert" role="alert" style="display: none;">
+          <!-- Se rellena por JavaScript -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="text-center py-2 border-top">
+      <small class="text-muted">
+        &copy; 2025 - Actividad de Autoaprendizaje en Seguridad Informática
+      </small>
+    </footer>
+    
+    <!-- Bootstrap JS (CDN) -->
+    <script 
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    </script>
+    
+    <script>
+      // SCRIPT PARA VALIDAR EL TEST DE AUTOEVALUACIÓN
+      const checkAnswersBtn = document.getElementById('checkAnswersBtn');
+      const resultMessage = document.getElementById('resultMessage');
+    
+      // Respuestas correctas:
+      // q1 -> b
+      // q2 -> c
+      // q3 -> a
+      // q4 -> d
+      // q5 -> c
+      // q6 -> c
+      // q7 -> b
+      // q8 -> c
+      // q9 -> b
+      // q10 -> b
+      const correctAnswers = {
+        q1: 'b',
+        q2: 'c',
+        q3: 'a',
+        q4: 'd',
+        q5: 'c',
+        q6: 'c',
+        q7: 'b',
+        q8: 'c',
+        q9: 'b',
+        q10: 'b'
+      };
+    
+      checkAnswersBtn.addEventListener('click', () => {
+        // Obtenemos el valor de cada pregunta
+        const userAnswers = {};
+        let totalQuestions = 10;
+    
+        for (let i = 1; i <= totalQuestions; i++) {
+          const questionName = 'q' + i;
+          const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+          userAnswers[questionName] = selected ? selected.value : null;
+        }
+    
+        // Contador de aciertos
+        let score = 0;
+    
+        for (let question in correctAnswers) {
+          if (userAnswers[question] === correctAnswers[question]) {
+            score++;
+          }
+        }
+    
+        // Mostrar resultado
+        resultMessage.style.display = 'block';
+        if (score === totalQuestions) {
+          resultMessage.textContent = `¡Excelente! Has acertado todas las preguntas (${score}/${totalQuestions}).`;
+          resultMessage.className = 'alert alert-success';
+        } else {
+          resultMessage.textContent = `Has acertado ${score} de ${totalQuestions} preguntas. ¡Sigue repasando!`;
+          resultMessage.className = 'alert alert-warning';
+        }
+      });
+    </script>
+    </body>
+    </html>
+    
