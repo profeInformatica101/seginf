@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Unidad 2 - Seguridad Física</title>
+  <link 
+    rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  >
+  <link 
+    rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+  >
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-light border-bottom">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-door-closed"></i> Seguridad Física
+      </a>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="text-center mb-4">
+      <h1 class="fw-bold">Unidad 2: Seguridad Física</h1>
+      <p class="lead">“Oficina <strong>SecureSys</strong>”</p>
+      <hr>
+    </div>
+
+    <div class="p-4 mb-3 bg-body-tertiary rounded">
+      <h2 class="h4">
+        <i class="bi bi-building-lock"></i> Descripción del Escenario
+      </h2>
+      <p>
+        La empresa <strong>SecureSys</strong> se dedica a servicios tecnológicos y almacena
+        datos sensibles en sus servidores. Sin embargo, ha crecido rápidamente sin implementar
+        medidas adecuadas de seguridad física, lo que pone en riesgo su infraestructura.
+      </p>
+      <ul>
+        <li>Los servidores están en una sala sin control de acceso ni climatización.</li>
+        <li>No existen cámaras ni cerraduras especiales.</li>
+        <li>Los SAI no han sido probados desde su instalación.</li>
+        <li>Los trabajadores usan post-its con contraseñas.</li>
+        <li>No hay registro de visitas ni política de acceso.</li>
+      </ul>
+    </div>
+
+    <div class="accordion mb-4" id="accordionPhysical">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button 
+            class="accordion-button" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#collapseOne"
+            aria-expanded="true" 
+            aria-controls="collapseOne">
+            <i class="bi bi-hammer"></i> Fundamentos de la Seguridad Física
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+          <div class="accordion-body">
+            <ul>
+              <li><strong>Diferencia entre seguridad física y lógica:</strong> la primera protege el hardware, la segunda el software y los datos.</li>
+              <li><strong>Protección ambiental:</strong> temperatura, humedad y polvo pueden afectar a los sistemas.</li>
+              <li><strong>Ubicación adecuada:</strong> salas cerradas, alejadas de accesos públicos o ventanas.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button 
+            class="accordion-button collapsed" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#collapseTwo"
+            aria-expanded="false" 
+            aria-controls="collapseTwo">
+            <i class="bi bi-tools"></i> Medidas de Protección Física
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+          <div class="accordion-body">
+            <ul>
+              <li>Sistemas de cerraduras, puertas de seguridad y control biométrico.</li>
+              <li>Alarmas, cámaras de videovigilancia y sensores de movimiento.</li>
+              <li>SAI (sistemas de alimentación ininterrumpida) para evitar pérdidas por cortes de energía.</li>
+              <li>Control de visitas y registro de accesos físicos.</li>
+              <li>Política de contraseñas segura y no visible físicamente.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+          <button 
+            class="accordion-button collapsed" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#collapseThree"
+            aria-expanded="false" 
+            aria-controls="collapseThree">
+            <i class="bi bi-lightbulb"></i> Buenas Prácticas Recomendadas
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+          <div class="accordion-body">
+            <ul>
+              <li>Evaluar regularmente los riesgos físicos del entorno.</li>
+              <li>Verificar y mantener los SAI.</li>
+              <li>Formar al personal en seguridad física y uso de contraseñas.</li>
+              <li>Ubicar los servidores en zonas protegidas y monitorizadas.</li>
+              <li>Aplicar políticas de seguridad documentadas y revisadas.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-4 mb-3 bg-body-tertiary rounded">
+      <h2 class="h4"><i class="bi bi-question-circle"></i> Test de Autoevaluación</h2>
+      <p>Responde las siguientes preguntas para comprobar tu comprensión.</p>
+      <form id="quizForm">
+        <div class="mb-3">
+          <label class="form-label">1. ¿Cuál de las siguientes opciones NO es una medida de seguridad física?</label>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q1" value="a"> Contraseñas fuertes</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q1" value="b"> Control biométrico</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q1" value="c"> SAI</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">2. ¿Qué protege la seguridad física?</label>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q2" value="a"> Bases de datos</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q2" value="b"> Equipos e instalaciones</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q2" value="c"> Programas antivirus</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">3. ¿Cuál de estos entornos es adecuado para un servidor?</label>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q3" value="a"> Sala ventilada con acceso restringido</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q3" value="b"> Oficina compartida sin puerta</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q3" value="c"> Bajo de una mesa en la recepción</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">4. ¿Qué función realiza un SAI?</label>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q4" value="a"> Enfría los sistemas</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q4" value="b"> Proporciona alimentación durante un corte eléctrico</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q4" value="c"> Controla el acceso de los usuarios</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">5. ¿Qué es recomendable para evitar accesos no autorizados?</label>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q5" value="a"> Contraseñas en post-it</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q5" value="b"> Cerraduras electrónicas y registro de visitas</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q5" value="c"> Dejar las puertas abiertas para ventilar</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">6. ¿Cuál es un riesgo ambiental común en salas de servidores?</label>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q6" value="a"> Alta humedad</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q6" value="b"> Buen cableado</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q6" value="c"> Climatización</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">7. ¿Qué ventaja aporta la biometría?</label>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q7" value="a"> Es menos segura que una contraseña</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q7" value="b"> No requiere recordar claves</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q7" value="c"> Siempre se puede compartir</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">8. ¿Qué se debe revisar regularmente en los SAI?</label>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q8" value="a"> Su funcionamiento</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q8" value="b"> Su color</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q8" value="c"> Su número de serie</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">9. ¿Qué tipo de seguridad representa una cámara de videovigilancia?</label>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q9" value="a"> Seguridad lógica</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q9" value="b"> Seguridad física</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q9" value="c"> Seguridad informática</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">10. ¿Qué medida mejora la seguridad del entorno físico?</label>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q10" value="a"> Usar escritorios compartidos</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q10" value="b"> Control de acceso a salas técnicas</div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="q10" value="c"> Publicar horarios en la puerta</div>
+        </div>
+        <button type="button" id="checkAnswersBtn" class="btn btn-primary">
+          <i class="bi bi-check2-circle"></i> Comprobar Respuestas
+        </button>
+        <div id="resultMessage" class="alert mt-3" style="display: none;"></div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="text-center py-2 border-top">
+    <small class="text-muted">&copy; 2025 - Unidad 2: Seguridad Física</small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const correctAnswers = {
+      q1: 'a',
+      q2: 'b',
+      q3: 'a',
+      q4: 'b',
+      q5: 'b',
+      q6: 'a',
+      q7: 'b',
+      q8: 'a',
+      q9: 'b',
+      q10: 'b'
+    };
+
+    document.getElementById('checkAnswersBtn').addEventListener('click', () => {
+      let score = 0;
+      let total = Object.keys(correctAnswers).length;
+      for (let key in correctAnswers) {
+        const selected = document.querySelector(`input[name="${key}"]:checked`);
+        if (selected && selected.value === correctAnswers[key]) {
+          score++;
+        }
+      }
+      const resultMessage = document.getElementById('resultMessage');
+      resultMessage.style.display = 'block';
+      resultMessage.className = 'alert ' + (score === total ? 'alert-success' : 'alert-warning');
+      resultMessage.textContent = `Has acertado ${score} de ${total} preguntas.`;
+    });
+  </script>
+</body>
+</html>
