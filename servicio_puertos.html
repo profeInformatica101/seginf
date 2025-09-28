@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="es" data-bs-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Puertos & Procesos — Cheat Sheet</title>
+
+  <!-- Bootstrap + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    /* Código en morado (purple) */
+    :root { --code-purple: #6f42c1; }
+    code, pre code { color: var(--code-purple); font-weight: 600; }
+
+    /* Presentación */
+    pre { background: var(--bs-tertiary-bg); border-radius: .5rem; padding: .75rem; overflow: auto; }
+    .fit { max-width: 100%; overflow-x: auto; }
+    .section-badge { font-size: .8rem; }
+    @media (max-width: 576px){
+      .table-sm td, .table-sm th { padding: .5rem .6rem; }
+    }
+  </style>
+</head>
+<body class="bg-body">
+
+<header class="container py-3">
+  <div class="d-flex align-items-center gap-2">
+    <i class="bi bi-hdd-network fs-4"></i>
+    <h1 class="h4 mb-0">Puertos &amp; Procesos — Cheat Sheet</h1>
+  </div>
+  <p class="text-muted mb-0">Identifica qué aplicación usa un puerto, inspecciona conexiones y actúa con seguridad.</p>
+</header>
+
+<main class="container pb-5">
+  <!-- Búsqueda ligera (filtra texto) -->
+  <div class="mb-3">
+    <input id="q" class="form-control" type="search" placeholder="Buscar (ej. 80, lsof, ss, kill, netstat, firewall)…">
+  </div>
+
+  <div id="cheatsAccordion" class="accordion">
+    <!-- Linux -->
+    <div class="accordion-item">
+      <h2 id="h-linux" class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#c-linux" aria-expanded="true" aria-controls="c-linux">
+          Linux <span class="ms-2 badge text-bg-warning section-badge">ss · lsof · nmap · tcpdump · ufw</span>
+        </button>
+      </h2>
+      <div id="c-linux" class="accordion-collapse collapse show" aria-labelledby="h-linux" data-bs-parent="#cheatsAccordion">
+        <div class="accordion-body">
+          <div id="linuxInner" class="accordion accordion-flush">
+
+            <!-- Ver puertos -->
+            <div class="accordion-item">
+              <h2 id="h-l1" class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-l1">
+                  Ver puertos en escucha
+                </button>
+              </h2>
+              <div id="c-l1" class="accordion-collapse collapse" data-bs-parent="#linuxInner">
+                <div class="accordion-body">
+                  <div class="table-responsive fit">
+                    <table class="table table-sm table-bordered align-middle mb-3">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Tarea</th>
+                          <th>Comando</th>
+                          <th>Parámetros clave</th>
+                          <th>¿Para qué sirve?</th>
+                          <th>Ejemplo</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Rápido y moderno</td>
+                          <td><code>ss</code></td>
+                          <td><code>-l</code> listen · <code>-t</code> TCP · <code>-u</code> UDP · <code>-n</code> numérico · <code>-p</code> proceso</td>
+                          <td>Lista sockets abiertos; ideal para saber qué servicios esperan conexiones.</td>
+                          <td><code>ss -ltnp</code></td>
+                        </tr>
+                        <tr>
+                          <td>Clásico</td>
+                          <td><code>netstat</code></td>
+                          <td><code>-tuln</code> = TCP/UDP + listening + numérico</td>
+                          <td>Alternativa en sistemas antiguos donde <code>ss</code> no está disponible.</td>
+                          <td><code>netstat -tuln</code></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="mb-0"><strong>Tip:</strong> añade <code>-p</code> (sudo) para ver el proceso que posee el socket.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- ¿Qué proceso usa un puerto? -->
+            <div class="accordion-item">
+              <h2 id="h-l2" class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-l2">
+                  ¿Qué proceso usa un puerto?
+                </button>
+              </h2>
+              <div id="c-l2" class="accordion-collapse collapse" data-bs-parent="#linuxInner">
+                <div class="accordion-body">
+                  <div class="table-responsive fit">
+                    <table class="table table-sm table-bordered align-middle mb-3">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Herramienta</th>
+                          <th>Comando base</th>
+                          <th>Notas</th>
+                          <th>Ejemplo</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>lsof</td>
+                          <td><code>lsof -i :PUERTO -Pn</code></td>
+                          <td>Muestra PID y ejecutable. <em>Requiere</em> <code>sudo</code> para ver todo.</td>
+                          <td><code>sudo lsof -i :80 -Pn</code></td>
+                        </tr>
+                        <tr>
+                          <td>fuser (ligero)</td>
+                          <td><code>fuser -n tcp PUERTO</code></td>
+                          <td>Devuelve PIDs que usan un puerto TCP concreto.</td>
+                          <td><code>fuser -n tcp 5432</code></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="mb-0"><strong>Ruta típica:</strong> <code>ss -ltnp</code> → anota puerto → <code>lsof -i :PUERTO</code> → decide acción.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actuar: cerrar proceso / firewall / depurar -->
+            <div class="accordion-item">
+              <h2 id="h-l3" class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-l3">
+                  Actuar: cerrar proceso, depurar tráfico y firewall
+                </button>
+              </h2>
+              <div id="c-l3" class="accordion-collapse collapse" data-bs-parent="#linuxInner">
+                <div class="accordion-body">
+                  <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                      <h6 class="mb-2">Finalizar proceso por PID</h6>
+                      <pre class="mb-2"><code>kill 1234      # intento suave (SIGTERM)
+kill -9 1234   # forzado (SIGKILL) — usar solo si es necesario</code></pre>
+                      <p class="mb-0 small text-muted">Mejor reiniciar el servicio correctamente antes de forzar.</p>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <h6 class="mb-2">Capturar tráfico (depurar)</h6>
+                      <pre class="mb-2"><code>sudo tcpdump -i any port 80</code></pre>
+                      <p class="mb-0 small text-muted">Detén con <kbd>Ctrl</kbd>+<kbd>C</kbd>. Verifica si llega tráfico.</p>
+                    </div>
+                    <div class="col-12">
+                      <h6 class="mb-2">Firewall (UFW)</h6>
+                      <pre class="mb-2"><code>sudo ufw allow 8080/tcp
+sudo ufw deny  8080/tcp
+sudo ufw status</code></pre>
+                      <p class="mb-0 small text-muted">Registra los cambios (qué, cuándo y por qué).</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Escaneo local -->
+            <div class="accordion-item">
+              <h2 id="h-l4" class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-l4">
+                  Escaneo de puertos locales (nmap)
+                </button>
+              </h2>
+              <div id="c-l4" class="accordion-collapse collapse" data-bs-parent="#linuxInner">
+                <div class="accordion-body">
+                  <pre class="mb-2"><code>nmap -p 1-1024 localhost     # puertos comunes
+nmap -sS -p 80,443 127.0.0.1  # SYN scan selectivo</code></pre>
+                  <p class="mb-0 small text-muted">Instala con <code>sudo apt install nmap</code>. Útil para validar exposición local.</p>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /accordion flush linuxInner -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Windows -->
+    <div class="accordion-item">
+      <h2 id="h-win" class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-win" aria-expanded="false" aria-controls="c-win">
+          Windows <span class="ms-2 badge text-bg-primary section-badge">netstat · tasklist · taskkill · PowerShell · netsh</span>
+        </button>
+      </h2>
+      <div id="c-win" class="accordion-collapse collapse" aria-labelledby="h-win" data-bs-parent="#cheatsAccordion">
+        <div class="accordion-body">
+          <div id="winInner" class="accordion accordion-flush">
+
+            <!-- Ver/filtrar -->
+            <div class="accordion-item">
+              <h2 id="h-w1" class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-w1">
+                  Ver puertos, filtrar por puerto y obtener PID
+                </button>
+              </h2>
+              <div id="c-w1" class="accordion-collapse collapse" data-bs-parent="#winInner">
+                <div class="accordion-body">
+                  <div class="table-responsive fit">
+                    <table class="table table-sm table-bordered align-middle mb-3">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Tarea</th>
+                          <th>Comando</th>
+                          <th>¿Para qué sirve?</th>
+                          <th>Ejemplo</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Ver puertos + PID</td>
+                          <td><code>netstat -aon</code></td>
+                          <td>Lista conexiones y puertos en escucha con su PID.</td>
+                          <td><code>netstat -aon</code></td>
+                        </tr>
+                        <tr>
+                          <td>Filtrar por puerto</td>
+                          <td><code>findstr :PUERTO</code></td>
+                          <td>Localiza la línea del puerto concreto.</td>
+                          <td><code>netstat -aon | findstr :80</code></td>
+                        </tr>
+                        <tr>
+                          <td>Ver proceso por PID</td>
+                          <td><code>tasklist | findstr PID</code></td>
+                          <td>Obtiene el ejecutable asociado al PID.</td>
+                          <td><code>tasklist | findstr 1234</code></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="mb-0"><strong>Tip:</strong> <code>netstat -aonb</code> muestra binario (lento; ejecutar como admin).</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actuar -->
+            <div class="accordion-item">
+              <h2 id="h-w2" class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-w2">
+                  Actuar: finalizar proceso, PowerShell y firewall
+                </button>
+              </h2>
+              <div id="c-w2" class="accordion-collapse collapse" data-bs-parent="#winInner">
+                <div class="accordion-body">
+                  <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                      <h6 class="mb-2">Finalizar proceso por PID</h6>
+                      <pre class="mb-2"><code>taskkill /PID 1234         # intento
+taskkill /PID 1234 /F     # forzado</code></pre>
+                      <p class="mb-0 small text-muted">Prueba sin <code>/F</code> antes. Ejecuta la consola como administrador.</p>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <h6 class="mb-2">PowerShell — conexiones</h6>
+                      <pre class="mb-2"><code>Get-NetTCPConnection -LocalPort 80</code></pre>
+                      <p class="mb-0 small text-muted">Útil para ver estado de sockets por puerto.</p>
+                    </div>
+                    <div class="col-12">
+                      <h6 class="mb-2">Firewall (abrir puerto)</h6>
+                      <pre class="mb-2"><code>netsh advfirewall firewall add rule name="HTTP 8080" dir=in action=allow protocol=TCP localport=8080</code></pre>
+                      <p class="mb-0 small text-muted">Revisa y documenta las reglas creadas.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Flujo recomendado -->
+            <div class="accordion-item">
+              <h2 id="h-w3" class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-w3">
+                  Flujo recomendado (paso a paso)
+                </button>
+              </h2>
+              <div id="c-w3" class="accordion-collapse collapse" data-bs-parent="#winInner">
+                <div class="accordion-body">
+                  <ol class="mb-0">
+                    <li><strong>Listar:</strong> <code>netstat -aon</code>.</li>
+                    <li><strong>Filtrar puerto:</strong> <code>findstr :PUERTO</code> → anota <em>PID</em>.</li>
+                    <li><strong>Identificar proceso:</strong> <code>tasklist | findstr PID</code>.</li>
+                    <li><strong>Actuar:</strong> reiniciar servicio o <code>taskkill</code>.</li>
+                    <li><strong>Opcional:</strong> <code>Get-NetTCPConnection</code> y ajustar firewall con <code>netsh</code>.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /accordion flush winInner -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Guía rápida de parámetros -->
+    <div class="accordion-item">
+      <h2 id="h-quick" class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-quick">
+          Guía rápida de parámetros
+        </button>
+      </h2>
+      <div id="c-quick" class="accordion-collapse collapse" aria-labelledby="h-quick" data-bs-parent="#cheatsAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><code>ss -ltnp</code> → <strong>l</strong>isten · <strong>t</strong>cp · <strong>n</strong>umérico · <strong>p</strong>roceso.</li>
+                <li class="list-group-item"><code>lsof -i :PUERTO -Pn</code> → proceso y PID sin resolver DNS/servicios.</li>
+                <li class="list-group-item"><code>fuser -n tcp PUERTO</code> → PIDs que usan el puerto TCP.</li>
+                <li class="list-group-item"><code>nmap -p 1-1024 localhost</code> → escaneo rápido de puertos comunes.</li>
+                <li class="list-group-item"><code>tcpdump -i any port 80</code> → captura tráfico (parar con Ctrl+C).</li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><code>netstat -aon</code> → todas las conexiones + PID.</li>
+                <li class="list-group-item"><code>findstr :PUERTO</code> → filtra por puerto.</li>
+                <li class="list-group-item"><code>tasklist | findstr PID</code> → nombre del proceso.</li>
+                <li class="list-group-item"><code>taskkill /PID PID /F</code> → terminar proceso (forzado si hace falta).</li>
+                <li class="list-group-item"><code>Get-NetTCPConnection -LocalPort N</code> → conexiones por puerto.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="alert alert-warning mt-3 mb-0">
+            <strong>Buenas prácticas:</strong> evita <code>-9</code>/<code>/F</code> salvo que sea imprescindible; prioriza reiniciar servicios y documenta cualquier cambio de firewall.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /accordion principal -->
+</main>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Filtro de búsqueda muy simple (oculta items cuyo texto no coincide) -->
+<script>
+  const q = document.getElementById('q');
+  const items = Array.from(document.querySelectorAll('.accordion-item'));
+  q.addEventListener('input', () => {
+    const term = q.value.trim().toLowerCase();
+    items.forEach(it => {
+      const body = it.querySelector('.accordion-body');
+      const headerBtn = it.querySelector('.accordion-button');
+      const text = ((body?.innerText || '') + ' ' + (headerBtn?.innerText || '')).toLowerCase();
+      it.style.display = term ? (text.includes(term) ? '' : 'none') : '';
+    });
+  });
+</script>
+
+</body>
+</html>
