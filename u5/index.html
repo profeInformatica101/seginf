@@ -3,344 +3,955 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutorial de Criptografía</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Criptografía — OpenSSL & GPG</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        code{
-            color:blue;
+        :root {
+            --bg: #0a0e1a;
+            --surface: #111827;
+            --surface2: #1a2236;
+            --border: #1e3a5f;
+            --accent-sym: #00e5ff;
+            --accent-hash: #b388ff;
+            --accent-asym: #69ff47;
+            --text: #e2e8f0;
+            --text-muted: #64748b;
+            --warn: #ffb74d;
+            --danger: #ef5350;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Syne', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 24px 80px;
+        }
+
+        header { text-align: center; margin-bottom: 64px; }
+
+        header .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 4px;
+            color: var(--accent-sym);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            opacity: 0.8;
+        }
+
+        header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #00e5ff, #b388ff, #69ff47);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p { margin-top: 16px; color: var(--text-muted); font-size: 1rem; }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--surface);
+            border-radius: 14px;
+            padding: 6px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 8px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: 'Syne', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .tab-btn[data-tab="simetrica"] .dot { background: var(--accent-sym); }
+        .tab-btn[data-tab="hash"] .dot { background: var(--accent-hash); }
+        .tab-btn[data-tab="asimetrica"] .dot { background: var(--accent-asym); }
+        .tab-btn[data-tab="glosario"] .dot { background: #fb923c; }
+
+        .tab-btn.active { color: var(--text); }
+        .tab-btn[data-tab="simetrica"].active { background: rgba(0,229,255,0.12); }
+        .tab-btn[data-tab="hash"].active { background: rgba(179,136,255,0.12); }
+        .tab-btn[data-tab="asimetrica"].active { background: rgba(105,255,71,0.12); }
+        .tab-btn[data-tab="glosario"].active { background: rgba(251,146,60,0.12); }
+
+        .section { display: none; }
+        .section.active { display: block; animation: fadeUp 0.35s ease; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            width: 56px; height: 56px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 14px;
+            flex-shrink: 0;
+        }
+
+        .simetrica .section-icon { background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.2); }
+        .hash .section-icon { background: rgba(179,136,255,0.1); border: 1px solid rgba(179,136,255,0.2); }
+        .asimetrica .section-icon { background: rgba(105,255,71,0.1); border: 1px solid rgba(105,255,71,0.2); }
+        .glosario .section-icon { background: rgba(251,146,60,0.1); border: 1px solid rgba(251,146,60,0.2); }
+
+        .section-title h2 { font-size: 1.5rem; font-weight: 800; }
+        .simetrica .section-title h2 { color: var(--accent-sym); }
+        .hash .section-title h2 { color: var(--accent-hash); }
+        .asimetrica .section-title h2 { color: var(--accent-asym); }
+        .glosario .section-title h2 { color: #fb923c; }
+        .section-title p { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 700px) {
+            .tool-grid { grid-template-columns: 1fr; }
+            .tabs { flex-direction: column; }
+        }
+
+        .tool-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .tool-card:hover { transform: translateY(-2px); }
+        .simetrica .tool-card:hover { border-color: rgba(0,229,255,0.4); }
+        .hash .tool-card:hover { border-color: rgba(179,136,255,0.4); }
+        .asimetrica .tool-card:hover { border-color: rgba(105,255,71,0.4); }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tool-name {
+            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .simetrica .tool-name { color: var(--accent-sym); }
+        .hash .tool-name { color: var(--accent-hash); }
+        .asimetrica .tool-name { color: var(--accent-asym); }
+
+        .card-header h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-top: 2px; }
+
+        .badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge-rec { background: rgba(105,255,71,0.1); color: var(--accent-asym); border: 1px solid rgba(105,255,71,0.3); }
+        .badge-dep { background: rgba(239,83,80,0.1); color: var(--danger); border: 1px solid rgba(239,83,80,0.3); }
+
+        .card-body { padding: 16px 20px 20px; }
+        .cmd-block { margin-top: 10px; }
+
+        .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cmd-wrap { position: relative; }
+
+        pre {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 48px 12px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #a5f3fc;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            line-height: 1.6;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 8px; right: 8px;
+            background: var(--border);
+            border: none;
+            color: var(--text-muted);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.65rem;
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover { background: #2a4a7f; color: var(--text); }
+        .copy-btn.copied { color: var(--accent-asym); }
+
+        .note {
+            margin-top: 10px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            line-height: 1.5;
+        }
+
+        .note-warn { background: rgba(255,183,77,0.07); border: 1px solid rgba(255,183,77,0.2); color: var(--warn); }
+        .note-danger { background: rgba(239,83,80,0.07); border: 1px solid rgba(239,83,80,0.2); color: #ff8a80; }
+        .note-info { background: rgba(100,116,139,0.1); border: 1px solid rgba(100,116,139,0.2); color: var(--text-muted); }
+
+        /* Tabla */
+        .compare-section { margin-top: 48px; }
+
+        .compare-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .compare-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+
+        th {
+            background: var(--surface2);
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--border);
+        }
+
+        th:nth-child(2) { color: var(--accent-sym); }
+        th:nth-child(3) { color: #b388ff; }
+
+        td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text-muted); vertical-align: top; }
+        td:first-child { color: var(--text); font-weight: 600; white-space: nowrap; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+
+        .tick { color: var(--accent-asym); }
+        .cross { color: var(--danger); }
+        .partial { color: var(--warn); }
+
+        /* Glosario */
+        .glosario-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 700px) { .glosario-grid { grid-template-columns: 1fr; } }
+
+        .glosario-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .glosario-card:hover { transform: translateY(-2px); border-color: rgba(251,146,60,0.35); }
+
+        .glosario-card .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fb923c;
+            margin-bottom: 8px;
+        }
+
+        .glosario-card h3 { font-size: 1.1rem; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+        .glosario-card p { font-size: 0.83rem; color: var(--text-muted); line-height: 1.65; }
+
+        .glosario-card .tool-ref { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .pill.sym { border-color: rgba(0,229,255,0.3); color: var(--accent-sym); }
+        .pill.hsh { border-color: rgba(179,136,255,0.3); color: var(--accent-hash); }
+        .pill.asy { border-color: rgba(105,255,71,0.3); color: var(--accent-asym); }
     </style>
+</head>
 <body>
-    <div class="container my-5">
-        <h1 class="text-center">Resumen de algunos comandos para Criptografía </h1>
-        <h6>OpenSSL y GPG</h6>
-        <h1>OpenSSL</h1>
-        <div class="accordion" id="accordionExample">
+<div class="wrapper">
 
-            <!-- Cifrado y descifrado simétrico -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Cifrado y Descifrado Simétrico
-                    </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <h5>Cifrado:</h5>
-                        <code>openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -salt -in archivo.txt -out archivo.lock</code>
-                        <br>
-                        <h5>Descifrado:</h5>
-                        <code>openssl enc -d -aes-256-cbc -pbkdf2 -iter 100000 -salt -in archivo.lock -out archivo.txt</code>
-                    </div>
-                </div>
+    <header>
+        <p class="eyebrow">// Referencia de comandos</p>
+        <h1>Criptografía<br>OpenSSL & GPG</h1>
+        <p>Comandos actualizados — 2025</p>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="simetrica"><span class="dot"></span> Simétrica</button>
+        <button class="tab-btn" data-tab="hash"><span class="dot"></span> Hash</button>
+        <button class="tab-btn" data-tab="asimetrica"><span class="dot"></span> Asimétrica</button>
+        <button class="tab-btn" data-tab="glosario"><span class="dot"></span> Glosario</button>
+    </div>
+
+    <!-- ══════════════════ SIMÉTRICA ══════════════════ -->
+    <div class="section simetrica active" id="simetrica">
+        <div class="section-header">
+            <div class="section-icon">🔐</div>
+            <div class="section-title">
+                <h2>Criptografía Simétrica</h2>
+                <p>Misma clave para cifrar y descifrar · AES-256-GCM y ChaCha20-Poly1305 son el estándar actual</p>
             </div>
-
-            <!-- Generación y uso de claves asimétricas -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Generación y Uso de Claves Asimétricas
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <h5>Clave Privada:</h5>
-                        <code>openssl genpkey -algorithm RSA -out privada.pem -aes-256-cbc -pass pass:tu_contraseña</code>
-                        <br>
-                        <h5>Clave Pública:</h5>
-                        <code>openssl rsa -in privada.pem -pubout -out publica.pem</code>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Resumen hash -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingThree">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Resumen Hash
-                    </button>
-                </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <h5>MD5:</h5>
-                        <code>openssl dgst -md5 -out archivo.md5 archivo.txt</code>
-                        <br>
-                        <h5>SHA-512:</h5>
-                        <code>openssl dgst -sha512 -out archivo.sha archivo.txt</code>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Firma y verificación -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingFour">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                        Firma Digital y Verificación
-                    </button>
-                </h2>
-                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <h5>Firmar un archivo:</h5>
-                        <code>openssl dgst -sign privada.pem -out firma.sign archivo.txt</code>
-                        <br>
-                        <h5>Verificar firma:</h5>
-                        <code>openssl dgst -verify publica.pem -signature firma.sign archivo.txt</code>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Certificado digital autofirmado -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingFive">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                        Certificado Digital Autofirmado
-                    </button>
-                </h2>
-                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <h5>Comando:</h5>
-                        <code>openssl req -x509 -newkey rsa:2048 -keyout privada.key -out certificado.crt -days 365 -nodes</code>
-                        <h5>Campos solicitados:</h5>
-                        <ul>
-                            <li>Country Name (2 letter code)</li>
-                            <li>State or Province Name</li>
-                            <li>Locality Name</li>
-                            <li>Organization Name</li>
-                            <li>Organizational Unit Name</li>
-                            <li>Common Name</li>
-                            <li>Email Address</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
-        <h1>GPG</h1>
-<div class="accordion" id="accordionGPG">
+        <div class="tool-grid">
 
-    <!-- Cifrado y descifrado simétrico -->
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingGPGOne">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGPGOne" aria-expanded="true" aria-controls="collapseGPGOne">
-                Cifrado y Descifrado Simétrico
-            </button>
-        </h2>
-        <div id="collapseGPGOne" class="accordion-collapse collapse show" aria-labelledby="headingGPGOne" data-bs-parent="#accordionGPG">
-            <div class="accordion-body">
-                <h5>Ver versión y algoritmos soportados:</h5>
-                <code>gpg --version</code>
-                <br>
-                <h5>Cifrado:</h5>
-                <code>gpg -c archivo.txt</code> (Genera <code>archivo.gpg</code>)
-                <br>
-                <h5>Cifrado en formato ASCII:</h5>
-                <code>gpg -c -a archivo.txt</code> (Genera <code>archivo.asc</code>)
-                <br>
-                <h5>Desencriptar:</h5>
-                <code>gpg -d archivo.asc</code>
-                <br>
-                <h5>Cifrado con algoritmo específico:</h5>
-                <code>gpg -c -a --cipher-algo AES192 archivo.txt</code>
+            <div class="tool-card">
+                <div class="card-header">
+                    <div><div class="tool-name">OpenSSL</div><h3>AES-256-GCM</h3></div>
+                    <span class="badge badge-rec">✓ Recomendado</span>
+                </div>
+                <div class="card-body">
+                    <div class="cmd-block">
+                        <div class="label">// Cifrar (el salt se embebe en el archivo)</div>
+                        <div class="cmd-wrap">
+                            <pre id="c1">openssl enc -aes-256-gcm \
+  -pbkdf2 -iter 600000 -salt \
+  -in archivo.txt -out archivo.enc</pre>
+                            <button class="copy-btn" onclick="copyCmd('c1',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Descifrar (sin -salt: se lee del encabezado)</div>
+                        <div class="cmd-wrap">
+                            <pre id="c2">openssl enc -d -aes-256-gcm \
+  -pbkdf2 -iter 600000 \
+  -in archivo.enc -out archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('c2',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="note note-info">💡 AES-256-GCM es AEAD: cifra y autentica en un solo paso. Detecta cualquier modificación del archivo cifrado.</div>
+                    <div class="note note-warn">⚠️ Ajusta <code style="background:none;color:inherit">-iter</code> para que tarde ~200–500 ms en tu equipo. 600 000 es un buen punto de partida en hardware moderno.</div>
+                    <div class="note note-warn">⚠️ Nunca uses <code style="background:none;color:inherit">-pass pass:xxx</code> en la CLI — la contraseña queda en el historial del shell. Usa el prompt interactivo o <code style="background:none;color:inherit">-pass file:clave.txt</code>.</div>
+                </div>
             </div>
+
+            <div class="tool-card">
+                <div class="card-header">
+                    <div><div class="tool-name">OpenSSL</div><h3>ChaCha20-Poly1305</h3></div>
+                    <span class="badge badge-rec">✓ Alternativa moderna</span>
+                </div>
+                <div class="card-body">
+                    <div class="cmd-block">
+                        <div class="label">// Cifrar</div>
+                        <div class="cmd-wrap">
+                            <pre id="c3">openssl enc -chacha20-poly1305 \
+  -pbkdf2 -iter 600000 -salt \
+  -in archivo.txt -out archivo.enc</pre>
+                            <button class="copy-btn" onclick="copyCmd('c3',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Descifrar</div>
+                        <div class="cmd-wrap">
+                            <pre id="c4">openssl enc -d -chacha20-poly1305 \
+  -pbkdf2 -iter 600000 \
+  -in archivo.enc -out archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('c4',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="note note-info">💡 Preferible a AES en dispositivos <strong>sin aceleración AES-NI</strong> (móviles, Raspberry Pi, microcontroladores). También AEAD como GCM.</div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="card-header">
+                    <div><div class="tool-name">GPG</div><h3>Cifrado simétrico</h3></div>
+                    <span class="badge badge-rec">✓ Recomendado</span>
+                </div>
+                <div class="card-body">
+                    <div class="cmd-block">
+                        <div class="label">// Cifrar con AES-256 (GPG calibra s2k automáticamente)</div>
+                        <div class="cmd-wrap">
+                            <pre id="c5">gpg -c --cipher-algo AES256 \
+  --s2k-digest-algo SHA512 \
+  -o archivo.gpg archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('c5',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Descifrar</div>
+                        <div class="cmd-wrap">
+                            <pre id="c6">gpg -d archivo.gpg &gt; archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('c6',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Ver algoritmos disponibles</div>
+                        <div class="cmd-wrap">
+                            <pre id="c7">gpg --version</pre>
+                            <button class="copy-btn" onclick="copyCmd('c7',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="note note-info">💡 GPG calibra la dificultad de derivación de clave (s2k) automáticamente. No fijes <code style="background:none;color:inherit">--s2k-count</code> salvo que sepas el valor correcto para tu versión.</div>
+                    <div class="note note-info">💡 GPG pide la passphrase de forma interactiva — más seguro que pasarla como argumento de CLI.</div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- Generación y uso de claves asimétricas -->
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingGPGTwo">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGPGTwo" aria-expanded="false" aria-controls="collapseGPGTwo">
-                Generación y Uso de Claves Asimétricas
-            </button>
-        </h2>
-        <div id="collapseGPGTwo" class="accordion-collapse collapse" aria-labelledby="headingGPGTwo" data-bs-parent="#accordionGPG">
-            <div class="accordion-body">
-                <h5>Generar par de claves:</h5>
-                <code>gpg --gen-key</code>
-                <br>
-                <h5>Listar claves públicas disponibles:</h5>
-                <code>gpg --list-keys</code>
-                <br>
-                <h5>Importar clave pública:</h5>
-                <code>gpg --import clave.asc</code>
-                <br>
-                <h5>Exportar clave pública en formato ASCII:</h5>
-                <code>gpg --armor --output miclave_publica.asc --export ClaveID</code>
-                <br>
-                <h5>Exportar clave privada como backup:</h5>
-                <code>gpg --armor --output claveprivada.asc --export-secret-key ClaveID</code>
+    <!-- ══════════════════ HASH ══════════════════ -->
+    <div class="section hash" id="hash">
+        <div class="section-header">
+            <div class="section-icon">🔍</div>
+            <div class="section-title">
+                <h2>Funciones Hash</h2>
+                <p>SHA-256/512 — mínimo práctico · SHA-3 — alternativa estandarizada (NIST) · BLAKE3 — muy rápido, no universal</p>
             </div>
+        </div>
+
+        <div class="tool-grid">
+
+            <div class="tool-card">
+                <div class="card-header">
+                    <div><div class="tool-name">OpenSSL</div><h3>Hashes actuales</h3></div>
+                    <span class="badge badge-rec">✓ Recomendado</span>
+                </div>
+                <div class="card-body">
+                    <div class="cmd-block">
+                        <div class="label">// SHA-256 (mínimo recomendado)</div>
+                        <div class="cmd-wrap">
+                            <pre id="h1">openssl dgst -sha256 archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('h1',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// SHA-512</div>
+                        <div class="cmd-wrap">
+                            <pre id="h2">openssl dgst -sha512 archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('h2',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// SHA3-256 — alternativa moderna estandarizada por NIST</div>
+                        <div class="cmd-wrap">
+                            <pre id="h3">openssl dgst -sha3-256 archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('h3',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// SHA3-512</div>
+                        <div class="cmd-wrap">
+                            <pre id="h4">openssl dgst -sha3-512 archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('h4',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Guardar hash en archivo</div>
+                        <div class="cmd-wrap">
+                            <pre id="h5">openssl dgst -sha256 \
+  -out archivo.sha256 archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('h5',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Listar todos los algoritmos disponibles</div>
+                        <div class="cmd-wrap">
+                            <pre id="h6">openssl list -digest-algorithms</pre>
+                            <button class="copy-btn" onclick="copyCmd('h6',this)">copiar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="card-header">
+                    <div><div class="tool-name">Sistema / BLAKE3</div><h3>Utilidades del sistema</h3></div>
+                    <span class="badge badge-rec">✓ Útiles</span>
+                </div>
+                <div class="card-body">
+                    <div class="cmd-block">
+                        <div class="label">// SHA-256 (sistema)</div>
+                        <div class="cmd-wrap">
+                            <pre id="h7">sha256sum archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('h7',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// SHA-512 (sistema)</div>
+                        <div class="cmd-wrap">
+                            <pre id="h8">sha512sum archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('h8',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// BLAKE3 — extremadamente rápido (requiere instalación)</div>
+                        <div class="cmd-wrap">
+                            <pre id="h9"># Instalar: cargo install b3sum
+b3sum archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('h9',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Verificar integridad de un archivo</div>
+                        <div class="cmd-wrap">
+                            <pre id="h10">sha256sum -c archivo.sha256</pre>
+                            <button class="copy-btn" onclick="copyCmd('h10',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="note note-info">💡 BLAKE3 es seguro y muy rápido, pero no está presente en todos los entornos ni en estándares de cumplimiento (FIPS, etc.). Usa SHA-3 como alternativa estandarizada por NIST.</div>
+                </div>
+            </div>
+
+            <div class="tool-card" style="grid-column: 1 / -1;">
+                <div class="card-header">
+                    <div><div class="tool-name">Obsoletos — NO usar en producción</div><h3>MD5 · SHA-1</h3></div>
+                    <span class="badge badge-dep">✗ Deprecado</span>
+                </div>
+                <div class="card-body">
+                    <div class="tool-grid" style="margin-top:0">
+                        <div>
+                            <div class="cmd-block">
+                                <div class="label">// MD5 (solo compatibilidad legacy)</div>
+                                <div class="cmd-wrap">
+                                    <pre id="h11">openssl dgst -md5 archivo.txt
+# o bien:
+md5sum archivo.txt</pre>
+                                    <button class="copy-btn" onclick="copyCmd('h11',this)">copiar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="cmd-block">
+                                <div class="label">// SHA-1 (solo compatibilidad legacy)</div>
+                                <div class="cmd-wrap">
+                                    <pre id="h12">openssl dgst -sha1 archivo.txt
+# o bien:
+sha1sum archivo.txt</pre>
+                                    <button class="copy-btn" onclick="copyCmd('h12',this)">copiar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note note-danger" style="margin-top:12px;">🚨 MD5 y SHA-1 tienen colisiones conocidas y están rotos para uso criptográfico. Usar únicamente para compatibilidad con sistemas legacy. En cualquier sistema nuevo, SHA-256 es el mínimo.</div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- Cifrado y descifrado con clave pública -->
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingGPGThree">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGPGThree" aria-expanded="false" aria-controls="collapseGPGThree">
-                Cifrado y Descifrado con Clave Pública
-            </button>
-        </h2>
-        <div id="collapseGPGThree" class="accordion-collapse collapse" aria-labelledby="headingGPGThree" data-bs-parent="#accordionGPG">
-            <div class="accordion-body">
-                <h5>Cifrar con clave pública del destinatario:</h5>
-                <code>gpg -e -r "nombre_destinatario" archivo.txt</code> (Genera <code>archivo.txt.gpg</code>)
-                <br>
-                <h5>Desencriptar:</h5>
-                <code>gpg -d archivo.txt.gpg > archivo.txt</code>
+    <!-- ══════════════════ ASIMÉTRICA ══════════════════ -->
+    <div class="section asimetrica" id="asimetrica">
+        <div class="section-header">
+            <div class="section-icon">🗝️</div>
+            <div class="section-title">
+                <h2>Criptografía Asimétrica</h2>
+                <p>Ed25519 → firma · X25519/ECDH → intercambio de clave · ECDSA P-384 → compatibilidad · RSA → legacy</p>
             </div>
         </div>
-    </div>
-    <!-- Resumen Hash -->
-<div class="accordion-item">
-    <h2 class="accordion-header" id="headingGPGSix">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGPGSix" aria-expanded="false" aria-controls="collapseGPGSix">
-            Resumen Hash
-        </button>
-    </h2>
-    <div id="collapseGPGSix" class="accordion-collapse collapse" aria-labelledby="headingGPGSix" data-bs-parent="#accordionGPG">
-        <div class="accordion-body">
-            <p><strong>Nota:</strong> GPG no realiza generación de hashes como una funcionalidad separada, pero utiliza algoritmos hash internamente para firmas digitales.</p>
-            <h5>Generar Hash Manualmente (MD5, SHA-1, SHA-256):</h5>
-            <ul>
-                <li><strong>MD5:</strong> <code>echo -n "contraseña" | md5sum</code></li>
-                <li><strong>SHA-1:</strong> <code>echo -n "contraseña" | sha1sum</code></li>
-                <li><strong>SHA-256:</strong> <code>echo -n "contraseña" | sha256sum</code></li>
-            </ul>
+
+        <div class="tool-grid">
+
+            <div class="tool-card">
+                <div class="card-header">
+                    <div><div class="tool-name">OpenSSL — Claves</div><h3>Ed25519 / X25519 / ECDSA</h3></div>
+                    <span class="badge badge-rec">✓ Recomendado</span>
+                </div>
+                <div class="card-body">
+                    <div class="cmd-block">
+                        <div class="label">// Ed25519 — firma digital (no cifrado directo)</div>
+                        <div class="cmd-wrap">
+                            <pre id="a1">openssl genpkey \
+  -algorithm Ed25519 \
+  -out privada_ed25519.pem</pre>
+                            <button class="copy-btn" onclick="copyCmd('a1',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// X25519 — intercambio de clave (ECDH)</div>
+                        <div class="cmd-wrap">
+                            <pre id="a2">openssl genpkey \
+  -algorithm X25519 \
+  -out privada_x25519.pem</pre>
+                            <button class="copy-btn" onclick="copyCmd('a2',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Extraer clave pública</div>
+                        <div class="cmd-wrap">
+                            <pre id="a3">openssl pkey -in privada_ed25519.pem \
+  -pubout -out publica.pem</pre>
+                            <button class="copy-btn" onclick="copyCmd('a3',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// ECDSA P-384 (firma, amplia compatibilidad)</div>
+                        <div class="cmd-wrap">
+                            <pre id="a4">openssl genpkey \
+  -algorithm EC \
+  -pkeyopt ec_paramgen_curve:P-384 \
+  -out privada_ec.pem</pre>
+                            <button class="copy-btn" onclick="copyCmd('a4',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// RSA-4096 (compatibilidad legacy)</div>
+                        <div class="cmd-wrap">
+                            <pre id="a5">openssl genpkey \
+  -algorithm RSA \
+  -pkeyopt rsa_keygen_bits:4096 \
+  -aes-256-cbc \
+  -out privada_rsa.pem</pre>
+                            <button class="copy-btn" onclick="copyCmd('a5',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="note note-info">💡 <strong>Ed25519 es para firma, no cifrado directo.</strong> Para cifrar asimétricamente con ECC: usa X25519 (ECDH) para derivar una clave compartida, luego AES-GCM para cifrar. Este esquema híbrido es lo que usan TLS 1.3 y Signal.</div>
+                    <div class="note note-warn">⚠️ RSA-2048 ya no se recomienda. Mínimo RSA-3072; preferiblemente Ed25519 o ECDSA P-384.</div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="card-header">
+                    <div><div class="tool-name">OpenSSL — Firma & Certificados</div><h3>Firma digital y X.509</h3></div>
+                    <span class="badge badge-rec">✓ Recomendado</span>
+                </div>
+                <div class="card-body">
+                    <div class="cmd-block">
+                        <div class="label">// Firmar archivo</div>
+                        <div class="cmd-wrap">
+                            <pre id="a6">openssl dgst -sha256 \
+  -sign privada_ed25519.pem \
+  -out firma.sig archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('a6',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Verificar firma</div>
+                        <div class="cmd-wrap">
+                            <pre id="a7">openssl dgst -sha256 \
+  -verify publica.pem \
+  -signature firma.sig archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('a7',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Certificado autofirmado — ECDSA P-384</div>
+                        <div class="cmd-wrap">
+                            <pre id="a8">openssl req -x509 \
+  -newkey ec \
+  -pkeyopt ec_paramgen_curve:P-384 \
+  -keyout privada.key \
+  -out cert.crt \
+  -days 365 -nodes \
+  -sha256</pre>
+                            <button class="copy-btn" onclick="copyCmd('a8',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="note note-warn">⚠️ <code style="background:none;color:inherit">-nodes</code> deja la clave privada sin cifrar en disco. Válido para pruebas y contenedores con controles propios. No usar en producción sin protección adicional.</div>
+                    <div class="note note-info">💡 Usa validez corta (90–397 días) según la política de tu CA o navegador. Los requisitos cambian frecuentemente; consulta las guías de tu CA.</div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="card-header">
+                    <div><div class="tool-name">GPG — Claves</div><h3>Generación y gestión</h3></div>
+                    <span class="badge badge-rec">✓ Recomendado</span>
+                </div>
+                <div class="card-body">
+                    <div class="cmd-block">
+                        <div class="label">// Generar par ECC (Ed25519 firma + Cv25519 cifrado)</div>
+                        <div class="cmd-wrap">
+                            <pre id="a9">gpg --full-generate-key
+# Tipo: ECC (sign and encrypt)
+#   o:  Curve 25519 (si aparece como opción)
+# Curva firma:    ed25519
+# Curva cifrado:  cv25519</pre>
+                            <button class="copy-btn" onclick="copyCmd('a9',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Listar claves</div>
+                        <div class="cmd-wrap">
+                            <pre id="a10">gpg --list-keys
+gpg --list-secret-keys</pre>
+                            <button class="copy-btn" onclick="copyCmd('a10',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Exportar clave pública</div>
+                        <div class="cmd-wrap">
+                            <pre id="a11">gpg --armor --export TU_KEYID \
+  -o publica.asc</pre>
+                            <button class="copy-btn" onclick="copyCmd('a11',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Backup clave privada (guardar cifrado y offline)</div>
+                        <div class="cmd-wrap">
+                            <pre id="a12">gpg --armor --export-secret-key \
+  TU_KEYID -o privada_backup.asc</pre>
+                            <button class="copy-btn" onclick="copyCmd('a12',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="note note-warn">⚠️ La pérdida o exposición de la clave privada es irreversible. Guarda el backup en almacenamiento cifrado y offline.</div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="card-header">
+                    <div><div class="tool-name">GPG — Cifrado & Firma</div><h3>Operaciones con clave pública</h3></div>
+                    <span class="badge badge-rec">✓ Recomendado</span>
+                </div>
+                <div class="card-body">
+                    <div class="cmd-block">
+                        <div class="label">// Importar clave pública del destinatario</div>
+                        <div class="cmd-wrap">
+                            <pre id="a13">gpg --import clave_destinatario.asc</pre>
+                            <button class="copy-btn" onclick="copyCmd('a13',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Cifrar para destinatario</div>
+                        <div class="cmd-wrap">
+                            <pre id="a14">gpg -e -a \
+  -r "destinatario@email.com" \
+  archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('a14',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Descifrar</div>
+                        <div class="cmd-wrap">
+                            <pre id="a15">gpg -d archivo.txt.asc \
+  &gt; archivo_descifrado.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('a15',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Firma separada (detached — recomendado)</div>
+                        <div class="cmd-wrap">
+                            <pre id="a16">gpg --detach-sign --armor archivo.txt
+# Genera: archivo.txt.asc</pre>
+                            <button class="copy-btn" onclick="copyCmd('a16',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Verificar firma</div>
+                        <div class="cmd-wrap">
+                            <pre id="a17">gpg --verify archivo.txt.asc archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('a17',this)">copiar</button>
+                        </div>
+                    </div>
+                    <div class="cmd-block">
+                        <div class="label">// Cifrar + firmar en un paso</div>
+                        <div class="cmd-wrap">
+                            <pre id="a18">gpg -s -e -a \
+  -r "destinatario@email.com" \
+  archivo.txt</pre>
+                            <button class="copy-btn" onclick="copyCmd('a18',this)">copiar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="compare-section">
+            <h3 class="compare-title">GPG vs OpenSSL</h3>
+            <table>
+                <thead>
+                    <tr><th>Característica</th><th>GPG</th><th>OpenSSL</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Cifrado simétrico</td><td>AES-256, Camellia-256</td><td>AES-256-GCM, ChaCha20-Poly1305</td></tr>
+                    <tr><td>Claves asimétricas</td><td>Ed25519, Cv25519, RSA</td><td>Ed25519, X25519, ECDSA P-384, RSA-4096</td></tr>
+                    <tr><td>Hash directo</td><td><span class="partial">≈</span> No orientado a eso (usa SHA en firmas)</td><td><span class="tick">✓</span> SHA-256, SHA-512, SHA3-256…</td></tr>
+                    <tr><td>Certificados X.509</td><td><span class="cross">✗</span> OpenPGP solamente</td><td><span class="tick">✓</span> Soporte completo TLS/PKI</td></tr>
+                    <tr><td>Firma digital</td><td><span class="tick">✓</span> Firmas OpenPGP</td><td><span class="tick">✓</span> + certificados digitales</td></tr>
+                    <tr><td>Uso habitual</td><td>Correo cifrado, archivos, backups</td><td>Servidores, PKI, TLS/HTTPS</td></tr>
+                    <tr><td>GUI disponible</td><td><span class="tick">✓</span> Kleopatra, Thunderbird</td><td>Solo CLI (GUIs externas)</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
+
+    <!-- ══════════════════ GLOSARIO ══════════════════ -->
+    <div class="section glosario" id="glosario">
+        <div class="section-header">
+            <div class="section-icon">📖</div>
+            <div class="section-title">
+                <h2>Glosario</h2>
+                <p>Los cuatro pilares de la seguridad de la información y las herramientas que los implementan</p>
+            </div>
+        </div>
+
+        <div class="glosario-grid">
+
+            <div class="glosario-card">
+                <div class="tag">Pilar 01</div>
+                <h3>Confidencialidad</h3>
+                <p>Garantiza que la información solo es accesible para quien está autorizado. Se implementa mediante <strong>cifrado</strong>: el dato queda ilegible para cualquiera que no posea la clave correcta. El cifrado puede ser simétrico (misma clave) o asimétrico (clave pública/privada).</p>
+                <div class="tool-ref">
+                    <span class="pill sym">AES-256-GCM</span>
+                    <span class="pill sym">ChaCha20-Poly1305</span>
+                    <span class="pill asy">ECDH + AES</span>
+                    <span class="pill sym">GPG -c</span>
+                </div>
+            </div>
+
+            <div class="glosario-card">
+                <div class="tag">Pilar 02</div>
+                <h3>Integridad</h3>
+                <p>Asegura que los datos no han sido alterados —accidental o maliciosamente— durante almacenamiento o transmisión. Se verifica con <strong>funciones hash</strong> y códigos de autenticación (MAC). Los esquemas AEAD (GCM, Poly1305) combinan cifrado e integridad en un solo paso.</p>
+                <div class="tool-ref">
+                    <span class="pill hsh">SHA-256 / SHA-512</span>
+                    <span class="pill hsh">SHA-3</span>
+                    <span class="pill hsh">BLAKE3</span>
+                    <span class="pill sym">AEAD (GCM, Poly1305)</span>
+                </div>
+            </div>
+
+            <div class="glosario-card">
+                <div class="tag">Pilar 03</div>
+                <h3>Autenticación y No repudio</h3>
+                <p>La <strong>autenticación</strong> verifica la identidad del emisor. El <strong>no repudio</strong> impide que el firmante niegue haber generado un mensaje: solo quien posee la clave privada puede producir una firma válida, que cualquiera puede verificar con la clave pública correspondiente.</p>
+                <div class="tool-ref">
+                    <span class="pill asy">Ed25519 / ECDSA</span>
+                    <span class="pill asy">RSA firma</span>
+                    <span class="pill asy">GPG --detach-sign</span>
+                    <span class="pill asy">openssl dgst -sign</span>
+                </div>
+            </div>
+
+            <div class="glosario-card">
+                <div class="tag">Pilar 04</div>
+                <h3>PKI / Certificados X.509</h3>
+                <p>La <strong>Infraestructura de Clave Pública (PKI)</strong> vincula claves públicas a identidades (personas, servidores) mediante certificados firmados por una Autoridad de Certificación (CA). Los certificados <strong>X.509</strong> son la base de HTTPS/TLS: garantizan que el servidor es quien dice ser. GPG usa el modelo alternativo OpenPGP (web of trust).</p>
+                <div class="tool-ref">
+                    <span class="pill asy">openssl req -x509</span>
+                    <span class="pill asy">ECDSA P-384</span>
+                    <span class="pill asy">TLS 1.3</span>
+                    <span class="pill hsh">OpenPGP (GPG)</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>
 
+<script>
+    // ── Tabs ──────────────────────────────────────────
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(btn.dataset.tab).classList.add('active');
+        });
+    });
 
-    <!-- Firma digital y verificación -->
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingGPGFour">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGPGFour" aria-expanded="false" aria-controls="collapseGPGFour">
-                Firma Digital y Verificación
-            </button>
-        </h2>
-        <div id="collapseGPGFour" class="accordion-collapse collapse" aria-labelledby="headingGPGFour" data-bs-parent="#accordionGPG">
-            <div class="accordion-body">
-                <h5>Firmar un archivo:</h5>
-                <code>gpg --sign archivo.txt</code> (Genera <code>archivo.txt.gpg</code>)
-                <br>
-                <h5>Verificar una firma:</h5>
-                <code>gpg --verify archivo.txt.gpg</code>
-                <br>
-                <h5>Firmar y cifrar un archivo:</h5>
-                <code>gpg -s -e -r "nombre_destinatario" archivo.txt</code>
-            </div>
-        </div>
-    </div>
+    // ── Copy con fallback para file:// y contextos sin HTTPS ──
+    function copyCmd(id, btn) {
+        const text = document.getElementById(id).innerText;
 
-    <!-- Certificados -->
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingGPGFive">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGPGFive" aria-expanded="false" aria-controls="collapseGPGFive">
-                Certificados y Gestión de Claves
-            </button>
-        </h2>
-        <div id="collapseGPGFive" class="accordion-collapse collapse" aria-labelledby="headingGPGFive" data-bs-parent="#accordionGPG">
-            <div class="accordion-body">
-                <p>GPG no genera certificados X.509 autofirmados (como los usados en HTTPS), pero permite crear "certificados" OpenPGP que contienen las claves públicas.</p>
-                <h5>Generar un "certificado" de clave pública:</h5>
-                <code>gpg --armor --output certificado.asc --export ClaveID</code>
-            </div>
-        </div>
-    </div>
+        function markCopied() {
+            btn.textContent = '✓ copiado';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = 'copiar'; btn.classList.remove('copied'); }, 2000);
+        }
 
-</div>
-<div class="container my-4">
-    <h2>Comparación: GPG vs OpenSSL</h2>
-    <table class="table table-bordered">
-        <thead class="table-dark">
-            <tr>
-                <th>Característica</th>
-                <th>GPG (GNU Privacy Guard)</th>
-                <th>OpenSSL</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><strong>Funcionalidad Principal</strong></td>
-                <td>Cifrado, descifrado, firma digital, manejo de claves públicas y privadas (OpenPGP).</td>
-                <td>Cifrado, descifrado, hash, firma digital, generación de <a href="https://es.wikipedia.org/wiki/X.509">certificados X.509.</a></td>
-            </tr>
-            <tr>
-                <td><strong>Cifrado Simétrico</strong></td>
-                <td>Soporta cifrado simétrico con algoritmos modernos como AES.</td>
-                <td>Ofrece una amplia variedad de algoritmos (AES, DES, ChaCha20, etc.).</td>
-            </tr>
-            <tr>
-                <td><strong>Cifrado Asimétrico</strong></td>
-                <td>Basado en OpenPGP, permite cifrar con claves públicas y descifrar con claves privadas.</td>
-                <td>Generación y uso de claves RSA, ECDSA, ED25519, etc.</td>
-            </tr>
-            <tr>
-                <td><strong>Hash</strong></td>
-                <td>No genera hashes directamente; utiliza hashes en firmas digitales (SHA-256, SHA-512, etc.).</td>
-                <td>Generación directa de hashes (MD5, SHA-1, SHA-256, SHA-512, etc.).</td>
-            </tr>
-            <tr>
-                <td><strong>Firma Digital</strong></td>
-                <td>Soporta firma de archivos y su verificación.</td>
-                <td>Permite firmar y verificar archivos, además de certificados digitales.</td>
-            </tr>
-            <tr>
-                <td><strong>Certificados X.509</strong></td>
-                <td>No soporta la generación de certificados X.509.</td>
-                <td>Permite generar certificados X.509, incluyendo autofirmados.</td>
-            </tr>
-            <tr>
-                <td><strong>Soporte de Protocolos</strong></td>
-                <td>OpenPGP (compatible con estándares de correo electrónico cifrado).</td>
-                <td>SSL/TLS, PKI, y otros estándares de comunicación segura.</td>
-            </tr>
-            <tr>
-                <td><strong>Comunidad y Uso</strong></td>
-                <td>Popular para uso personal y comunicaciones (correo, archivos).</td>
-                <td>Estándar en entornos empresariales y servidores web.</td>
-            </tr>
-            <tr>
-                <td><strong>Interfaz</strong></td>
-                <td>Línea de comandos y herramientas gráficas como Kleopatra.</td>
-                <td>Solo línea de comandos; algunas GUI externas disponibles.</td>
-            </tr>
-            <tr>
-                <td><strong>Ventajas</strong></td>
-                <td>
-                    <ul>
-                        <li>Fácil integración con herramientas como Thunderbird.</li>
-                        <li>Foco en privacidad individual.</li>
-                        <li>Código abierto y gratuito.</li>
-                    </ul>
-                </td>
-                <td>
-                    <ul>
-                        <li>Muy versátil.</li>
-                        <li>Compatible con múltiples estándares y protocolos.</li>
-                        <li>Amplio soporte de algoritmos de cifrado.</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <td><strong>Desventajas</strong></td>
-                <td>
-                    <ul>
-                        <li>No soporta certificados X.509.</li>
-                        <li>Menos eficiente en operaciones masivas.</li>
-                    </ul>
-                </td>
-                <td>
-                    <ul>
-                        <li>Interfaz compleja para principiantes.</li>
-                        <li>Configuración avanzada puede ser complicada.</li>
-                    </ul>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        function fallback() {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); markCopied(); }
+            catch(e) { btn.textContent = 'error'; }
+            ta.remove();
+        }
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(markCopied).catch(fallback);
+        } else {
+            fallback();
+        }
+    }
+</script>
 </body>
 </html>

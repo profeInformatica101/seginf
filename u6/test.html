@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página sobre seguridad en redes informáticas, con información sobre tipos de IPs, configuración de Endian Firewall y Windows Server en DMZ.">
+    <meta name="keywords" content="seguridad, redes, IP, Endian Firewall, DMZ, Windows Server">
+    <meta name="author" content="Tu Nombre">
+    <title>Seguridad en Redes con Bootstrap</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .accordion-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .accordion-button {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .accordion-button:not(.collapsed) {
+            background-color: #e9ecef;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center"><i class="bi bi-shield-lock"></i> Seguridad en Redes Informáticas</h1>
+        
+        <!-- Acordeón Principal -->
+        <div class="accordion" id="seguridadRedes">
+            
+            <!-- Sección 1: Tipos de IPs -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" aria-label="Tipos de Direcciones IP">
+                        <i class="bi bi-router" aria-hidden="true"></i> Tipos de Direcciones IP
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#seguridadRedes">
+                    <div class="accordion-body">
+                        <ul>
+                            <li><strong>IP Privada:</strong> 192.168.x.x, 10.x.x.x, 172.16.x.x - Para uso en redes locales.</li>
+                            <li><strong>IP Pública:</strong> Asignada por un proveedor de Internet para comunicación externa.</li>
+                            <li><strong>IP Estática:</strong> No cambia con el tiempo.</li>
+                            <li><strong>IP Dinámica:</strong> Asignada temporalmente por DHCP.</li>
+                        </ul>
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Dirección IP asignada por un proveedor de Internet">
+                            ¿Qué es una IP Pública?
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección 2: Configuración de Endian Firewall -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" aria-label="Configuración de Endian Firewall">
+                        <i class="bi bi-fire" aria-hidden="true"></i> Configuración de Endian Firewall
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#seguridadRedes">
+                    <div class="accordion-body">
+                        <p>Endian Firewall permite segmentar la red en zonas:</p>
+                        <ul>
+                            <li><strong>GREEN:</strong> Red interna segura.</li>
+                            <li><strong>ORANGE:</strong> DMZ para servidores públicos.</li>
+                            <li><strong>RED:</strong> Conexión a Internet.</li>
+                            <li><strong>BLUE:</strong> Red WiFi controlada.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección 3: Configuración de Windows Server como DMZ -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" aria-label="Configuración de Windows Server en la DMZ">
+                        <i class="bi bi-server" aria-hidden="true"></i> Configuración de Windows Server en la DMZ
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#seguridadRedes">
+                    <div class="accordion-body">
+                        <p>Para configurar Windows Server en la DMZ de Endian Firewall:</p>
+                        <ol>
+                            <li>Asignar IP fija dentro de la subred ORANGE (Ejemplo: 192.168.2.10).</li>
+                            <li>Configurar reglas de firewall para permitir tráfico HTTP/HTTPS.</li>
+                            <li>Habilitar seguridad adicional como IPSec o Firewall de Windows.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Botón de Volver al Inicio -->
+        <div class="text-center mt-4">
+            <a href="#seguridadRedes" class="btn btn-primary">
+                <i class="bi bi-arrow-up"></i> Volver al inicio
+            </a>
+        </div>
+        
+        <!-- Pie de página -->
+        <footer class="text-center mt-4 py-3 bg-light">
+            <p>&copy; 2025 Seguridad en Redes | Creado con Bootstrap <i class="bi bi-bootstrap"></i></p>
+            <div class="mt-2">
+                <a href="#" class="text-decoration-none me-3"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="text-decoration-none me-3"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="text-decoration-none"><i class="bi bi-github"></i></a>
+            </div>
+            <p class="mt-2"><a href="#" class="text-decoration-none">Política de Privacidad</a></p>
+        </footer>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script>
+        // Inicializar tooltips
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+</body>
+</html>
